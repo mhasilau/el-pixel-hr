@@ -6,7 +6,7 @@ import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, MatIconModule, Nav, RouterLink],
+  imports: [MatButtonModule, MatIconModule, Nav],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })
