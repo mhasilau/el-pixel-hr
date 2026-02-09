@@ -50,49 +50,4 @@
     width: 70%;
 }
 
-@media screen and (min-width: 901px) {
 
-}
-
-@media (min-width: 601px) and (max-width: 900px) {
-
-    .main_pages {
-        background-position-x: 250%;
-        background-size:90%;
-    }    
-}
-
-@media (max-width: 600px) {
-    .main_pages {
-        background-position:center;
-        background-size:100%;
-    } 
-
-    .logo{
-        width: 60%;
-    }
-
-    h1 {
-        margin: auto;
-    }
-
-    .for_main_content {
-        padding: 0;
-        height: 70vh;
-    }
-
-    .for_main_content p {
-        width: 100%;
-        font-size: 1.3rem;
-        text-align: center;
-    }
-
-    .for_main_content button {
-        width: 90%;
-        margin: 1% auto;
-    }  
-
-    .for_nav {
-        margin-right: 2%;
-    }
-}
