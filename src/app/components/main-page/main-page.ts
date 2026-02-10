@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, LOCALE_ID, ViewChild } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { Nav } from "../nav/nav";
@@ -16,13 +16,13 @@ export class MainPage {
 
   readonly dialog = inject(MatDialog);
 
-  nameUser:string = ''
+  nameUser:string = ''//избавиться от этой переменной
   
   openDialog(): void {
-    const dialogRef = this.dialog.open(AuthForm,{ width: '60vw', height: '50vh'});
-
-    dialogRef.afterClosed().pipe(filter((date)=>!!date)).subscribe(result => {
-      this.nameUser =result['name'].value})
+    const dialogRef = this.dialog.open(AuthForm,{ width: '60vw', height: '50vh'}); 
+    dialogRef.afterClosed().pipe(filter((date)=>!!date)).subscribe(result => {          
+      this.nameUser =result.userName 
+    })
   }
   
 }

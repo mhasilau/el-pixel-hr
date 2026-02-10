@@ -6,12 +6,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {MatDialogClose,MatDialogRef} from '@angular/material/dialog';
 
-
-interface IUser{
-  name:string|AbstractControl
-  password:string|AbstractControl,
-}
-
 @Component({
   selector: 'app-auth-form',
   imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule,MatFormFieldModule,MatInputModule,FormsModule,MatButtonModule,MatDialogClose],
@@ -32,14 +26,6 @@ export class AuthForm {
     'userPassword': new FormControl('',[this.inputValid,Validators.required]),
   })
 
-  regName=this.authForm.controls['userName']
-  regPassword=this.authForm.controls['userPassword']
-
-  newUser:IUser = {
-    name:'',
-    password:''
-  }
-
   hide = signal(true);
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -47,14 +33,10 @@ export class AuthForm {
   }
 
   enter(){ 
-    this.newUser={
-      name:this.authForm.controls['userName'],
-      password:this.regPassword,
-    }  
-    this.dialogRef.close(this.newUser)
+    this.dialogRef.close(this.authForm.value)
   }
 
-    onNoClick(): void {
+  onNoClick(): void {
     this.dialogRef.close();
   }
 
