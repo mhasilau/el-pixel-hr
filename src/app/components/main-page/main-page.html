@@ -1,11 +1,11 @@
 <section class="main_pages">
     <header class="for_header">
         <a href=""><img src="\assets\images\logo1.png" alt="logo" class="logo"></a>
-        <!-- @if (Имя) {
-            <button matButton="tonal" >{{Имя}}</button>
-        } -->
         <nav class="for_nav">
-            <button matButton="tonal">Войти</button>
+            @if(nameUser) {
+                <button matButton="elevated" (click)="openDialog()">{{nameUser}}</button><!-- не могу придумать логику кнопки, если уже зашел -->
+            } @else {            
+                <button matButton="elevated" (click)="openDialog()">Войти</button>}
             <app-nav></app-nav>
         </nav>
     </header>
@@ -17,3 +17,4 @@
         <button matButton="tonal">Подать заявку на стажировку</button>
     </section>
 </section>
+

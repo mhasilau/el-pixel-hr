@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { Nav } from "../nav/nav";
-import { RouterLink } from "@angular/router";
+import { AuthForm } from "../auth-form/auth-form";
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
@@ -12,5 +14,15 @@ import { RouterLink } from "@angular/router";
 })
 export class MainPage {
 
+  readonly dialog = inject(MatDialog);
 
+  nameUser:string = ''
+  
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AuthForm,{ width: '60vw', height: '50vh'});
+
+    dialogRef.afterClosed().pipe(filter((date)=>!!date)).subscribe(result => {
+      this.nameUser =result['name'].value})
+  }
+  
 }
