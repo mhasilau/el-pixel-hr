@@ -1,0 +1,22 @@
+.forAuth {
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .forClose {
+        position: absolute;
+        background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
+        left: 92%;
+        top: 2%;
+    }
+
+    mat-form-field {
+        width: 80%;
+        mat-hint {
+            color: red;
+        }
+    }
+}
+

@@ -23,6 +23,7 @@
 
         button {
             margin-right: 10px;
+            background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
         }
     }
 
@@ -46,7 +47,10 @@
         h3 {
             width: 70%;
         }
-
     }
 }
+
+
+
+
 
