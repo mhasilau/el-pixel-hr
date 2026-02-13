@@ -1,0 +1,30 @@
+import { Component, ElementRef, inject, LOCALE_ID, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Nav } from '../nav/nav';
+import { AuthForm } from '../auth-form/auth-form';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
+import { RouterLinkWithHref } from '@angular/router';
+
+@Component({
+  selector: 'app-main-page',
+  imports: [MatButtonModule, MatIconModule, Nav, RouterLinkWithHref],
+  templateUrl: './main-page.html',
+  styleUrl: './main-page.scss',
+})
+export class MainPage {
+  readonly dialog = inject(MatDialog);
+
+  nameUser: string = ''; //избавиться от этой переменной
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AuthForm, { width: '60vw', height: '50vh' });
+    dialogRef
+      .afterClosed()
+      .pipe(filter((date) => !!date))
+      .subscribe((result) => {
+        this.nameUser = result.userName;
+      });
+  }
+}
