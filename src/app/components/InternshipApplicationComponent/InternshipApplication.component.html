@@ -1,0 +1,429 @@
+<div class="internship-application-wrapper">
+  <form [formGroup]="internshipApplicationForm" class="internship-form">
+    <div class="form-header">
+      <span class="header-title">personal information</span>
+    </div>
+    <div class="form-wrapper" formGroupName="personal-info">
+      <div class="form-block">
+        <div class="form-block-header"></div>
+        <div class="form-line form-line-personal">
+          <div class="form-item">
+            <p class="form-item__title">Full Name:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item">
+                <mat-label>First Name</mat-label>
+
+                <input matInput placeholder="First Name" formControlName="firstName" />
+                @if (firstName?.hasError('required') && firstName?.touched) {
+                <mat-error>First name is required</mat-error>
+                } @else if (firstName?.hasError('pattern') && firstName?.touched) {
+                <mat-error>First name must be without numbers</mat-error>
+                } @else if (firstName?.hasError('minlength') && firstName?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (firstName?.hasError('maxlength') && firstName?.touched) {
+                <mat-error>Maximum 50 characters</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field class="input-item">
+                <mat-label>Surname</mat-label>
+                <input matInput placeholder="Surname" formControlName="surname" />
+
+                @if (surname?.hasError('required') && surname?.touched) {
+                <mat-error>Surname is required</mat-error>
+                } @else if (surname?.hasError('pattern') && surname?.touched) {
+                <mat-error>Surname must be without numbers</mat-error>
+                } @else if (surname?.hasError('minlength') && surname?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (surname?.hasError('maxlength') && surname?.touched) {
+                <mat-error>Maximum 50 characters</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field class="input-item">
+                <mat-label>Patronymic</mat-label>
+                <input matInput placeholder="Patronymic" formControlName="patronymic" />
+                @if (patronymic?.hasError('required') && patronymic?.touched) {
+                <mat-error>Patronymic is required</mat-error>
+                } @else if (patronymic?.hasError('pattern') && patronymic?.touched) {
+                <mat-error>Patronymic must be without numbers</mat-error>
+                } @else if (patronymic?.hasError('minlength') && patronymic?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (patronymic?.hasError('maxlength') && patronymic?.touched) {
+                <mat-error>Maximum 50 characters</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="form-line">
+          <div class="form-item">
+            <p class="form-item__title">Date of Birth:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item input-item-birthdate">
+                <mat-label>Birth Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="birthDatePicker"
+                  formControlName="birthDate"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="birthDatePicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #birthDatePicker></mat-datepicker>
+
+                @if (birthDate?.hasError('required') && birthDate?.touched) {
+                <mat-error>Date of birth is required</mat-error>
+                } @else if (birthDate?.hasError('minAge') && birthDate?.touched) {
+                <mat-error
+                  >Minimum age is 16, you are
+                  {{birthDate?.errors?.['minAge']?.actualAge}}</mat-error
+                >
+                } @else if (birthDate?.hasError('maxAge') && birthDate?.touched) {
+                <mat-error
+                  >Maximum age is 100, you are
+                  {{birthDate?.errors?.['maxAge']?.actualAge}}</mat-error
+                >
+                }
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-item">
+            <p class="form-item__title">Age:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item">
+                <mat-label>Age</mat-label>
+                <input matInput formControlName="age" readonly />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-item">
+            <p class="form-item__title">Gender:</p>
+            <div class="input-group">
+              <mat-button-toggle-group
+                name="genderToggle"
+                formControlName="gender"
+                class="gender-toggle-group"
+              >
+                <mat-button-toggle value="Male">Male</mat-button-toggle>
+                <mat-button-toggle value="Female">Female</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            @if (gender?.hasError('required') && gender?.touched) {
+            <mat-error>Gender is required</mat-error>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="form-block">
+        <div class="form-block-header">Contact information</div>
+        <div class="form-line">
+          <div class="form-item">
+            <p class="form-item__title">Phone:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item">
+                <span matTextPrefix>+ &nbsp;</span>
+                <input
+                  matInput
+                  type="tel"
+                  formControlName="phone"
+                  (keydown)="preventNonNumeric($event)"
+                  (paste)="onPhonePaste($event)"
+                />
+                <mat-icon matSuffix>mode_edit</mat-icon>
+                <mat-hint>+375 (29) 888-88-88</mat-hint>
+
+                @if(phone?.hasError('minlength') && phone?.touched){
+                <mat-error>Minimum length must be 7</mat-error>
+                } @if(phone?.hasError('maxlength') && phone?.touched){
+                <mat-error>Maximum length must be 15</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-item">
+            <p class="form-item__title">Email:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item input-item-email">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  type="email"
+                  placeholder="your.email@example.com"
+                  formControlName="email"
+                  required
+                />
+                @if (email?.hasError('required') && email?.touched) {
+                <mat-error>Email is required</mat-error>
+                } @else if ((email?.hasError('email') || email?.hasError('pattern')) &&
+                email?.touched) {
+                <mat-error>Please enter a valid email address</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="form-line form-line-personal">
+          <div class="form-item">
+            <p class="form-item__title">Address:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item">
+                <mat-label>Country</mat-label>
+
+                <input matInput placeholder="Country" formControlName="country" />
+                @if (country?.hasError('required') && country?.touched) {
+                <mat-error>Country is required</mat-error>
+                } @else if (country?.hasError('pattern') && country?.touched) {
+                <mat-error>Country must be without numbers</mat-error>
+                } @else if (country?.hasError('minlength') && country?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (country?.hasError('maxlength') && country?.touched) {
+                <mat-error>Maximum 50 characters</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field class="input-item">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="City" formControlName="city" />
+
+                @if (city?.hasError('required') && city?.touched) {
+                <mat-error>City is required</mat-error>
+                } @else if (city?.hasError('pattern') && city?.touched) {
+                <mat-error>City must be without numbers</mat-error>
+                } @else if (city?.hasError('minlength') && city?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (city?.hasError('maxlength') && city?.touched) {
+                <mat-error>Maximum 50 characters</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field class="input-item">
+                <mat-label>Street/House/Flat/Office</mat-label>
+                <input matInput placeholder="Street/House/Flat/Office" formControlName="street" />
+                <mat-hint>15 Pushkina Street, Building 2, Apt 4.</mat-hint>
+                @if (street?.hasError('required') && street?.touched) {
+                <mat-error>Street/House/Flat/Office is required</mat-error>
+                } @else if (street?.hasError('minlength') && street?.touched) {
+                <mat-error>Minimum 2 characters</mat-error>
+                } @else if (street?.hasError('maxlength') && street?.touched) {
+                <mat-error>Maximum 100 characters</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-block">
+        <p class="form-block-header">Education information</p>
+        <div class="form-line">
+          <div class="form-item">
+            <p class="form-item__title">School:</p>
+            <div class="input-group">
+              <mat-form-field class="input-item">
+                <input matInput type="text" formControlName="school" />
+                @if(school?.hasError('required') && school?.touched){
+                <mat-error>School is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-line form-line-multiple">
+          <div class="form-item">
+            <p class="form-item__title">Higher education:</p>
+            <button mat-icon-button (click)="addItem('higherEducation')" type="button">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <div class="multiple-forms">
+            @for (education of higherEducationControls; track education) {
+            <div class="multiple-block" [formGroupName]="'higherEducation' + $index">
+              <p class="form-item__title">Education {{ $index + 1 }}:</p>
+
+              <div class="form-line form-line-multiple">
+                <div class="form-item">
+                  <div class="input-group">
+                    <mat-form-field class="input-item">
+                      <mat-label>University/Institution Name</mat-label>
+                      <input
+                        matInput
+                        placeholder="Enter university name"
+                        formControlName="institution"
+                        class="university-name"
+                      />
+                    </mat-form-field>
+
+                    <mat-form-field class="input-item">
+                      <mat-label>Date of start</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="startDatePicker"
+                        formControlName="startDate"
+                        class="university-date"
+                        readonly
+                      />
+                      <mat-datepicker-toggle
+                        matIconSuffix
+                        [for]="startDatePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="input-item">
+                      <mat-label>Date of end</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="endDatePicker"
+                        formControlName="endDate"
+                        class="university-date"
+                        readonly
+                      />
+                      <mat-datepicker-toggle
+                        matIconSuffix
+                        [for]="endDatePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              @if (higherEducationControls.length > 1) {
+              <button
+                mat-icon-button
+                color="warn"
+                class="remove-button"
+                (click)="removeItem('higherEducation', $index)"
+                type="button"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+              }
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="form-line form-line-multiple">
+          <div class="form-item">
+            <p class="form-item__title">Courses:</p>
+            <button mat-icon-button (click)="addItem('courses')" type="button">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <div class="multiple-forms">
+            @for (course of coursesControls; track course) {
+            <div class="multiple-block" [formGroupName]="'course' + $index">
+              <p class="form-item__title">Course {{ $index + 1 }}:</p>
+              <div class="form-line form-line-multiple">
+                <div class="form-item">
+                  <div class="input-group">
+                    <mat-form-field class="input-item">
+                      <mat-label>Course Name</mat-label>
+                      <input
+                        matInput
+                        placeholder="Enter course name"
+                        formControlName="course"
+                        class="course-name"
+                      />
+                    </mat-form-field>
+                    <div
+                      class="file-input-wrapper"
+                      [class.has-file]="course.get('certificate')?.value"
+                      (click)="fileInput_$index.click()"
+                    >
+                      <label class="file-label">
+                        <mat-icon>attach_file</mat-icon>
+                        {{ course.get('certificate')?.value ? 'Change' : 'Choose file' }}
+                      </label>
+                      @if (course.get('certificate')?.value) {
+                      <div class="selected-file">
+                        <div class="file-info">
+                          <mat-icon>description</mat-icon>
+                          <span class="file-name">{{
+                            course.get('certificate')?.value?.name
+                          }}</span>
+                        </div>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          class="clear-file-btn"
+                          (click)="clearFile(course); $event.stopPropagation()"
+                        >
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      </div>
+                      }
+
+                      <input
+                        type="file"
+                        [id]="'file-' + $index"
+                        accept=".pdf,.doc,.docx,.jpg,.png"
+                        (change)="onFileSelected($event, course)"
+                        class="file-input"
+                        #fileInput_$index
+                      />
+                    </div>
+                  </div>
+                </div>
+                @if (coursesControls.length > 1) {
+                <button
+                  mat-icon-button
+                  color="warn"
+                  class="remove-button"
+                  (click)="removeItem('courses', $index)"
+                  type="button"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                }
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="form-line form-line-multiple form-line-skills">
+          <div class="form-item">
+            <p class="form-item__title">Skills:</p>
+            <div class="input-group skill-input-group">
+              <mat-form-field class="input-item skill-field">
+                <mat-label>Add a skill</mat-label>
+                <input
+                  matInput
+                  #skillInput
+                  placeholder="e.g. JavaScript, Angular, TypeScript"
+                  (keyup.enter)="addItem('skills', skillInput.value); skillInput.value = ''"
+                />
+              </mat-form-field>
+              <button
+                color="primary"
+                class="add-skill-btn"
+                (click)="addItem('skills', skillInput.value); skillInput.value = ''"
+                type="button"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+          <div class="skills-container">
+            @for (skill of skillsControls; track skill; let i = $index) {
+            <div class="skill-chip" [formGroupName]="'skill' + i">
+              <span class="skill-name">{{ skill.get('name')?.value }}</span>
+              <button
+                mat-icon-button
+                type="button"
+                class="remove-skill-btn"
+                (click)="removeItem('skills', i)"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" (click)="onSubmit()">Submit</button>
+    </div>
+  </form>
+</div>
