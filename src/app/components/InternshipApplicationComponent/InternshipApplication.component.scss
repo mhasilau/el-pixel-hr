@@ -1,14 +1,14 @@
-$primary-color: #0078d4;
 $primary-dark: #005a9e;
 $background-color: #f3f2f1;
-$surface-color: #ffffff;
-$text-primary: #323130;
-$text-secondary: #605e5c;
+$text-primary: #0c1e34;
 $border-color: #d2d0ce;
 $error-color: #a4262c;
-$success-color: #107c10;
+$background-pixel-color: #faf8f5;
+$primary-color: #0c1e34;
+$secondary-color: #ffbf00;
 
-$font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+$font-family: 'Geologica', cursive;
+
 $font-size-xs: 0.75rem; // 12px
 $font-size-sm: 0.875rem; // 14px
 $font-size-base: 1rem; // 16px
@@ -26,20 +26,26 @@ $spacing-xl: 32px;
 $spacing-2xl: 40px;
 $spacing-3xl: 48px;
 
+mat-mdc-text-field-wrapper {
+  ::ng-deep {
+    font-family: $font-family;
+  }
+}
+
 .internship-application-wrapper {
-  background-color: $background-color;
+  background-color: $background-pixel-color;
   min-height: 100vh;
   padding: $spacing-lg;
-
+  padding-top: 0;
   .internship-form {
-    max-width: 800px;
+    width: 70%;
     margin: 0 auto;
-    background-color: $surface-color;
-    border-radius: 2px;
-    box-shadow: 0 1.6px 3.6px rgba(0, 0, 0, 0.13), 0 0.3px 0.9px rgba(0, 0, 0, 0.1);
 
+    border-radius: 2px;
     .form-header {
       background-color: $primary-color;
+      font-size: $font-size-lg;
+      font-weight: 600;
       color: white;
       padding: $spacing-2xl $spacing-xl;
       border-radius: 2px 2px 0 0;
@@ -59,55 +65,80 @@ $spacing-3xl: 48px;
       flex-direction: column;
       gap: 20px;
       .form-block {
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
         .form-block-header {
-          font-size: $font-size-lg;
+          font-size: $font-size-xl;
+          color: $text-primary;
+          font-weight: 600;
           width: 100%;
           border-bottom: 1px solid $border-color;
           padding-bottom: 10px;
-        }
-        .form-line-personal {
-          .form-item {
-            display: flex;
-            flex-direction: column;
-            .input-group {
-              display: flex !important;
-              align-items: center;
-              gap: 10px;
-              .input-item {
-                width: 230px;
-              }
-            }
-          }
+          margin-bottom: 20px;
         }
         .form-line {
           display: flex;
-          gap: 10px;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
           .form-item {
-            .form-item__title {
-              font-size: $font-size-lg;
-              font-weight: 600;
-              color: $text-primary;
-              margin-bottom: $spacing-md;
-              display: block;
-            }
-
+            width: 100%;
             .input-group {
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-              gap: $spacing-md;
-              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: 10px;
               .input-item {
-                width: 230px;
+                width: 100%;
                 ::ng-deep .mat-mdc-form-field-text-prefix {
-                  height: 20px !important;
+                  height: 20px;
                 }
               }
-              .gender-toggle-group {
+              .gender-radio-group {
                 font-family: $font-family;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 12px;
                 .mat-button-toggle {
                   width: 115px;
                   height: 56px;
                   display: flex;
+                }
+                .gender-radio {
+                  display: flex;
+                  align-items: center;
+                  &:not(:focus-visible) {
+                    outline: none;
+                  }
+                  ::ng-deep {
+                    .mdc-radio {
+                      padding: 0;
+                      margin-right: 10px;
+
+                      .mdc-radio__background {
+                        &::before {
+                          display: none;
+                        }
+                      }
+
+                      .mdc-radio__outer-circle {
+                        border-color: $border-color;
+                        border-width: 2px;
+                        transition: border-color 0.2s ease;
+                      }
+
+                      .mdc-radio__inner-circle {
+                        background-color: $secondary-color !important;
+                        border-color: $secondary-color !important;
+                        transition: transform 0.2s ease;
+                      }
+
+                      &:hover .mdc-radio__outer-circle {
+                        border-color: $secondary-color;
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -220,7 +251,7 @@ $spacing-3xl: 48px;
                   width: 30px;
                   height: 30px;
                   margin-left: 4px;
-                  color: $text-secondary;
+                  color: $text-primary;
                   text-align: center;
                   vertical-align: middle;
                   position: relative;
@@ -258,6 +289,7 @@ $spacing-3xl: 48px;
             justify-content: center;
             .skill-input-group {
               display: flex;
+              align-items: self-start;
               width: 100%;
               gap: 2px;
               .skill-field {
@@ -291,7 +323,7 @@ $spacing-3xl: 48px;
                 border-bottom: 1px solid $border-color;
                 cursor: pointer;
                 transition: all 0.2s;
-                color: $text-secondary;
+                color: $text-primary;
                 font-family: $font-family;
                 font-weight: 500;
                 &:hover {
@@ -312,6 +344,7 @@ $spacing-3xl: 48px;
         .skills-container {
           display: flex;
           flex-wrap: wrap;
+          width: 100%;
           gap: $spacing-sm;
           padding: $spacing-sm 0;
           &:empty {
@@ -350,7 +383,7 @@ $spacing-3xl: 48px;
               height: 28px;
               line-height: 28px;
               margin-left: 4px;
-              color: $text-secondary;
+              color: $text-primary;
               position: relative;
 
               mat-icon {
@@ -401,6 +434,7 @@ $spacing-3xl: 48px;
     }
   }
 }
+
 mat-error {
   font-size: $font-size-xs;
   font-weight: 600;

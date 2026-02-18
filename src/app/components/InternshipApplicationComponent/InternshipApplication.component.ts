@@ -15,6 +15,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 @Component({
   selector: 'app-InternshipApplicationComponent',
   standalone: true,
@@ -29,6 +31,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatButtonToggleModule,
     MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
   ],
 })
 export class InternshipApplicationComponent {
@@ -39,37 +43,14 @@ export class InternshipApplicationComponent {
   minDate: Date;
   maxDate: Date;
 
-  higherEducationControls: FormGroup[] = [];
-  coursesControls: FormGroup[] = [];
   skillsControls: FormGroup[] = [];
-
-  private readonly dynamicFormsGroups = {
-    higherEducation: {
-      arrayName: 'higherEducationControls',
-      formGroupName: 'higherEducation',
-      fields: {
-        institution: [''],
-        startDate: [''],
-        endDate: [''],
-      },
-    },
-    courses: {
-      arrayName: 'coursesControls',
-      formGroupName: 'course',
-      fields: {
-        course: [''],
-        certificate: [''],
-      },
-    },
-    skills: {
-      arrayName: 'skillsControls',
-      formGroupName: 'skill',
-      fields: {
-        name: [''],
-      },
-    },
-  } as const;
-
+  specializations = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
+  englishLevels = [
+    { value: 'Beginner / Elementary' },
+    { value: 'Pre-Intermediate' },
+    { value: 'Intermediate' },
+    { value: 'Upper-Intermediate / Advanced' },
+  ];
   constructor(private fb: FormBuilder) {
     const today = new Date();
     this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
@@ -95,15 +76,6 @@ export class InternshipApplicationComponent {
             Validators.pattern(/^[^\d]*$/),
           ],
         ],
-        patronymic: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/),
-          ],
-        ],
         email: [
           '',
           [
@@ -113,7 +85,6 @@ export class InternshipApplicationComponent {
           ],
         ],
         birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
-        age: [{ value: '', disabled: true }],
         gender: ['', Validators.required],
         phone: ['', [Validators.minLength(7), Validators.maxLength(15)]],
         country: [
@@ -134,12 +105,21 @@ export class InternshipApplicationComponent {
             Validators.pattern(/^[^\d]*$/),
           ],
         ],
-        street: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-        school: ['', Validators.required],
+        education: [''],
+        about: [''],
+        specialization: ['', Validators.required],
+        telegram: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(5),
+            Validators.maxLength(32),
+            Validators.pattern(/^@?[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]$/),
+          ],
+        ],
+        englishLevel: ['', Validators.required],
       }),
     });
-    this.addItem('higherEducation');
-    this.addItem('courses');
 
     this.loadFromLocalStorage();
     this.internshipApplicationForm.get('personal-info')?.valueChanges.subscribe(() => {
@@ -150,87 +130,57 @@ export class InternshipApplicationComponent {
       this.updateAgeFromBirthDate();
     });
   }
-  onFileSelected(event: Event, formGroup: FormGroup): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
 
-    if (file) {
-      formGroup.patchValue({
-        certificate: file,
-      });
+  clearControl(control: AbstractControl | null | undefined): void {
+    if (control) {
+      control.setValue('');
+      control.markAsTouched();
     }
   }
+  addSkill(value?: string): void {
+    if (!value?.trim()) return;
 
-  addItem(sectionKey: keyof typeof this.dynamicFormsGroups, value?: string): void {
-    const config = this.dynamicFormsGroups[sectionKey];
-    const array = this[config.arrayName] as FormGroup[];
-    const index = array.length;
+    const personalInfo = this.personalInfo as FormGroup;
+    const newIndex = this.skillsControls.length;
+    const controlName = `skill${newIndex}`;
 
-    let newGroup: FormGroup;
-
-    if (sectionKey === 'skills') {
-      if (!value?.trim()) return;
-      newGroup = this.fb.group({
-        name: [value.trim()],
-      });
-    } else {
-      const fields: Record<string, [string]> = {};
-      (Object.keys(config.fields) as Array<keyof typeof config.fields>).forEach((key) => {
-        fields[key as string] = [''];
-      });
-      newGroup = this.fb.group(fields);
-    }
-
-    const personalInfo = this.internshipApplicationForm.get('personal-info') as FormGroup;
-    personalInfo.addControl(`${config.formGroupName}${index}`, newGroup);
-    array.push(newGroup);
-  }
-
-  removeItem(sectionKey: keyof typeof this.dynamicFormsGroups, index: number): void {
-    const config = this.dynamicFormsGroups[sectionKey];
-    const array = this[config.arrayName] as FormGroup[];
-
-    if (sectionKey === 'skills' ? array.length > 0 : array.length > 1) {
-      const personalInfo = this.internshipApplicationForm.get('personal-info') as FormGroup;
-      personalInfo.removeControl(`${config.formGroupName}${index}`);
-
-      const remainingControls = array.filter((_, i) => i !== index);
-      array.length = 0;
-
-      Object.keys(personalInfo.controls).forEach((key) => {
-        if (key.startsWith(config.formGroupName)) {
-          personalInfo.removeControl(key);
-        }
-      });
-
-      remainingControls.forEach((control, i) => {
-        personalInfo.addControl(`${config.formGroupName}${i}`, control);
-        array.push(control);
-      });
-    }
-  }
-
-  clearFile(formGroup: FormGroup): void {
-    formGroup.patchValue({
-      certificate: null,
+    const newGroup = this.fb.group({
+      name: [value.trim()],
     });
 
-    const fileInput = document.getElementById(
-      'file-' + this.getIndex(formGroup)
-    ) as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = '';
-    }
+    personalInfo.addControl(controlName, newGroup);
+    this.skillsControls.push(newGroup);
   }
 
-  private getIndex(formGroup: FormGroup): number {
-    return this.coursesControls.findIndex((control) => control === formGroup);
+  removeSkill(index: number): void {
+    const personalInfo = this.personalInfo as FormGroup;
+    const controlName = `skill${index}`;
+
+    personalInfo.removeControl(controlName);
+    this.skillsControls.splice(index, 1);
+
+    const remainingValues = this.skillsControls.map((control) => control.get('name')?.value);
+
+    Object.keys(personalInfo.controls).forEach((key) => {
+      if (key.startsWith('skill')) {
+        personalInfo.removeControl(key);
+      }
+    });
+
+    this.skillsControls = [];
+    remainingValues.forEach((value, i) => {
+      const newControlName = `skill${i}`;
+      const skillGroup = this.fb.group({
+        name: [value || ''],
+      });
+      personalInfo.addControl(newControlName, skillGroup);
+      this.skillsControls.push(skillGroup);
+    });
   }
 
   formatPhoneInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    //delete all non-numbers
     const cleaned = input.value.replace(/\D/g, '');
 
     input.value = cleaned;
@@ -341,65 +291,66 @@ export class InternshipApplicationComponent {
       this.personalInfo?.patchValue({
         firstName: formData.firstName || '',
         surname: formData.surname || '',
-        patronymic: formData.patronymic || '',
         email: formData.email || '',
         birthDate: formData.birthDate ? new Date(formData.birthDate) : '',
         gender: formData.gender || '',
         phone: formData.phone || '',
         country: formData.country || '',
         city: formData.city || '',
-        street: formData.street || '',
-        school: formData.school || '',
+        specialization: formData['specialization'] || '',
+        education: formData['education'] || '',
       });
       if (formData.birthDate) {
         this.updateAgeFromBirthDate();
       }
-      this.restoreDynamicSection('higherEducation', formData.higherEducation);
-      this.restoreDynamicSection('courses', formData.course);
-      this.restoreDynamicSection('skills', formData.skill);
+      this.restoreSkills(formData);
     }
   }
-  private restoreDynamicSection(
-    sectionKey: keyof typeof this.dynamicFormsGroups,
-    items: Record<string, string>[] | undefined
-  ): void {
-    const config = this.dynamicFormsGroups[sectionKey];
-    const array = this[config.arrayName] as FormGroup[];
 
-    array.length = 0;
+  private restoreSkills(formData: Record<string, unknown>): void {
+    const personalInfo = this.personalInfo as FormGroup;
 
-    const personalInfo = this.internshipApplicationForm.get('personal-info') as FormGroup;
-
+    this.skillsControls = [];
     Object.keys(personalInfo.controls).forEach((key) => {
-      if (key.startsWith(config.formGroupName)) {
+      if (key.startsWith('skill')) {
         personalInfo.removeControl(key);
       }
     });
 
-    if (items && items.length > 0) {
-      items.forEach((item: Record<string, string>, index: number) => {
-        let newGroup: FormGroup;
+    let skillIndex = 0;
 
-        if (sectionKey === 'skills') {
-          newGroup = this.fb.group({
-            name: [item['name'] || ''],
-          });
-        } else {
-          const fields: Record<string, [string]> = {};
+    while (true) {
+      const skillKey = `skill${skillIndex}`;
+      const skillValue = formData[skillKey];
 
-          (Object.keys(config.fields) as Array<keyof typeof config.fields>).forEach((key) => {
-            fields[key as string] = [item[key as string] || ''];
-          });
-          newGroup = this.fb.group(fields);
-        }
+      if (skillValue === undefined) {
+        break;
+      }
 
-        personalInfo.addControl(`${config.formGroupName}${index}`, newGroup);
-        array.push(newGroup);
-      });
-    } else {
-      this.addItem(sectionKey);
+      const controlName = `skill${skillIndex}`;
+
+      if (skillValue && typeof skillValue === 'object' && 'name' in skillValue) {
+        const nameValue = (skillValue as { name?: unknown }).name;
+        personalInfo.addControl(
+          controlName,
+          this.fb.group({
+            name: [typeof nameValue === 'string' ? nameValue : ''],
+          })
+        );
+      } else {
+        personalInfo.addControl(
+          controlName,
+          this.fb.group({
+            name: [typeof skillValue === 'string' ? skillValue : ''],
+          })
+        );
+      }
+
+      this.skillsControls.push(personalInfo.get(controlName) as FormGroup);
+      skillIndex++;
     }
   }
+
   get personalInfo() {
     return this.internshipApplicationForm.get('personal-info');
   }
@@ -408,9 +359,6 @@ export class InternshipApplicationComponent {
   }
   get surname() {
     return this.personalInfo?.get('surname');
-  }
-  get patronymic() {
-    return this.personalInfo?.get('patronymic');
   }
   get email() {
     return this.personalInfo?.get('email');
@@ -430,50 +378,49 @@ export class InternshipApplicationComponent {
   get city() {
     return this.personalInfo?.get('city');
   }
-  get street() {
-    return this.personalInfo?.get('street');
-  }
   get gender() {
     return this.personalInfo?.get('gender');
   }
-  get school() {
-    return this.personalInfo?.get('school');
+  get specialization() {
+    return this.personalInfo?.get('specialization');
   }
-  get university() {
-    return this.personalInfo?.get('university');
+  get education() {
+    return this.personalInfo?.get('education');
   }
-
+  get about() {
+    return this.personalInfo?.get('about');
+  }
+  get telegram() {
+    return this.personalInfo?.get('telegram');
+  }
+  get englishLevel() {
+    return this.personalInfo?.get('englishLevel');
+  }
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
       console.log('Form Submitted:', this.internshipApplicationForm.value);
 
       this.clearLocalStorage();
 
-      this.higherEducationControls = [];
-      this.coursesControls = [];
       this.skillsControls = [];
 
       this.internshipApplicationForm.reset({
         'personal-info': {
           firstName: '',
           surname: '',
-          patronymic: '',
           email: '',
           birthDate: '',
-          age: { value: '', disabled: true },
           gender: '',
           phone: '',
           country: '',
           city: '',
-          street: '',
-          school: '',
+          specialization: '',
+          education: '',
+          about: '',
+          telegram: '',
+          englishLevel: '',
         },
       });
-
-      this.addItem('higherEducation');
-      this.addItem('courses');
-
-      this.age?.setValue('');
     } else {
       console.log('Form is invalid');
       this.internshipApplicationForm.markAllAsTouched();
