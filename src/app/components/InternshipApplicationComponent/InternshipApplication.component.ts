@@ -189,32 +189,12 @@ export class InternshipApplicationComponent {
     this.phone?.markAsTouched();
   }
 
-  preventNonNumeric(event: KeyboardEvent): void {
-    const allowedKeys = [
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      'Backspace',
-      'Delete',
-      'Tab',
-      'Enter',
-      'ArrowLeft',
-      'ArrowRight',
-      'Home',
-      'End',
-      'Shift',
-    ];
-
-    if (!allowedKeys.includes(event.key) && !event.ctrlKey && !event.metaKey) {
-      event.preventDefault();
-    }
+  preventNonNumeric(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const original = input.value;
+    let clean = original.replace(/[^0-9.]/g, '');
+    console.log(clean);
+    input.value = clean;
   }
 
   onPhonePaste(event: ClipboardEvent): void {
@@ -335,14 +315,14 @@ export class InternshipApplicationComponent {
           controlName,
           this.fb.group({
             name: [typeof nameValue === 'string' ? nameValue : ''],
-          })
+          }),
         );
       } else {
         personalInfo.addControl(
           controlName,
           this.fb.group({
             name: [typeof skillValue === 'string' ? skillValue : ''],
-          })
+          }),
         );
       }
 

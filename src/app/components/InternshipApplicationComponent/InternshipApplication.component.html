@@ -14,34 +14,36 @@
 
                 <input matInput type="text" #firstNameInput formControlName="firstName" />
                 @if (firstName?.value) {
-                <button matSuffix matIconButton (click)="clearControl(firstName)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-                } @if (firstName?.hasError('required') && firstName?.touched) {
-                <mat-error>First name is required</mat-error>
+                  <button matSuffix matIconButton (click)="clearControl(firstName)" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                @if (firstName?.hasError('required') && firstName?.touched) {
+                  <mat-error>First name is required</mat-error>
                 } @else if (firstName?.hasError('pattern') && firstName?.touched) {
-                <mat-error>First name must be without numbers</mat-error>
+                  <mat-error>First name must be without numbers</mat-error>
                 } @else if (firstName?.hasError('minlength') && firstName?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                  <mat-error>Minimum 2 characters</mat-error>
                 } @else if (firstName?.hasError('maxlength') && firstName?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                  <mat-error>Maximum 50 characters</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
                 <mat-label>Surname</mat-label>
                 <input matInput formControlName="surname" type="text" />
                 @if (surname?.value) {
-                <button matSuffix matIconButton (click)="clearControl(surname)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-                } @if (surname?.hasError('required') && surname?.touched) {
-                <mat-error>Surname is required</mat-error>
+                  <button matSuffix matIconButton (click)="clearControl(surname)" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                @if (surname?.hasError('required') && surname?.touched) {
+                  <mat-error>Surname is required</mat-error>
                 } @else if (surname?.hasError('pattern') && surname?.touched) {
-                <mat-error>Surname must be without numbers</mat-error>
+                  <mat-error>Surname must be without numbers</mat-error>
                 } @else if (surname?.hasError('minlength') && surname?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                  <mat-error>Minimum 2 characters</mat-error>
                 } @else if (surname?.hasError('maxlength') && surname?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                  <mat-error>Maximum 50 characters</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -65,17 +67,17 @@
                 <mat-datepicker #birthDatePicker></mat-datepicker>
 
                 @if (birthDate?.hasError('required') && birthDate?.touched) {
-                <mat-error>Date of birth is required</mat-error>
+                  <mat-error>Date of birth is required</mat-error>
                 } @else if (birthDate?.hasError('minAge') && birthDate?.touched) {
-                <mat-error
-                  >Minimum age is 16, you are
-                  {{birthDate?.errors?.['minAge']?.actualAge}}</mat-error
-                >
+                  <mat-error
+                    >Minimum age is 16, you are
+                    {{ birthDate?.errors?.['minAge']?.actualAge }}</mat-error
+                  >
                 } @else if (birthDate?.hasError('maxAge') && birthDate?.touched) {
-                <mat-error
-                  >Maximum age is 100, you are
-                  {{birthDate?.errors?.['maxAge']?.actualAge}}</mat-error
-                >
+                  <mat-error
+                    >Maximum age is 100, you are
+                    {{ birthDate?.errors?.['maxAge']?.actualAge }}</mat-error
+                  >
                 }
               </mat-form-field>
             </div>
@@ -99,7 +101,7 @@
               </mat-radio-group>
             </div>
             @if (gender?.hasError('required') && gender?.touched) {
-            <mat-error>Gender is required</mat-error>
+              <mat-error>Gender is required</mat-error>
             }
           </div>
         </div>
@@ -111,34 +113,36 @@
 
                 <input matInput formControlName="country" />
                 @if (country?.value) {
-                <button matSuffix matIconButton (click)="clearControl(country)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-                } @if (country?.hasError('required') && country?.touched) {
-                <mat-error>Country is required</mat-error>
+                  <button matSuffix matIconButton (click)="clearControl(country)" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                @if (country?.hasError('required') && country?.touched) {
+                  <mat-error>Country is required</mat-error>
                 } @else if (country?.hasError('pattern') && country?.touched) {
-                <mat-error>Country must be without numbers</mat-error>
+                  <mat-error>Country must be without numbers</mat-error>
                 } @else if (country?.hasError('minlength') && country?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                  <mat-error>Minimum 2 characters</mat-error>
                 } @else if (country?.hasError('maxlength') && country?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                  <mat-error>Maximum 50 characters</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
                 <mat-label>City</mat-label>
                 <input matInput formControlName="city" />
                 @if (city?.value) {
-                <button matSuffix matIconButton (click)="clearControl(city)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-                } @if (city?.hasError('required') && city?.touched) {
-                <mat-error>City is required</mat-error>
+                  <button matSuffix matIconButton (click)="clearControl(city)" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                @if (city?.hasError('required') && city?.touched) {
+                  <mat-error>City is required</mat-error>
                 } @else if (city?.hasError('pattern') && city?.touched) {
-                <mat-error>City must be without numbers</mat-error>
+                  <mat-error>City must be without numbers</mat-error>
                 } @else if (city?.hasError('minlength') && city?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                  <mat-error>Minimum 2 characters</mat-error>
                 } @else if (city?.hasError('maxlength') && city?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                  <mat-error>Maximum 50 characters</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -157,16 +161,17 @@
                   type="tel"
                   placeholder="Phone"
                   formControlName="phone"
-                  (keydown)="preventNonNumeric($event)"
+                  (input)="preventNonNumeric($event)"
                   (paste)="onPhonePaste($event)"
                 />
                 <mat-icon matSuffix>mode_edit</mat-icon>
                 <mat-hint>+375 (29) 888-88-88</mat-hint>
 
-                @if(phone?.hasError('minlength') && phone?.touched){
-                <mat-error>Minimum length must be 7</mat-error>
-                } @if(phone?.hasError('maxlength') && phone?.touched){
-                <mat-error>Maximum length must be 15</mat-error>
+                @if (phone?.hasError('minlength') && phone?.touched) {
+                  <mat-error>Minimum length must be 7</mat-error>
+                }
+                @if (phone?.hasError('maxlength') && phone?.touched) {
+                  <mat-error>Maximum length must be 15</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item input-item-email">
@@ -179,14 +184,16 @@
                   required
                 />
                 @if (email?.value) {
-                <button matSuffix matIconButton (click)="clearControl(email)" type="button">
-                  <mat-icon>close</mat-icon>
-                </button>
-                } @if (email?.hasError('required') && email?.touched) {
-                <mat-error>Email is required</mat-error>
-                } @else if ((email?.hasError('email') || email?.hasError('pattern')) &&
-                email?.touched) {
-                <mat-error>Please enter a valid email address</mat-error>
+                  <button matSuffix matIconButton (click)="clearControl(email)" type="button">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                @if (email?.hasError('required') && email?.touched) {
+                  <mat-error>Email is required</mat-error>
+                } @else if (
+                  (email?.hasError('email') || email?.hasError('pattern')) && email?.touched
+                ) {
+                  <mat-error>Please enter a valid email address</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -199,13 +206,13 @@
                 <mat-label>Telegram username</mat-label>
                 <input matInput type="text" formControlName="telegram" />
                 @if (telegram?.hasError('required') && telegram?.touched) {
-                <mat-error>Telegram is required</mat-error>
+                  <mat-error>Telegram is required</mat-error>
                 } @else if (telegram?.hasError('minlength') && telegram?.touched) {
-                <mat-error>Minimum 5 characters</mat-error>
+                  <mat-error>Minimum 5 characters</mat-error>
                 } @else if (telegram?.hasError('maxlength') && telegram?.touched) {
-                <mat-error>Maximum 32 characters</mat-error>
-                }@else if (telegram?.hasError('pattern') && telegram?.touched) {
-                <mat-error>Telegram username is invalid</mat-error>
+                  <mat-error>Maximum 32 characters</mat-error>
+                } @else if (telegram?.hasError('pattern') && telegram?.touched) {
+                  <mat-error>Telegram username is invalid</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -235,13 +242,13 @@
                 <mat-label>Select specialization</mat-label>
                 <mat-select formControlName="specialization">
                   @for (spec of specializations; track spec.value) {
-                  <mat-option [value]="spec.value">
-                    {{ spec.value }}
-                  </mat-option>
+                    <mat-option [value]="spec.value">
+                      {{ spec.value }}
+                    </mat-option>
                   }
                 </mat-select>
                 @if (specialization?.hasError('required') && specialization?.touched) {
-                <mat-error>Specialization is required</mat-error>
+                  <mat-error>Specialization is required</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -254,13 +261,13 @@
                 <mat-label>English level</mat-label>
                 <mat-select formControlName="englishLevel">
                   @for (level of englishLevels; track level.value) {
-                  <mat-option [value]="level.value">
-                    {{ level.value }}
-                  </mat-option>
+                    <mat-option [value]="level.value">
+                      {{ level.value }}
+                    </mat-option>
                   }
                 </mat-select>
                 @if (englishLevel?.hasError('required') && englishLevel?.touched) {
-                <mat-error>English level is required</mat-error>
+                  <mat-error>English level is required</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -291,17 +298,17 @@
           </div>
           <div class="skills-container">
             @for (skill of skillsControls; track skill; let i = $index) {
-            <div class="skill-chip" [formGroupName]="'skill' + i">
-              <span class="skill-name">{{ skill.get('name')?.value }}</span>
-              <button
-                mat-icon-button
-                type="button"
-                class="remove-skill-btn"
-                (click)="removeSkill(i)"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
-            </div>
+              <div class="skill-chip" [formGroupName]="'skill' + i">
+                <span class="skill-name">{{ skill.get('name')?.value }}</span>
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="remove-skill-btn"
+                  (click)="removeSkill(i)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
             }
           </div>
         </div>
