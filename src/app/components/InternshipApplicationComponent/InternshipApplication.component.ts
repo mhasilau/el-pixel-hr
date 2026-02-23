@@ -56,72 +56,69 @@ export class InternshipApplicationComponent {
     this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
     this.minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
 
-    this.internshipApplicationForm = this.fb.group({
-      'personal-info': this.fb.group({
-        firstName: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/),
-          ],
+    (this.internshipApplicationForm = this.fb.group({
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^[^\d]*$/),
         ],
-        surname: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/),
-          ],
+      ],
+      surname: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^[^\d]*$/),
         ],
-        email: [
-          '',
-          [
-            Validators.required,
-            Validators.email,
-            Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
-          ],
+      ],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
         ],
-        birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
-        gender: ['', Validators.required],
-        phone: ['', [Validators.minLength(7), Validators.maxLength(15)]],
-        country: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/),
-          ],
+      ],
+      birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
+      gender: ['', Validators.required],
+      phone: ['', [Validators.minLength(7), Validators.maxLength(15)]],
+      country: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^[^\d]*$/),
         ],
-        city: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/),
-          ],
+      ],
+      city: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          Validators.pattern(/^[^\d]*$/),
         ],
-        education: [''],
-        about: [''],
-        specialization: ['', Validators.required],
-        telegram: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(5),
-            Validators.maxLength(32),
-            Validators.pattern(/^@?[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]$/),
-          ],
+      ],
+      education: [''],
+      about: [''],
+      specialization: ['', Validators.required],
+      telegram: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(32),
+          Validators.pattern(/^@?[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]$/),
         ],
-        englishLevel: ['', Validators.required],
-      }),
-    });
-
-    this.loadFromLocalStorage();
+      ],
+      englishLevel: ['', Validators.required],
+    })),
+      this.loadFromLocalStorage();
     this.internshipApplicationForm.get('personal-info')?.valueChanges.subscribe(() => {
       this.saveToLocalStorage();
     });
@@ -140,7 +137,6 @@ export class InternshipApplicationComponent {
   addSkill(value?: string): void {
     if (!value?.trim()) return;
 
-    const personalInfo = this.personalInfo as FormGroup;
     const newIndex = this.skillsControls.length;
     const controlName = `skill${newIndex}`;
 
@@ -148,22 +144,21 @@ export class InternshipApplicationComponent {
       name: [value.trim()],
     });
 
-    personalInfo.addControl(controlName, newGroup);
+    this.internshipApplicationForm.addControl(controlName, newGroup);
     this.skillsControls.push(newGroup);
   }
 
   removeSkill(index: number): void {
-    const personalInfo = this.personalInfo as FormGroup;
     const controlName = `skill${index}`;
 
-    personalInfo.removeControl(controlName);
+    this.internshipApplicationForm.removeControl(controlName);
     this.skillsControls.splice(index, 1);
 
     const remainingValues = this.skillsControls.map((control) => control.get('name')?.value);
 
-    Object.keys(personalInfo.controls).forEach((key) => {
+    Object.keys(this.internshipApplicationForm.controls).forEach((key) => {
       if (key.startsWith('skill')) {
-        personalInfo.removeControl(key);
+        this.internshipApplicationForm.removeControl(key);
       }
     });
 
@@ -173,7 +168,7 @@ export class InternshipApplicationComponent {
       const skillGroup = this.fb.group({
         name: [value || ''],
       });
-      personalInfo.addControl(newControlName, skillGroup);
+      this.internshipApplicationForm.addControl(newControlName, skillGroup);
       this.skillsControls.push(skillGroup);
     });
   }
@@ -277,9 +272,10 @@ export class InternshipApplicationComponent {
   }
 
   private saveToLocalStorage(): void {
-    const formData = this.internshipApplicationForm.get('personal-info')?.value;
+    const formData = this.internshipApplicationForm.value;
     localStorage.setItem(this.formStorageKey, JSON.stringify(formData));
   }
+
   private clearLocalStorage(): void {
     localStorage.removeItem(this.formStorageKey);
   }
@@ -288,7 +284,7 @@ export class InternshipApplicationComponent {
     const savedData = localStorage.getItem(this.formStorageKey);
     if (savedData) {
       const formData = JSON.parse(savedData);
-      this.personalInfo?.patchValue({
+      this.internshipApplicationForm.patchValue({
         firstName: formData.firstName || '',
         surname: formData.surname || '',
         email: formData.email || '',
@@ -308,12 +304,10 @@ export class InternshipApplicationComponent {
   }
 
   private restoreSkills(formData: Record<string, unknown>): void {
-    const personalInfo = this.personalInfo as FormGroup;
-
     this.skillsControls = [];
-    Object.keys(personalInfo.controls).forEach((key) => {
+    Object.keys(this.internshipApplicationForm.controls).forEach((key) => {
       if (key.startsWith('skill')) {
-        personalInfo.removeControl(key);
+        this.internshipApplicationForm.removeControl(key);
       }
     });
 
@@ -331,14 +325,14 @@ export class InternshipApplicationComponent {
 
       if (skillValue && typeof skillValue === 'object' && 'name' in skillValue) {
         const nameValue = (skillValue as { name?: unknown }).name;
-        personalInfo.addControl(
+        this.internshipApplicationForm.addControl(
           controlName,
           this.fb.group({
             name: [typeof nameValue === 'string' ? nameValue : ''],
           })
         );
       } else {
-        personalInfo.addControl(
+        this.internshipApplicationForm.addControl(
           controlName,
           this.fb.group({
             name: [typeof skillValue === 'string' ? skillValue : ''],
@@ -346,55 +340,55 @@ export class InternshipApplicationComponent {
         );
       }
 
-      this.skillsControls.push(personalInfo.get(controlName) as FormGroup);
+      this.skillsControls.push(this.internshipApplicationForm.get(controlName) as FormGroup);
       skillIndex++;
     }
   }
-
-  get personalInfo() {
-    return this.internshipApplicationForm.get('personal-info');
-  }
+  // если решим добавить в конструктор еще form groups, для них будут нужны такие геттеры
+  // get personalInfo() {
+  //   return this.internshipApplicationForm.get('personal-info');
+  // }
   get firstName() {
-    return this.personalInfo?.get('firstName');
+    return this.internshipApplicationForm?.get('firstName');
   }
   get surname() {
-    return this.personalInfo?.get('surname');
+    return this.internshipApplicationForm?.get('surname');
   }
   get email() {
-    return this.personalInfo?.get('email');
+    return this.internshipApplicationForm?.get('email');
   }
   get birthDate() {
-    return this.personalInfo?.get('birthDate');
+    return this.internshipApplicationForm?.get('birthDate');
   }
   get age() {
-    return this.personalInfo?.get('age');
+    return this.internshipApplicationForm?.get('age');
   }
   get phone() {
-    return this.personalInfo?.get('phone');
+    return this.internshipApplicationForm?.get('phone');
   }
   get country() {
-    return this.personalInfo?.get('country');
+    return this.internshipApplicationForm?.get('country');
   }
   get city() {
-    return this.personalInfo?.get('city');
+    return this.internshipApplicationForm?.get('city');
   }
   get gender() {
-    return this.personalInfo?.get('gender');
+    return this.internshipApplicationForm?.get('gender');
   }
   get specialization() {
-    return this.personalInfo?.get('specialization');
+    return this.internshipApplicationForm?.get('specialization');
   }
   get education() {
-    return this.personalInfo?.get('education');
+    return this.internshipApplicationForm?.get('education');
   }
   get about() {
-    return this.personalInfo?.get('about');
+    return this.internshipApplicationForm?.get('about');
   }
   get telegram() {
-    return this.personalInfo?.get('telegram');
+    return this.internshipApplicationForm?.get('telegram');
   }
   get englishLevel() {
-    return this.personalInfo?.get('englishLevel');
+    return this.internshipApplicationForm?.get('englishLevel');
   }
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
