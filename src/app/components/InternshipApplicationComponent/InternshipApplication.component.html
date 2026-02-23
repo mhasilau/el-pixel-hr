@@ -1,16 +1,16 @@
 <div class="internship-application-wrapper">
   <form [formGroup]="internshipApplicationForm" class="internship-form">
     <div class="form-header">
-      <span class="header-title">application for a Traineeship</span>
+      <span class="header-title">заявка на стажировку</span>
     </div>
     <div class="form-wrapper" formGroupName="personal-info">
       <div class="form-block">
-        <div class="form-block-header">Personal information</div>
+        <div class="form-block-header">Персональная информация</div>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>First Name</mat-label>
+                <mat-label>Имя</mat-label>
 
                 <input matInput type="text" #firstNameInput formControlName="firstName" />
                 @if (firstName?.value) {
@@ -18,30 +18,30 @@
                   <mat-icon>close</mat-icon>
                 </button>
                 } @if (firstName?.hasError('required') && firstName?.touched) {
-                <mat-error>First name is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (firstName?.hasError('pattern') && firstName?.touched) {
-                <mat-error>First name must be without numbers</mat-error>
+                <mat-error>Имя не должно содержать чисел</mat-error>
                 } @else if (firstName?.hasError('minlength') && firstName?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                <mat-error>Минимум 2 символа</mat-error>
                 } @else if (firstName?.hasError('maxlength') && firstName?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                <mat-error>Максимум 50 символов</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>Surname</mat-label>
+                <mat-label>Фамилия</mat-label>
                 <input matInput formControlName="surname" type="text" />
                 @if (surname?.value) {
                 <button matSuffix matIconButton (click)="clearControl(surname)" type="button">
                   <mat-icon>close</mat-icon>
                 </button>
                 } @if (surname?.hasError('required') && surname?.touched) {
-                <mat-error>Surname is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (surname?.hasError('pattern') && surname?.touched) {
-                <mat-error>Surname must be without numbers</mat-error>
+                <mat-error>Фамилия не должна содержать чисел</mat-error>
                 } @else if (surname?.hasError('minlength') && surname?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                <mat-error>Минимум 2 символа</mat-error>
                 } @else if (surname?.hasError('maxlength') && surname?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                <mat-error>Максимум 50 символов</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -51,7 +51,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item input-item-birthdate">
-                <mat-label>Birth Date</mat-label>
+                <mat-label>Дата рождения</mat-label>
                 <input
                   matInput
                   [matDatepicker]="birthDatePicker"
@@ -65,15 +65,15 @@
                 <mat-datepicker #birthDatePicker></mat-datepicker>
 
                 @if (birthDate?.hasError('required') && birthDate?.touched) {
-                <mat-error>Date of birth is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (birthDate?.hasError('minAge') && birthDate?.touched) {
                 <mat-error
-                  >Minimum age is 16, you are
+                  >Минимальный возраст 16 лет
                   {{birthDate?.errors?.['minAge']?.actualAge}}</mat-error
                 >
                 } @else if (birthDate?.hasError('maxAge') && birthDate?.touched) {
                 <mat-error
-                  >Maximum age is 100, you are
+                  >Максимальный возраст 100 лет
                   {{birthDate?.errors?.['maxAge']?.actualAge}}</mat-error
                 >
                 }
@@ -90,16 +90,16 @@
                 aria-label="Select gender"
               >
                 <mat-radio-button value="Male" class="gender-radio">
-                  <span class="radio-label">Male</span>
+                  <span class="radio-label">Муж.</span>
                 </mat-radio-button>
 
                 <mat-radio-button value="Female" class="gender-radio">
-                  <span class="radio-label">Female</span>
+                  <span class="radio-label">Жен.</span>
                 </mat-radio-button>
               </mat-radio-group>
             </div>
             @if (gender?.hasError('required') && gender?.touched) {
-            <mat-error>Gender is required</mat-error>
+            <mat-error>Обязательное поле</mat-error>
             }
           </div>
         </div>
@@ -107,7 +107,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>Country</mat-label>
+                <mat-label>Страна</mat-label>
 
                 <input matInput formControlName="country" />
                 @if (country?.value) {
@@ -115,30 +115,30 @@
                   <mat-icon>close</mat-icon>
                 </button>
                 } @if (country?.hasError('required') && country?.touched) {
-                <mat-error>Country is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (country?.hasError('pattern') && country?.touched) {
-                <mat-error>Country must be without numbers</mat-error>
+                <mat-error>Страна не должна содержать чисел</mat-error>
                 } @else if (country?.hasError('minlength') && country?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                <mat-error>Минимум 2 символа</mat-error>
                 } @else if (country?.hasError('maxlength') && country?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                <mat-error>Максимум 50 символов</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>City</mat-label>
+                <mat-label>Город</mat-label>
                 <input matInput formControlName="city" />
                 @if (city?.value) {
                 <button matSuffix matIconButton (click)="clearControl(city)" type="button">
                   <mat-icon>close</mat-icon>
                 </button>
                 } @if (city?.hasError('required') && city?.touched) {
-                <mat-error>City is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (city?.hasError('pattern') && city?.touched) {
-                <mat-error>City must be without numbers</mat-error>
+                <mat-error>Город не должен содержать символов</mat-error>
                 } @else if (city?.hasError('minlength') && city?.touched) {
-                <mat-error>Minimum 2 characters</mat-error>
+                <mat-error>Максимум 2 символа</mat-error>
                 } @else if (city?.hasError('maxlength') && city?.touched) {
-                <mat-error>Maximum 50 characters</mat-error>
+                <mat-error>Максимум 50 символов</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -146,7 +146,7 @@
         </div>
       </div>
       <div class="form-block">
-        <div class="form-block-header">Contact information</div>
+        <div class="form-block-header">Контакты</div>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
@@ -155,7 +155,7 @@
                 <input
                   matInput
                   type="tel"
-                  placeholder="Phone"
+                  placeholder="Телефон"
                   formControlName="phone"
                   (keydown)="preventNonNumeric($event)"
                   (paste)="onPhonePaste($event)"
@@ -164,9 +164,9 @@
                 <mat-hint>+375 (29) 888-88-88</mat-hint>
 
                 @if(phone?.hasError('minlength') && phone?.touched){
-                <mat-error>Minimum length must be 7</mat-error>
+                <mat-error>Минальное количество - 7 символов</mat-error>
                 } @if(phone?.hasError('maxlength') && phone?.touched){
-                <mat-error>Maximum length must be 15</mat-error>
+                <mat-error>Максимальное количество - 15 символов</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item input-item-email">
@@ -183,10 +183,10 @@
                   <mat-icon>close</mat-icon>
                 </button>
                 } @if (email?.hasError('required') && email?.touched) {
-                <mat-error>Email is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if ((email?.hasError('email') || email?.hasError('pattern')) &&
                 email?.touched) {
-                <mat-error>Please enter a valid email address</mat-error>
+                <mat-error>Пожалуйста, введите валидный email адрес</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -196,16 +196,16 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>Telegram username</mat-label>
+                <mat-label>Telegram</mat-label>
                 <input matInput type="text" formControlName="telegram" />
                 @if (telegram?.hasError('required') && telegram?.touched) {
-                <mat-error>Telegram is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 } @else if (telegram?.hasError('minlength') && telegram?.touched) {
-                <mat-error>Minimum 5 characters</mat-error>
+                <mat-error>Минимум 5 символов</mat-error>
                 } @else if (telegram?.hasError('maxlength') && telegram?.touched) {
-                <mat-error>Maximum 32 characters</mat-error>
+                <mat-error>Максимум 32 символа</mat-error>
                 }@else if (telegram?.hasError('pattern') && telegram?.touched) {
-                <mat-error>Telegram username is invalid</mat-error>
+                <mat-error>Пожалуйста, введите корректное имя пользователя</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -213,16 +213,16 @@
         </div>
       </div>
       <div class="form-block">
-        <p class="form-block-header">About yourself</p>
+        <p class="form-block-header">О себе</p>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>Education</mat-label>
+                <mat-label>Образование</mat-label>
                 <textarea matInput formControlName="education"></textarea>
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>About yourself</mat-label>
+                <mat-label>О себе</mat-label>
                 <textarea matInput formControlName="about"></textarea>
               </mat-form-field>
             </div>
@@ -232,7 +232,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>Select specialization</mat-label>
+                <mat-label>Выберите направление</mat-label>
                 <mat-select formControlName="specialization">
                   @for (spec of specializations; track spec.value) {
                   <mat-option [value]="spec.value">
@@ -241,7 +241,7 @@
                   }
                 </mat-select>
                 @if (specialization?.hasError('required') && specialization?.touched) {
-                <mat-error>Specialization is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -251,7 +251,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>English level</mat-label>
+                <mat-label>Уровень английского</mat-label>
                 <mat-select formControlName="englishLevel">
                   @for (level of englishLevels; track level.value) {
                   <mat-option [value]="level.value">
@@ -260,7 +260,7 @@
                   }
                 </mat-select>
                 @if (englishLevel?.hasError('required') && englishLevel?.touched) {
-                <mat-error>English level is required</mat-error>
+                <mat-error>Обязательное поле</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -268,10 +268,10 @@
         </div>
         <div class="form-line form-line-multiple form-line-skills">
           <div class="form-item">
-            <p class="form-item__title">Skills:</p>
+            <p class="form-item__title">Навыки:</p>
             <div class="input-group skill-input-group">
               <mat-form-field class="input-item skill-field">
-                <mat-label>Add a skill</mat-label>
+                <mat-label>Добавить навык</mat-label>
                 <input
                   matInput
                   #skillInput
@@ -285,7 +285,7 @@
                 (click)="addSkill(skillInput.value); skillInput.value = ''"
                 type="button"
               >
-                Add
+                Добавить
               </button>
             </div>
           </div>
@@ -306,7 +306,7 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="submit-btn" (click)="onSubmit()">Send</button>
+      <button type="submit" class="submit-btn" (click)="onSubmit()">Отправить</button>
     </div>
   </form>
 </div>
