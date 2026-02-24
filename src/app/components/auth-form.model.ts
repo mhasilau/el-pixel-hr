@@ -8,4 +8,3 @@ export interface IUser{
   role:string,
   specialization:string
 }
-
