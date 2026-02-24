@@ -16,7 +16,7 @@ export class AllEmployees{
     {
       'id':1,
       "name":"Name-one",
-      "surname":"surname",
+      "surname":"surnameOne",
       "email":"email@el-pixel.com",
       "login":"login",
       "password":"password",
@@ -27,7 +27,7 @@ export class AllEmployees{
     {
       'id':2,
       "name":"Name-two",
-      "surname":"surname2",
+      "surname":"surnameTwo",
       "email":"email2@el-pixel.com",
       "login":"login2",
       "password":"password2",
