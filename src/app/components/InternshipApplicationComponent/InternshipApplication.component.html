@@ -68,12 +68,12 @@
                 <mat-error>Обязательное поле</mat-error>
                 } @else if (birthDate?.hasError('minAge') && birthDate?.touched) {
                 <mat-error
-                  >Минимальный возраст 16 лет
+                  >Минимальный возраст 16 лет, указаный вами возраст
                   {{birthDate?.errors?.['minAge']?.actualAge}}</mat-error
                 >
                 } @else if (birthDate?.hasError('maxAge') && birthDate?.touched) {
                 <mat-error
-                  >Максимальный возраст 100 лет
+                  >Максимальный возраст 100 лет, указаный вами возраст
                   {{birthDate?.errors?.['maxAge']?.actualAge}}</mat-error
                 >
                 }
@@ -157,8 +157,7 @@
                   type="tel"
                   placeholder="Телефон"
                   formControlName="phone"
-                  (keydown)="preventNonNumeric($event)"
-                  (paste)="onPhonePaste($event)"
+                  (input)="formatPhoneInput($event)"
                   required
                 />
                 <mat-icon matSuffix>mode_edit</mat-icon>

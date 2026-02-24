@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
+import { ageValidator, oneRequiredValidator } from '../../validators';
 @Component({
   selector: 'app-InternshipApplicationComponent',
   standalone: true,
@@ -38,13 +39,13 @@ import { MatChipsModule } from '@angular/material/chips';
     MatChipsModule,
   ],
 })
-export class InternshipApplicationComponent {
+export class InternshipApplicationComponent implements OnInit {
   private readonly formStorageKey = 'internshipApplicationForm';
 
   internshipApplicationForm: FormGroup;
 
-  minDate: Date;
-  maxDate: Date;
+  minDate!: Date;
+  maxDate!: Date;
 
   internship_specs = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
   englishLevels = [
@@ -54,11 +55,7 @@ export class InternshipApplicationComponent {
     { value: 'Upper-Intermediate / Advanced' },
   ];
   constructor(private fb: FormBuilder) {
-    const today = new Date();
-    this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
-    this.minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
-
-    (this.internshipApplicationForm = this.fb.group({
+    this.internshipApplicationForm = this.fb.group({
       'personal-info': this.fb.group({
         firstName: [
           '',
@@ -78,7 +75,7 @@ export class InternshipApplicationComponent {
             Validators.pattern(/^[^\d]*$/),
           ],
         ],
-        birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
+        birthDate: ['', [Validators.required, ageValidator(16, 100)]],
         gender: ['', Validators.required],
         country: [
           '',
@@ -115,7 +112,7 @@ export class InternshipApplicationComponent {
             [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\d+$/)],
           ],
         },
-        { validators: this.oneRequired(['telegram', 'email', 'phone']) }
+        { validators: oneRequiredValidator(['telegram', 'email', 'phone']) }
       ),
       'education-info': this.fb.group({
         education: [''],
@@ -124,8 +121,12 @@ export class InternshipApplicationComponent {
         englishLevel: ['', Validators.required],
         skills: this.fb.array([]),
       }),
-    })),
-      this.loadFromLocalStorage();
+    });
+  }
+
+  ngOnInit(): void {
+    this.initDateRange();
+    this.loadFromLocalStorage();
     this.internshipApplicationForm.valueChanges.subscribe(() => {
       this.saveToLocalStorage();
     });
@@ -135,18 +136,10 @@ export class InternshipApplicationComponent {
     });
   }
 
-  private oneRequired(fields: string[]): ValidatorFn {
-    return (group: AbstractControl): ValidationErrors | null => {
-      const formGroup = group as FormGroup;
-
-      const hasAtLeastOne = fields.some((fieldName) => {
-        const control = formGroup.get(fieldName);
-        const value = control?.value;
-        return value && value.toString().trim().length > 0;
-      });
-
-      return hasAtLeastOne ? null : { oneRequired: true };
-    };
+  private initDateRange(): void {
+    const today = new Date();
+    this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+    this.minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
   }
 
   clearControl(control: AbstractControl | null | undefined): void {
@@ -176,71 +169,6 @@ export class InternshipApplicationComponent {
 
     this.phone?.setValue(cleaned);
     this.phone?.markAsTouched();
-  }
-
-  preventNonNumeric(event: KeyboardEvent): void {
-    const allowedKeys = [
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      'Backspace',
-      'Delete',
-      'Tab',
-      'Enter',
-      'ArrowLeft',
-      'ArrowRight',
-      'Home',
-      'End',
-      'Shift',
-    ];
-
-    if (!allowedKeys.includes(event.key) && !event.ctrlKey && !event.metaKey) {
-      event.preventDefault();
-    }
-  }
-
-  onPhonePaste(event: ClipboardEvent): void {
-    event.preventDefault();
-  }
-
-  private ageValidator(minAge: number, maxAge: number): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const birthDate = new Date(control.value);
-      const today = new Date();
-
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-
-      if (age < minAge) {
-        return {
-          minAge: {
-            requiredAge: minAge,
-            actualAge: age,
-          },
-        };
-      }
-      if (age > maxAge) {
-        return {
-          maxAge: {
-            requiredAge: maxAge,
-            actualAge: age,
-          },
-        };
-      }
-
-      return null;
-    };
   }
 
   calculateAge(birthDate: Date | string): number | null {
