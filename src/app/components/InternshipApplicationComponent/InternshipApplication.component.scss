@@ -285,6 +285,9 @@ mat-mdc-text-field-wrapper {
         }
         .form-line-skills {
           margin-bottom: $spacing-md;
+          .skills-chip-set {
+            width: 100%;
+          }
           .form-item {
             display: flex;
             flex-direction: column;

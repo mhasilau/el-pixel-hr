@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -17,6 +18,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-InternshipApplicationComponent',
   standalone: true,
@@ -33,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatButtonModule,
     MatSelectModule,
     MatRadioModule,
+    MatChipsModule,
   ],
 })
 export class InternshipApplicationComponent {
@@ -43,8 +46,7 @@ export class InternshipApplicationComponent {
   minDate: Date;
   maxDate: Date;
 
-  skillsControls: FormGroup[] = [];
-  specializations = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
+  internship_specs = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
   englishLevels = [
     { value: 'Beginner / Elementary' },
     { value: 'Pre-Intermediate' },
@@ -57,69 +59,74 @@ export class InternshipApplicationComponent {
     this.minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
 
     (this.internshipApplicationForm = this.fb.group({
-      firstName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^[^\d]*$/),
+      'personal-info': this.fb.group({
+        firstName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(/^[^\d]*$/),
+          ],
         ],
-      ],
-      surname: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^[^\d]*$/),
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(/^[^\d]*$/),
+          ],
         ],
-      ],
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.email,
-          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+        birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
+        gender: ['', Validators.required],
+        country: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(/^[^\d]*$/),
+          ],
         ],
-      ],
-      birthDate: ['', [Validators.required, this.ageValidator(16, 100)]],
-      gender: ['', Validators.required],
-      phone: ['', [Validators.minLength(7), Validators.maxLength(15)]],
-      country: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^[^\d]*$/),
+        city: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            Validators.maxLength(50),
+            Validators.pattern(/^[^\d]*$/),
+          ],
         ],
-      ],
-      city: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-          Validators.pattern(/^[^\d]*$/),
-        ],
-      ],
-      education: [''],
-      about: [''],
-      specialization: ['', Validators.required],
-      telegram: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(32),
-          Validators.pattern(/^@?[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]$/),
-        ],
-      ],
-      englishLevel: ['', Validators.required],
+      }),
+      'contact-info': this.fb.group(
+        {
+          email: ['', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
+          telegram: [
+            '',
+            [
+              Validators.minLength(5),
+              Validators.maxLength(32),
+              Validators.pattern(/^@?[a-zA-Z][a-zA-Z0-9_]{3,30}[a-zA-Z0-9]$/),
+            ],
+          ],
+          phone: [
+            '',
+            [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\d+$/)],
+          ],
+        },
+        { validators: this.oneRequired(['telegram', 'email', 'phone']) }
+      ),
+      'education-info': this.fb.group({
+        education: [''],
+        about: [''],
+        internship_spec: ['', Validators.required],
+        englishLevel: ['', Validators.required],
+        skills: this.fb.array([]),
+      }),
     })),
       this.loadFromLocalStorage();
-    this.internshipApplicationForm.get('personal-info')?.valueChanges.subscribe(() => {
+    this.internshipApplicationForm.valueChanges.subscribe(() => {
       this.saveToLocalStorage();
     });
 
@@ -128,49 +135,36 @@ export class InternshipApplicationComponent {
     });
   }
 
+  private oneRequired(fields: string[]): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const formGroup = group as FormGroup;
+
+      const hasAtLeastOne = fields.some((fieldName) => {
+        const control = formGroup.get(fieldName);
+        const value = control?.value;
+        return value && value.toString().trim().length > 0;
+      });
+
+      return hasAtLeastOne ? null : { oneRequired: true };
+    };
+  }
+
   clearControl(control: AbstractControl | null | undefined): void {
     if (control) {
       control.setValue('');
       control.markAsTouched();
     }
   }
+
   addSkill(value?: string): void {
     if (!value?.trim()) return;
-
-    const newIndex = this.skillsControls.length;
-    const controlName = `skill${newIndex}`;
-
-    const newGroup = this.fb.group({
-      name: [value.trim()],
-    });
-
-    this.internshipApplicationForm.addControl(controlName, newGroup);
-    this.skillsControls.push(newGroup);
+    this.skills.push(this.fb.control(value.trim()));
+    this.saveToLocalStorage();
   }
 
   removeSkill(index: number): void {
-    const controlName = `skill${index}`;
-
-    this.internshipApplicationForm.removeControl(controlName);
-    this.skillsControls.splice(index, 1);
-
-    const remainingValues = this.skillsControls.map((control) => control.get('name')?.value);
-
-    Object.keys(this.internshipApplicationForm.controls).forEach((key) => {
-      if (key.startsWith('skill')) {
-        this.internshipApplicationForm.removeControl(key);
-      }
-    });
-
-    this.skillsControls = [];
-    remainingValues.forEach((value, i) => {
-      const newControlName = `skill${i}`;
-      const skillGroup = this.fb.group({
-        name: [value || ''],
-      });
-      this.internshipApplicationForm.addControl(newControlName, skillGroup);
-      this.skillsControls.push(skillGroup);
-    });
+    this.skills.removeAt(index);
+    this.saveToLocalStorage();
   }
 
   formatPhoneInput(event: Event): void {
@@ -284,111 +278,113 @@ export class InternshipApplicationComponent {
     const savedData = localStorage.getItem(this.formStorageKey);
     if (savedData) {
       const formData = JSON.parse(savedData);
-      this.internshipApplicationForm.patchValue({
-        firstName: formData.firstName || '',
-        surname: formData.surname || '',
-        email: formData.email || '',
-        birthDate: formData.birthDate ? new Date(formData.birthDate) : '',
-        gender: formData.gender || '',
-        phone: formData.phone || '',
-        country: formData.country || '',
-        city: formData.city || '',
-        specialization: formData['specialization'] || '',
-        education: formData['education'] || '',
-      });
-      if (formData.birthDate) {
+
+      if (formData['personal-info']) {
+        const personalData = formData['personal-info'];
+        this.personalInfo?.patchValue({
+          firstName: personalData.firstName || '',
+          lastName: personalData.lastName || '',
+          birthDate: personalData.birthDate ? new Date(personalData.birthDate) : '',
+          gender: personalData.gender || '',
+          country: personalData.country || '',
+          city: personalData.city || '',
+        });
+      }
+
+      if (formData['contact-info']) {
+        const contactData = formData['contact-info'];
+        this.contactInfo?.patchValue({
+          phone: contactData.phone || '',
+          email: contactData.email || '',
+          telegram: contactData.telegram || '',
+        });
+      }
+
+      if (formData['education-info']) {
+        const educationData = formData['education-info'];
+        this.educationInfo?.patchValue({
+          education: educationData.education || '',
+          about: educationData.about || '',
+          internship_spec: educationData.internship_spec || '',
+          englishLevel: educationData.englishLevel || '',
+        });
+
+        this.restoreSkills(educationData.skills);
+      }
+
+      if (formData['personal-info']?.birthDate) {
         this.updateAgeFromBirthDate();
       }
-      this.restoreSkills(formData);
     }
   }
 
-  private restoreSkills(formData: Record<string, unknown>): void {
-    this.skillsControls = [];
-    Object.keys(this.internshipApplicationForm.controls).forEach((key) => {
-      if (key.startsWith('skill')) {
-        this.internshipApplicationForm.removeControl(key);
-      }
-    });
-
-    let skillIndex = 0;
-
-    while (true) {
-      const skillKey = `skill${skillIndex}`;
-      const skillValue = formData[skillKey];
-
-      if (skillValue === undefined) {
-        break;
-      }
-
-      const controlName = `skill${skillIndex}`;
-
-      if (skillValue && typeof skillValue === 'object' && 'name' in skillValue) {
-        const nameValue = (skillValue as { name?: unknown }).name;
-        this.internshipApplicationForm.addControl(
-          controlName,
-          this.fb.group({
-            name: [typeof nameValue === 'string' ? nameValue : ''],
-          })
-        );
-      } else {
-        this.internshipApplicationForm.addControl(
-          controlName,
-          this.fb.group({
-            name: [typeof skillValue === 'string' ? skillValue : ''],
-          })
-        );
-      }
-
-      this.skillsControls.push(this.internshipApplicationForm.get(controlName) as FormGroup);
-      skillIndex++;
+  private restoreSkills(savedSkills: unknown): void {
+    while (this.skills.length) {
+      this.skills.removeAt(0);
+    }
+    if (Array.isArray(savedSkills)) {
+      savedSkills.forEach((skill: unknown) => {
+        if (typeof skill === 'string' && skill.trim()) {
+          this.skills.push(this.fb.control(skill));
+        }
+      });
     }
   }
-  // если решим добавить в конструктор еще form groups, для них будут нужны такие геттеры
-  // get personalInfo() {
-  //   return this.internshipApplicationForm.get('personal-info');
-  // }
+
+  get personalInfo() {
+    return this.internshipApplicationForm.get('personal-info');
+  }
+  get contactInfo() {
+    return this.internshipApplicationForm.get('contact-info');
+  }
+  get educationInfo() {
+    return this.internshipApplicationForm.get('education-info');
+  }
+
   get firstName() {
-    return this.internshipApplicationForm?.get('firstName');
+    return this.personalInfo?.get('firstName');
   }
-  get surname() {
-    return this.internshipApplicationForm?.get('surname');
-  }
-  get email() {
-    return this.internshipApplicationForm?.get('email');
+  get lastName() {
+    return this.personalInfo?.get('lastName');
   }
   get birthDate() {
-    return this.internshipApplicationForm?.get('birthDate');
+    return this.personalInfo?.get('birthDate');
   }
   get age() {
-    return this.internshipApplicationForm?.get('age');
-  }
-  get phone() {
-    return this.internshipApplicationForm?.get('phone');
+    return this.personalInfo?.get('age');
   }
   get country() {
-    return this.internshipApplicationForm?.get('country');
+    return this.personalInfo?.get('country');
   }
   get city() {
-    return this.internshipApplicationForm?.get('city');
+    return this.personalInfo?.get('city');
   }
   get gender() {
-    return this.internshipApplicationForm?.get('gender');
+    return this.personalInfo?.get('gender');
   }
-  get specialization() {
-    return this.internshipApplicationForm?.get('specialization');
+  get internship_spec() {
+    return this.educationInfo?.get('internship_spec');
   }
   get education() {
-    return this.internshipApplicationForm?.get('education');
+    return this.educationInfo?.get('education');
   }
   get about() {
-    return this.internshipApplicationForm?.get('about');
-  }
-  get telegram() {
-    return this.internshipApplicationForm?.get('telegram');
+    return this.educationInfo?.get('about');
   }
   get englishLevel() {
-    return this.internshipApplicationForm?.get('englishLevel');
+    return this.educationInfo?.get('englishLevel');
+  }
+  get email() {
+    return this.contactInfo?.get('email');
+  }
+  get phone() {
+    return this.contactInfo?.get('phone');
+  }
+  get telegram() {
+    return this.contactInfo?.get('telegram');
+  }
+  get skills(): FormArray {
+    return this.educationInfo?.get('skills') as FormArray;
   }
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
@@ -396,25 +392,7 @@ export class InternshipApplicationComponent {
 
       this.clearLocalStorage();
 
-      this.skillsControls = [];
-
-      this.internshipApplicationForm.reset({
-        'personal-info': {
-          firstName: '',
-          surname: '',
-          email: '',
-          birthDate: '',
-          gender: '',
-          phone: '',
-          country: '',
-          city: '',
-          specialization: '',
-          education: '',
-          about: '',
-          telegram: '',
-          englishLevel: '',
-        },
-      });
+      this.internshipApplicationForm.reset();
     } else {
       console.log('Form is invalid');
       this.internshipApplicationForm.markAllAsTouched();
