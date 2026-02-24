@@ -1,0 +1,13 @@
+<header class="for_header">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home" class="logo" [routerLink]="'MainPage'"></mat-icon>
+    <nav class="for_nav">
+        @if(nameUser) {
+            <button matButton="elevated" (click)="openDialog()">{{nameUser}}</button><!-- не могу придумать логику кнопки, если уже зашел,как выйти -->
+        } @else {            
+            <button matButton="elevated" (click)="openDialog()">Войти</button>}
+        @if(nameUser!=='admin') {
+            <!-- для тестирования меню сейчас видно. Изменить, как появиься админ nameUser==='admin'! -->
+            <app-nav></app-nav>
+        }
+    </nav>
+</header>
