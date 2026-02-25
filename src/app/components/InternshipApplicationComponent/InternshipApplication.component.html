@@ -293,10 +293,10 @@
             </div>
           </div>
           <mat-chip-set class="skills-chip-set" aria-label="Список навыков">
-            @for (skill of skills.controls; track skill; let i = $index) {
+            @for (skill of educationInfo?.get('skills')?.value; track skill; let i = $index) {
             <mat-chip (removed)="removeSkill(i)">
-              {{ skill.value }}
-              <button matChipRemove [attr.aria-label]="'удалить навык ' + skill.value">
+              {{ skill }}
+              <button matChipRemove [attr.aria-label]="'удалить навык ' + skill">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip>
