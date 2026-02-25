@@ -1,0 +1,22 @@
+[
+    {
+      "id":1,
+      "name":"Name1",
+      "surname":"surname",
+      "email":"email",
+      "login":"login",
+      "password":"password",
+      "role":"Руководитель стажировки",
+      "specialization":"Angular"
+    },
+    
+    { "id":2,
+      "name":"Name2",
+      "surname":"surname2",
+      "email":"email2",
+      "login":"login2",
+      "password":"password2",
+      "role":"HR",
+      "specialization":"React"
+    }
+  ]

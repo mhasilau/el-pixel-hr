@@ -1,14 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { Nav } from '../nav/nav';
 import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
+import { Header } from '../header/header';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, MatIconModule, Nav],
+  imports: [MatButtonModule, Header],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })
