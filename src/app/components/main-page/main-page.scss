@@ -5,28 +5,6 @@
     background-size:60%;
     height: 100vh;
 
-    .for_header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .logo{
-        margin-top: 5px;
-    }
-
-    .for_nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        margin-right: 1%;
-
-        button {
-            margin-right: 10px;
-            background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
-        }
-    }
-
     .for_main_content {
         margin-top: 7%;
         height: 50vh;

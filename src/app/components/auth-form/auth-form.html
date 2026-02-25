@@ -1,12 +1,13 @@
 <form [formGroup]="authForm" novalidate class="forAuth">
 
     <mat-form-field appearance="fill">
-        <mat-label>Введите имя</mat-label>
-        <input matInput placeholder="Name" formControlName="userName">
+        <mat-label>Введите логин</mat-label>
+        <input matInput placeholder="login" formControlName="userLogin">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         <mat-hint>
-            @if(authForm.controls['userName'].invalid&&authForm.controls['userName'].dirty)
-                {Имя должно содержать от 5 до 10 символов}
+            @if(authForm.controls['userLogin'].hasError('noUserLogin')&&authForm.controls['userLogin'].dirty) {
+                Нет в списке пользователей. Обратитесь к администратору.
+            }
         </mat-hint>
     </mat-form-field>
     
@@ -17,8 +18,9 @@
         <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-hint>
-            @if(authForm.controls['userPassword'].invalid&&authForm.controls['userPassword'].dirty)
-                {Пароль должен состоять из 5-10 символов} 
+            @if(authForm.controls['userPassword'].hasError('noUserLoginPassword')&&authForm.controls['userPassword'].dirty) {
+                Неверный пароль
+            } 
         </mat-hint>
     </mat-form-field>
 

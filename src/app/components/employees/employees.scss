@@ -1,0 +1,23 @@
+.button_add {
+  margin-left: 80%;
+  width: 19%;
+}
+
+table {
+  width: 100%;
+
+  .mdc-data-table__header-cell{
+    width: 16%,
+  }
+
+  .forIcon {
+    width: 8%;
+  }
+
+  .forButtonInTable{
+    cursor: pointer;
+    padding: 16px;
+  }
+}
+
+
