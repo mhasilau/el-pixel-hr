@@ -13,24 +13,34 @@ export class AllEmployees{
   // http = inject(HttpClient)
 
   employeesList:Array<IUser> = [
-    {
+      {
       'id':1,
+      "name":"Admin",
+      "surname":"surnameAdmin",
+      "email":"adminl@el-pixel.com",
+      "login":"login1",
+      "password":"password1",
+      "role":"админ",
+      "specialization":"Angular"
+    },
+    {
+      'id':2,
       "name":"Name-one",
       "surname":"surnameOne",
       "email":"email@el-pixel.com",
-      "login":"login",
-      "password":"password",
+      "login":"login2",
+      "password":"password2",
       "role":"Руководитель стажировки",
       "specialization":"Angular"
     },
     
     {
-      'id':2,
+      'id':3,
       "name":"Name-two",
       "surname":"surnameTwo",
       "email":"email2@el-pixel.com",
-      "login":"login2",
-      "password":"password2",
+      "login":"login3",
+      "password":"password3",
       "role":"HR",
       "specialization":"React"
     }
@@ -47,7 +57,7 @@ export class AllEmployees{
   deleteEmployee(id:number){
     const index = this.employeesList.findIndex(v=>v['id']===id)
     this.employeesList.splice(index,1)
-    return from([this.employeesList])
+    return from([this.employeesList.slice(0)])//как по другому здесь изменить ссылку на массив?
   }
 
   changeEmployee(item:IUser){

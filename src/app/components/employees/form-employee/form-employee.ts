@@ -2,15 +2,13 @@ import { Component, inject, OnInit, signal} from '@angular/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormBuilder,FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AllEmployees } from '../../../services/all-employees';
 import { ActivatedRoute, Router } from '@angular/router';
-
-
 
 @Component({
   selector: 'app-form-employee',
@@ -38,52 +36,33 @@ export class FormEmployee implements OnInit{
 
   forId = Math.floor(Math.random()*(1000-3+1))+3//id с сервера!!!
 
-  ngOnInit(): void {
+  ngOnInit() {
+
     if(this.id){
         this.employees.getAllEmployees().subscribe(data=>this.employee.set(data.filter((item=>item['id']===this.id))[0]))
-        //валидацию!!!! а как без инита?
-        this.form = this.formBuild.group({
-          id:[this.employee().id],
-          name:[this.employee().name,[
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/)]], 
-          surname:[this.employee().surname,[
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/)
-          ]], 
-          email:[this.employee().email,[
-            Validators.required,
-            Validators.pattern(/.*@el-pixel.com$/)]], 
-          login:[this.employee().login,[Validators.required]], 
-          password:[this.employee().password,[Validators.required]], 
-          role:[this.employee().role,[Validators.required]],
-          specialization:[this.employee().specialization,[]],
-        })
-    } else (
-        this.form = this.formBuild.group({
-          id:[this.forId],
-          name:[this.employee().name,[
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/)]], 
-          surname:[this.employee().surname,[
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[^\d]*$/)
-          ]],  
-          email:['',[Validators.required,Validators.pattern(/.*@el-pixel.com$/)]], 
-          login:['',[Validators.required]], 
-          password:['',[Validators.required]], 
-          role:['',[Validators.required]],
-          specialization:['',[]],
-        })
-    )
+    } 
+
+    this.form= this.formBuild.group({
+      id:[this.employee().id||this.forId],
+      name:[this.employee().name,[
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        Validators.pattern(/^[^\d]*$/)]], 
+      surname:[this.employee().surname,[
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+        Validators.pattern(/^[^\d]*$/)
+      ]], 
+      email:[this.employee().email,[
+        Validators.required,
+        Validators.pattern(/.*@el-pixel.com$/)]], 
+      login:[this.employee().login,[Validators.required]], 
+      password:[this.employee().password,[Validators.required]], 
+      role:[this.employee().role,[Validators.required]],
+      specialization:[this.employee().specialization,[]],
+    })
   }
 
   openAfter(){
@@ -92,7 +71,7 @@ export class FormEmployee implements OnInit{
 
   //переделать получение данных с сервера!
   addEmployee(){  
-    this.employees.setAllEmployees(this.form.value)
+    this.employees.setAllEmployees(this.form.value)    
     this.openAfter()
   }
 

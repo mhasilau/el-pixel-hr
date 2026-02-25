@@ -1,8 +1,11 @@
 <section class="employees">
+    
     <app-header></app-header>
     <router-outlet></router-outlet>
 
-    <button matButton="outlined"  [routerLink]="'create'" class="button_add">Добавить нового сотрудника</button>
+    @if(rootForChange){
+        <button matButton="outlined"  [routerLink]="'create'" class="button_add" >Добавить нового сотрудника</button>
+    }
    
     <table mat-table [dataSource]="allEmployeesList()" class="mat-elevation-z8">
 
@@ -32,15 +35,15 @@
         </ng-container>
 
         <ng-container matColumnDef="edit" >
-            <th mat-header-cell *matHeaderCellDef class="forIcon" > Изменить </th>
+            <th mat-header-cell *matHeaderCellDef class="forIcon"> Изменить </th>
             <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" class="forButtonInTable" (click)="openEdit(element.id)"></mat-icon> </td>
         </ng-container>
 
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef class="forIcon"> Удалить </th>
-            <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" class="forButtonInTable" (click)="openDialog(element.name)"></mat-icon> </td>
+            <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" class="forButtonInTable" (click)="openDialog(element.name,element.id)"></mat-icon> </td>
         </ng-container>
-
+        
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 

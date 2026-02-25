@@ -1,14 +1,14 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, inject,model, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component,inject, OnInit, signal} from '@angular/core';
 import { Header } from "../header/header";
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { AllEmployees } from '../../services/all-employees';
-import { IUser } from '../auth-form.model';
 import {MatTableModule} from '@angular/material/table';
 import {Router, RouterLink, RouterOutlet } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
+import { RootForButton } from '../../services/root-for-button';
 
 @Component({
   selector: 'app-employees',
@@ -18,32 +18,40 @@ import { DeleteDialog } from './delete-dialog';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class Employees implements OnInit{
-  cdr = inject(ChangeDetectorRef)
+export class Employees implements OnInit {
+
   dialog = inject(MatDialog);
   employeesList = inject(AllEmployees)
   router = inject(Router)
-
-  displayedColumns : string [] = [ 'name' , 'surname' , 'email', 'role' , 'specialization','edit','delete'];
+  roleRoot = inject(RootForButton)
+  roleUser:string = ''
+  rootForChange:boolean = false
+  displayedColumns : string [] = [ 'name' , 'surname' , 'email', 'role' , 'specialization'];
   allEmployeesList = signal<any>([])//ANY!!!
 
   ngOnInit(){
     this.employeesList.getAllEmployees().subscribe(date=>{this.allEmployeesList.set(date)}) 
+    this.roleUser = this.roleRoot.role
+    this.rootForChange = this.roleRoot.checkRootForChange(this.roleUser)
+    // this.rootForChange = true//удалить, это для проверки прав админа
+    if(this.rootForChange){
+      this.displayedColumns= [ 'name' , 'surname' , 'email', 'role' , 'specialization','edit','delete'];
+    }
   }
 
   openEdit(id:number){
-    this.router.navigate(['employees/edit/' + id])//id!!!
+    this.router.navigate(['employees/edit/' + id])
   }
 
-  deleteUser(nameUser:string){
-    this.allEmployeesList.update(arr=>arr.filter((item:IUser)=>item!['name']!==nameUser))
+  deleteUser(id:number){
+    this.employeesList.deleteEmployee(id).subscribe(data=> this.allEmployeesList.set(data))
   }
 
-  openDialog(nameUser:string): void {
+  openDialog(nameUser:string,id:number): void {
       const dialogRef = this.dialog.open(DeleteDialog, {width: '50%', data: {name: nameUser}} );
       dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.deleteUser(nameUser)
+        this.deleteUser(id)
       }
     });
   }
