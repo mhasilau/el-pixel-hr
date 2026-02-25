@@ -1,21 +1,11 @@
 <section class="main_pages">
-  <header class="for_header">
-    <a href=""><img src="\assets\images\logo1.png" alt="logo" class="logo" /></a>
-    <nav class="for_nav">
-      @if(nameUser) {
-      <button matButton="elevated" (click)="openDialog()">{{ nameUser }}</button
-      ><!-- не могу придумать логику кнопки, если уже зашел -->
-      } @else {
-      <button matButton="elevated" (click)="openDialog()">Войти</button>}
-      <app-nav></app-nav>
-    </nav>
-  </header>
+  <app-header></app-header>
   <section class="for_main_content">
     <h1>Стажировка</h1>
     <p>
       Компания El Pixel приглашает на стажировку с последующим трудоустройством. Предлагаем вам
       наставничество, практический опыт и увлекательные проекты.
     </p>
-    <button matButton="tonal" [routerLink]="'internship-form'">Подать заявку на стажировку</button>
+    <button matButton="tonal">Подать заявку на стажировку</button>
   </section>
 </section>

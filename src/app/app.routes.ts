@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { MainPage } from './components/main-page/main-page';
-import { InternshipApplicationComponent } from './components/InternshipApplicationComponent/InternshipApplication.component';
+import { Employees } from './components/employees/employees';
+import { AddEmployee } from './components/employees/add-employee/add-employee';
+import { EmployeeEdit } from './components/employees/employee-edit/employee-edit';
 
 export const routes: Routes = [
   {
@@ -8,8 +10,12 @@ export const routes: Routes = [
     component: MainPage,
   },
   {
-    path: 'internship-form',
-    component: InternshipApplicationComponent,
+    path: 'employees',
+    children: [
+      { path: '', component: Employees },
+      { path: 'create', component: AddEmployee },
+      { path: 'edit/:id', component: EmployeeEdit },
+    ],
   },
   {
     path: '**',

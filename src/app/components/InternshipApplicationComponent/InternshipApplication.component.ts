@@ -5,11 +5,9 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { MatInputModule, MatFormField, MatLabel } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -22,7 +20,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
 import { StorageService } from '../../services/storage.service';
 @Component({
-  selector: 'app-InternshipApplicationComponent',
+  selector: 'app-internship-application',
   standalone: true,
   templateUrl: './InternshipApplication.component.html',
   styleUrls: ['./InternshipApplication.component.scss'],
@@ -41,7 +39,6 @@ import { StorageService } from '../../services/storage.service';
   ],
 })
 export class InternshipApplicationComponent implements OnInit {
-
   private fb = inject(FormBuilder);
   private storageService = inject(StorageService);
 
@@ -122,16 +119,15 @@ export class InternshipApplicationComponent implements OnInit {
         about: [''],
         internship_spec: ['', Validators.required],
         englishLevel: ['', Validators.required],
-        skills: [[]]
+        skills: [[]],
       }),
     });
   }
 
   ngOnInit(): void {
     this.initDateRange();
-    this.storageService.loadForm(
-      this.internshipApplicationForm,
-      () => this.updateAgeFromBirthDate()
+    this.storageService.loadForm(this.internshipApplicationForm, () =>
+      this.updateAgeFromBirthDate(),
     );
 
     this.internshipApplicationForm.valueChanges.subscribe(() => {
