@@ -9,6 +9,7 @@ import {Router, RouterLink, RouterOutlet } from "@angular/router";
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
 import { RootForButton } from '../../services/root-for-button';
+import { IUser } from '../auth-form.model';
 
 @Component({
   selector: 'app-employees',
@@ -17,9 +18,7 @@ import { RootForButton } from '../../services/root-for-button';
   styleUrl: './employees.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class Employees implements OnInit {
-
   dialog = inject(MatDialog);
   employeesList = inject(AllEmployees)
   router = inject(Router)
@@ -27,7 +26,7 @@ export class Employees implements OnInit {
   roleUser:string = ''
   rootForChange:boolean = false
   displayedColumns : string [] = [ 'name' , 'surname' , 'email', 'role' , 'specialization'];
-  allEmployeesList = signal<any>([])//ANY!!!
+  allEmployeesList = signal<Array<IUser>>([])
 
   ngOnInit(){
     this.employeesList.getAllEmployees().subscribe(date=>{this.allEmployeesList.set(date)}) 
@@ -44,7 +43,7 @@ export class Employees implements OnInit {
   }
 
   deleteUser(id:number){
-    this.employeesList.deleteEmployee(id).subscribe(data=> this.allEmployeesList.set(data))
+    this.employeesList.deleteEmployee(id).subscribe(employees=> this.allEmployeesList.set(employees))
   }
 
   openDialog(nameUser:string,id:number): void {

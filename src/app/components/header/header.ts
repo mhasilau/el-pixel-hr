@@ -10,7 +10,6 @@ import { AllEmployees } from '../../services/all-employees';
 import { IUser } from '../auth-form.model';
 import { RootForButton } from '../../services/root-for-button';
 
-
 @Component({
   selector: 'app-header',
   imports: [MatButtonModule, MatIconModule, Nav, RouterLink],
@@ -18,15 +17,10 @@ import { RootForButton } from '../../services/root-for-button';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit{
-
   readonly dialog = inject(MatDialog);
-
   employeesList = inject(AllEmployees)
-
   forRoot = inject(RootForButton)
-
   allEmployeesList:Array<IUser>=[]
-  
   employee:IUser = {
     id: 0,
     name: '',
@@ -55,5 +49,4 @@ export class Header implements OnInit{
   checkRoot(id:number){//проверку на сотрудника переписать/с сервера!!
     this.rootForMenu = this.forRoot.checkRootForMenu(id)
   }
-
 }

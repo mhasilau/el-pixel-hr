@@ -1,7 +1,6 @@
 import { inject, Injectable, OnInit } from '@angular/core';
 import { IUser } from '../components/auth-form.model';
 import { from} from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -9,15 +8,12 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class AllEmployees{
-
-  // http = inject(HttpClient)
-
   employeesList:Array<IUser> = [
       {
       'id':1,
       "name":"Admin",
       "surname":"surnameAdmin",
-      "email":"adminl@el-pixel.com",
+      "email":"admin@el-pixel.com",
       "login":"login1",
       "password":"password1",
       "role":"админ",

@@ -20,6 +20,4 @@ import { FormEmployee } from "../form-employee/form-employee";
   styleUrl: './employee-edit.scss',
 })
 export class EmployeeEdit{
-
-
 }

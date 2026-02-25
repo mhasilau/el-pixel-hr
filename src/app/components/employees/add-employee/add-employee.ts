@@ -9,6 +9,4 @@ import { FormEmployee } from "../form-employee/form-employee";
   styleUrl: './add-employee.scss',
 })
 export class AddEmployee {
-
-
 }

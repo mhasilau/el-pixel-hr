@@ -10,11 +10,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteDialog {
-
     dialogRef = inject(MatDialogRef<DeleteDialog>);
-
     data = inject(MAT_DIALOG_DATA)
-
     userName = this.data.name
-
 }

@@ -15,18 +15,15 @@ import { IUser } from '../auth-form.model';
   styleUrl: './auth-form.scss',
 })
 export class AuthForm implements OnInit{
-
   readonly dialogRef = inject(MatDialogRef<AuthForm>);
-
   employeesList = inject(AllEmployees)
-
   allEmployeesList:Array<IUser>=[]
 
   ngOnInit(): void {
-    this.employeesList.getAllEmployees().subscribe(date=>{this.allEmployeesList = date})
+    this.employeesList.getAllEmployees().subscribe(employee=>{this.allEmployeesList = employee})
   }
 
-  userValid:ValidatorFn = (control:AbstractControl):ValidationErrors|null=>{    
+  userValid:ValidatorFn = (control:AbstractControl):ValidationErrors|null=>{   //надо будет потом вынести в отдельный файл с валидаторами формы 
     return this.allEmployeesList.some(v=>v['login']===control.value)?null:{noUserLogin:true};
   }
 
@@ -49,13 +46,11 @@ export class AuthForm implements OnInit{
   enter() {
     const user = this.allEmployeesList.filter(v=>v['login']===this.authForm.value.userLogin)[0]
     this.dialogRef.close(user)
-    // this.dialogRef.close(this.authForm.value)
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
 
 

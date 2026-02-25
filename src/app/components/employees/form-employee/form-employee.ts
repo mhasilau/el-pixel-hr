@@ -9,6 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AllEmployees } from '../../../services/all-employees';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IUser } from '../../auth-form.model';
 
 @Component({
   selector: 'app-form-employee',
@@ -16,30 +17,29 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './form-employee.html',
   styleUrl: './form-employee.scss',
 })
-
-
 export class FormEmployee implements OnInit{
-
   employees = inject(AllEmployees)
-
   router = inject(Router)
-
   rout = inject(ActivatedRoute)
-
   id = Number(this.rout.snapshot.params['id'])
-  
-  employee=signal<any>({})//ANY!!!
-
+  employee=signal<IUser>({
+    id: 0,
+    name: '',
+    surname: '',
+    email: '',
+    login: '',
+    password: '',
+    role: '',
+    specialization: ''
+  })
   form:FormGroup= new FormGroup({})
-
   formBuild = inject(FormBuilder)
-
   forId = Math.floor(Math.random()*(1000-3+1))+3//id с сервера!!!
 
   ngOnInit() {
 
     if(this.id){
-        this.employees.getAllEmployees().subscribe(data=>this.employee.set(data.filter((item=>item['id']===this.id))[0]))
+        this.employees.getAllEmployees().subscribe(employees=>this.employee.set(employees.filter((item=>item['id']===this.id))[0]))
     } 
 
     this.form= this.formBuild.group({
@@ -68,9 +68,8 @@ export class FormEmployee implements OnInit{
   openAfter(){
     this.router.navigate(['employees'])
   }
-
-  //переделать получение данных с сервера!
-  addEmployee(){  
+  
+  addEmployee(){  //переделать получение данных с сервера!
     this.employees.setAllEmployees(this.form.value)    
     this.openAfter()
   }
@@ -79,5 +78,4 @@ export class FormEmployee implements OnInit{
     this.employees.changeEmployee(this.form.value)
     this.openAfter()
   }
-
 }
