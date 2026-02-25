@@ -1,0 +1,11 @@
+.intern-list-wrapper {
+  .intern-list-header {
+    .intern-list-controls-wrapper {
+      display: flex;
+      .intern-list-filters {
+        display: flex;
+        gap: 15px;
+      }
+    }
+  }
+}
