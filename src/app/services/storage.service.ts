@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class StorageService {
   private readonly formStorageKey = 'internshipApplicationForm';
 
-  constructor(private fb: FormBuilder) {}
+  fb = inject(FormBuilder);
 
   saveForm(form: FormGroup): void {
     const formData = form.value;
