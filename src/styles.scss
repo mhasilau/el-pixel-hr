@@ -4,6 +4,7 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+$background-pixel-color: #faf8f5;
 @import '@fontsource/geologica/index.css';
 $font-family: 'Geologica', cursive;
 html {
@@ -31,7 +32,6 @@ body {
   // user's system settings.
   font-family: $font-family;
   color-scheme: light;
-
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
@@ -44,4 +44,15 @@ body {
 }
 body {
   margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: 'Geologica', sans-serif;
+  background-color: $background-pixel-color;
 }
