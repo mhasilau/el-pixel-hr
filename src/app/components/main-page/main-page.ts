@@ -4,10 +4,11 @@ import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 import { Header } from '../header/header';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, Header],
+  imports: [MatButtonModule, Header, RouterLink],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })

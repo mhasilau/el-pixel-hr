@@ -3,14 +3,9 @@ import { Header } from '../header/header';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RootForButton } from '../../services/root-for-button';
+import { oneRequiredValidator } from '../../validators/one-required.validator';
 
 @Component({
   selector: 'app-feedback-form',
@@ -26,18 +21,6 @@ export class FeedbackForm implements OnInit {
   studentSecondName = '';
   studentId = '';
 
-  oneRequiredValidator(fields: string[]): ValidatorFn {
-    //импорт из папки валидаторы сделать после слияния
-    return (group: AbstractControl): ValidationErrors | null => {
-      const hasAtLeastOne = fields.some((fieldName) => {
-        const control = group.get(fieldName);
-        const value = control?.value;
-        return value && value.toString().trim().length > 0;
-      });
-      return hasAtLeastOne ? null : { oneRequired: true };
-    };
-  }
-
   ngOnInit() {
     this.role = this.rootForButton.role;
   }
@@ -51,7 +34,7 @@ export class FeedbackForm implements OnInit {
       addComments: [],
     },
     {
-      validators: this.oneRequiredValidator([
+      validators: oneRequiredValidator([
         'fundamentalLevel',
         'traineeLevel',
         'englishLevel',
