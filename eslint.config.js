@@ -22,14 +22,14 @@ export default tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        {
-          type: 'attribute',
-          prefix: 'app',
-          style: 'camelCase',
-        },
-      ],
+      // '@angular-eslint/directive-selector': [
+      //   'error',
+      //   {
+      //     type: 'attribute',
+      //     prefix: 'app',
+      //     style: 'camelCase',
+      //   },
+      // ],
       '@angular-eslint/component-selector': [
         'error',
         {

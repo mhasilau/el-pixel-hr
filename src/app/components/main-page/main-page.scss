@@ -1,34 +1,29 @@
 .main_pages {
-    background-image: url('/assets/images/book.png');
-    background-repeat: no-repeat;
-    background-position-x: 130%;
-    background-size:60%;
-    height: 100vh;
+  background-image: url('/assets/images/book.png');
+  background-repeat: no-repeat;
+  background-position-x: 130%;
+  background-size: 60%;
+  height: 100vh;
 
-    .for_main_content {
-        margin-top: 7%;
-        height: 50vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding-left: 7%;
+  .for_main_content {
+    margin-top: 7%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 7%;
 
-        p {
-            width: 60%;
-            font-size: 1.3rem;
-        }
-
-        button {
-            width: 30%;
-        }
-
-        h3 {
-            width: 70%;
-        }
+    p {
+      width: 60%;
+      font-size: 1.3rem;
     }
+
+    button {
+      width: 30%;
+    }
+
+    h3 {
+      width: 70%;
+    }
+  }
 }
-
-
-
-
-
