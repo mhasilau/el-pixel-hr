@@ -12,7 +12,8 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 export interface IIntern {
   index: number;
   firstName: string;
@@ -28,6 +29,7 @@ export interface IIntern {
   startDate: Date | null;
   endDate: Date | null;
   rejectionReason: string;
+  selected?: boolean;
 }
 
 @Component({
@@ -50,10 +52,12 @@ export interface IIntern {
     MatCardModule,
     CdkDropList,
     CdkDrag,
+    MatCheckboxModule,
   ],
 })
 export class InternsListComponent {
   displayedColumns: string[] = [
+    'select',
     'index',
     'firstName',
     'lastName',
@@ -69,6 +73,7 @@ export class InternsListComponent {
     'endDate',
     'rejectionReason',
   ];
+  selection = new SelectionModel<IIntern>(true, []);
   interns: IIntern[] = [
     {
       index: 1,
@@ -92,7 +97,8 @@ export class InternsListComponent {
       lastName: 'Петров',
       birthDate: new Date('1999-08-23'),
       phone: '+375297654321',
-      email: 'petr.petrov@example.com',
+      email:
+        'petr.petrov@ффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффexample.com',
       telegram: '@petr_petrov',
       internship_spec: 'React',
       englishLevel: 'Upper-Intermediate / Advanced',
@@ -152,6 +158,31 @@ export class InternsListComponent {
     },
   ];
   dataSource = new MatTableDataSource(this.interns);
+  isAnySelected() {
+    return this.selection.selected.length > 0;
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.selection.select(...this.dataSource.data);
+    }
+  }
+
+  getSelectedCount() {
+    return this.selection.selected.length;
+  }
+
+  deleteSelected() {
+    //const selectedIds = this.selection.selected.map(s => s.index);
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);

@@ -2,12 +2,8 @@
   <div class="intern-list-header">
     <div class="intern-list__title">Список стажеров</div>
     <div class="intern-list-buttons">
-      <button mat-raised-button color="primary" class="action-button">
-        <mat-icon>add</mat-icon> Создать
-      </button>
-      <button mat-raised-button color="warn" class="action-button">
-        <mat-icon>delete</mat-icon> Удалить
-      </button>
+      <button mat-raised-button class="action-button"><mat-icon>add</mat-icon> Создать</button>
+      <button mat-raised-button class="action-button"><mat-icon>delete</mat-icon> Удалить</button>
     </div>
   </div>
 
@@ -20,6 +16,26 @@
       (cdkDropListDropped)="drop($event)"
       class="interns-table"
     >
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef cdkDrag>
+          <mat-checkbox
+            (change)="$event ? toggleAllRows() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="isAllSelected() ? 'Снять выделение со всех' : 'Выделить всех'"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="selection.isSelected(row) ? 'Снять выделение' : 'Выделить'"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="index">
         <th mat-header-cell *matHeaderCellDef cdkDrag>№</th>
         <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>

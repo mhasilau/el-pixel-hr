@@ -1,11 +1,51 @@
 .intern-list-wrapper {
+  width: 100%;
+  overflow: hidden;
   .intern-list-header {
-    .intern-list-controls-wrapper {
+    height: 200px;
+    padding: 0 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .intern-list__title {
       display: flex;
-      .intern-list-filters {
-        display: flex;
-        gap: 15px;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+    }
+    .intern-list-buttons {
+      display: flex;
+      gap: 20px;
+    }
+  }
+}
+.mat-mdc-table {
+  width: 100%;
+  table-layout: auto;
+  .mdc-data-table__cell,
+  .mdc-data-table__header-cell {
+    padding: 0 5px;
+    white-space: nowrap;
+
+    &.cdk-column-email,
+    &.cdk-column-phone,
+    &.cdk-column-telegram,
+    &.cdk-column-firstName,
+    &.cdk-column-lastName,
+    &.cdk-column-rejectionReason {
+      &::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
       }
     }
+  }
+  .mat-mdc-header-row,
+  .mat-mdc-row {
+    width: 100%;
   }
 }
