@@ -24,7 +24,7 @@ export class AllEmployees {
       email: 'email@el-pixel.com',
       login: 'login2',
       password: 'password2',
-      role: 'Ментор',
+      role: 'Руководитель стажировки',
       specialization: 'Angular',
     },
 

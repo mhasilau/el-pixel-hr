@@ -10,7 +10,7 @@ export class RootForButton {
 
   allListEmployees: Array<IUser> = [];
 
-  role: string = ''; //здесь сохраняется роль вошедшего сотрудника. Переписать, если руты по id
+  role: string = '';
 
   checkRootForMenu(id: number): boolean {
     this.employees.getAllEmployees().subscribe((data) => (this.allListEmployees = data));

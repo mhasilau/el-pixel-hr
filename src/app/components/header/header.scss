@@ -1,30 +1,27 @@
 .for_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  mat-icon {
+    height: 8vh;
+    width: auto;
+    font-size: 8vh;
+  }
+
+  .logo {
+    cursor: pointer;
+  }
+
+  .for_nav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin: 1%;
 
-    mat-icon{
-        height: 8vh;
-        width: auto;
-        font-size: 8vh;
+    button {
+      margin-right: 10px;
+      background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
     }
-
-    .logo{
-        cursor: pointer;
-   }
-
-    .for_nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        margin: 1%;
-
-        button {
-            margin-right: 10px;
-            background-color: var(--mat-button-tonal-container-color, var(--mat-sys-secondary-container));
-        }
-    }
+  }
 }
-
-
-    
