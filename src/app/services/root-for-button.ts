@@ -1,27 +1,30 @@
-import { inject, Injectable, OnInit } from "@angular/core";
-import { AllEmployees } from "./all-employees";
-import { IUser } from "../components/auth-form.model";
-
+import { inject, Injectable } from '@angular/core';
+import { AllEmployees } from './all-employees';
+import { IUser } from '../components/auth-form.model';
 
 @Injectable({
   providedIn: 'root',
 })
+export class RootForButton {
+  employees = inject(AllEmployees);
 
-export class RootForButton{
+  allListEmployees: Array<IUser> = [];
 
-    employees = inject(AllEmployees)
+  role: string = ''; //здесь сохраняется роль вошедшего сотрудника. Переписать, если руты по id
 
-    allListEmployees:Array<IUser> = []
+  checkRootForMenu(id: number): boolean {
+    this.employees.getAllEmployees().subscribe((data) => (this.allListEmployees = data));
+    this.role = this.allListEmployees.filter((v) => v['id'] === id)[0].role;
+    return this.role === 'админ' ||
+      this.role === 'Руководитель' ||
+      this.role === 'HR' ||
+      this.role === 'Руководитель стажировки' ||
+      this.role === 'Ментор'
+      ? true
+      : false;
+  }
 
-    role:string = ''
-
-    checkRootForMenu(id:number):boolean{
-        this.employees.getAllEmployees().subscribe(data=>this.allListEmployees=data) 
-        this.role = this.allListEmployees.filter(v=>v['id']===id)[0].role 
-        return this.role==='админ'||this.role==='Руководитель'||this.role==='HR'||this.role==='Руководитель стажировки'||this.role==='Ментор'?true:false
-    }
-
-    checkRootForChange(role:string):boolean {
-        return role==='админ'?true:false
-    }
+  checkRootForChange(role: string): boolean {
+    return role === 'админ' ? true : false;
+  }
 }
