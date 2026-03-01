@@ -4,18 +4,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { AllEmployees } from '../../services/all-employees';
 import { IUser } from '../auth-form.model';
+import { Router } from '@angular/router';
+import { RootForButton } from '../../services/root-for-button';
 
 @Component({
   selector: 'app-auth-form',
@@ -38,33 +37,21 @@ import { IUser } from '../auth-form.model';
 export class AuthForm implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AuthForm>);
   employeesList = inject(AllEmployees);
+  router = inject(Router);
+  root = inject(RootForButton);
   allEmployeesList: Array<IUser> = [];
+  authForm: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
     this.employeesList.getAllEmployees().subscribe((employee) => {
       this.allEmployeesList = employee;
     });
+
+    this.authForm = new FormGroup({
+      userLogin: new FormControl('', [Validators.required]),
+      userPassword: new FormControl('', [Validators.required]),
+    });
   }
-
-  userValid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    //надо будет потом вынести в отдельный файл с валидаторами формы
-    return this.allEmployeesList.some((v) => v['login'] === control.value)
-      ? null
-      : { noUserLogin: true };
-  };
-
-  passwordValid: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return this.allEmployeesList.some(
-      (v) => v['login'] === this.authForm.controls?.['userLogin'].value,
-    ) && this.allEmployeesList.some((v) => v['password'] === control.value)
-      ? null
-      : { noUserLoginPassword: true };
-  }; //перепроверить валидацию!!!!!!!!
-
-  authForm: FormGroup = new FormGroup({
-    userLogin: new FormControl('', [this.userValid, Validators.required]),
-    userPassword: new FormControl('', [this.passwordValid, Validators.required]),
-  });
 
   hide = signal(true);
 
@@ -77,7 +64,11 @@ export class AuthForm implements OnInit {
     const user = this.allEmployeesList.filter(
       (v) => v['login'] === this.authForm.value.userLogin,
     )[0];
-    this.dialogRef.close(user);
+    this.dialogRef.close();
+    this.employeesList.enterEmployee(user);
+    if (this.root.checkRootForAdmin(user.role)) {
+      this.router.navigate(['employees']);
+    } //куда перейти НЕ админу?
   }
 
   onNoClick(): void {

@@ -10,21 +10,19 @@ export class RootForButton {
 
   allListEmployees: Array<IUser> = [];
 
-  role: string = '';
-
   checkRootForMenu(id: number): boolean {
     this.employees.getAllEmployees().subscribe((data) => (this.allListEmployees = data));
-    this.role = this.allListEmployees.filter((v) => v['id'] === id)[0].role;
-    return this.role === 'админ' ||
-      this.role === 'Руководитель' ||
-      this.role === 'HR' ||
-      this.role === 'Руководитель стажировки' ||
-      this.role === 'Ментор'
+    const role = this.allListEmployees.filter((v) => v['id'] === id)[0].role;
+    return role === 'админ' ||
+      role === 'Руководитель' ||
+      role === 'HR' ||
+      role === 'Руководитель стажировки' ||
+      role === 'Ментор'
       ? true
       : false;
   }
 
-  checkRootForChange(role: string): boolean {
+  checkRootForAdmin(role: string): boolean {
     return role === 'админ' ? true : false;
   }
 }

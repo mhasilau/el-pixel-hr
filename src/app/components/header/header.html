@@ -1,19 +1,11 @@
 <header class="for_header">
-  <mat-icon
-    aria-hidden="false"
-    aria-label="Example home icon"
-    fontIcon="home"
-    class="logo"
-    [routerLink]="'MainPage'"
-  ></mat-icon>
+  <img src="assets/images/logo-home.svg" alt="home" class="logo" [routerLink]="'MainPage'" />
   <nav class="for_nav">
-    @if (employee.name) {
-      <button matButton="elevated" (click)="openDialog()">{{ employee.name }}</button
-      ><!-- не могу придумать логику кнопки, если уже зашел,как выйти -->
-    } @else {
+    @if (!employee.name) {
       <button matButton="elevated" (click)="openDialog()">Войти</button>
     }
     @if (rootForMenu) {
+      <!-- кому отражать меню -->
       <app-nav></app-nav>
     }
   </nav>

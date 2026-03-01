@@ -5,6 +5,8 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 $background-pixel-color: #faf8f5;
+@import '@fontsource/geologica/index.css';
+$font-family: 'Geologica', cursive;
 html {
   @include mat.theme(
     (
