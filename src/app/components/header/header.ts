@@ -18,7 +18,7 @@ import { RootService } from '../../services/root.service';
 export class Header implements OnInit {
   readonly dialog = inject(MatDialog);
   employeesList = inject(AllEmployees);
-  forRoot = inject(RootService);
+  rootService = inject(RootService);
   allEmployeesList: Array<IUser> = [];
   employee: IUser = {
     id: 0,
@@ -40,7 +40,7 @@ export class Header implements OnInit {
     this.employeesList.getEmployee().subscribe((employee) => {
       this.employee = employee;
     });
-    this.rootForMenu = this.forRoot.checkRootForAdmin(this.employee.role);
+    this.rootForMenu = this.rootService.checkRootForAdmin(this.employee.role);
   }
 
   openDialog(): void {

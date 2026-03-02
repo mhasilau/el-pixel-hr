@@ -38,7 +38,7 @@ export class AuthForm implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AuthForm>);
   employeesList = inject(AllEmployees);
   router = inject(Router);
-  root = inject(RootService);
+  rootService = inject(RootService);
   allEmployeesList: Array<IUser> = [];
   authForm: FormGroup = new FormGroup({});
 
@@ -66,9 +66,9 @@ export class AuthForm implements OnInit {
     )[0];
     this.dialogRef.close();
     this.employeesList.enterEmployee(user);
-    if (this.root.checkRootForAdmin(user.role)) {
+    if (this.rootService.checkRootForAdmin(user.role)) {
       this.router.navigate(['employees']);
-    } else if (this.root.checkRootForMenu(user.id)) {
+    } else if (this.rootService.checkRootForMenu(user.id)) {
       this.router.navigate(['employees']); //изменить на список стажеров, когда будет готов это компонент
     }
   }

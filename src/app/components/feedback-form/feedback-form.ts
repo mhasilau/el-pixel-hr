@@ -9,7 +9,7 @@ import { AllEmployees } from '../../services/all-employees.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
-import { MY_FORMATS } from '../formForDate.data';
+import { FORMAT_FOR_DATA } from '../formatForDate.data';
 
 @Component({
   selector: 'app-feedback-form',
@@ -24,7 +24,7 @@ import { MY_FORMATS } from '../formForDate.data';
   ],
   templateUrl: './feedback-form.html',
   styleUrl: './feedback-form.scss',
-  providers: [provideLuxonDateAdapter(MY_FORMATS)],
+  providers: [provideLuxonDateAdapter(FORMAT_FOR_DATA)],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackForm implements OnInit {

@@ -1,4 +1,4 @@
-export const MY_FORMATS = {
+export const FORMAT_FOR_DATA = {
   parse: {
     dateInput: 'DDD',
   },
