@@ -4,6 +4,7 @@ import { Employees } from './components/employees/employees';
 import { AddEmployee } from './components/employees/add-employee/add-employee';
 import { EmployeeEdit } from './components/employees/employee-edit/employee-edit';
 import { InternshipApplicationComponent } from './components/InternshipApplicationComponent/InternshipApplication.component';
+import { InternsListComponent } from './components/interns-list/interns-list.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,10 @@ export const routes: Routes = [
   {
     path: 'internship',
     component: InternshipApplicationComponent,
+  },
+  {
+    path: 'intern-list',
+    component: InternsListComponent,
   },
   {
     path: '**',

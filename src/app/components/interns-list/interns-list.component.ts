@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { ViewChild, AfterViewInit } from '@angular/core';
 export interface IIntern {
   index: number;
   firstName: string;
@@ -50,12 +52,14 @@ export interface IIntern {
     MatInputModule,
     MatDatepickerModule,
     MatCardModule,
+    MatMenuModule,
     CdkDropList,
     CdkDrag,
     MatCheckboxModule,
   ],
 })
-export class InternsListComponent {
+export class InternsListComponent implements AfterViewInit {
+  @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = [
     'select',
     'index',
@@ -72,6 +76,7 @@ export class InternsListComponent {
     'startDate',
     'endDate',
     'rejectionReason',
+    'actions',
   ];
   selection = new SelectionModel<IIntern>(true, []);
   interns: IIntern[] = [
@@ -157,6 +162,9 @@ export class InternsListComponent {
       rejectionReason: 'Не пройдено тестовое задание',
     },
   ];
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
   dataSource = new MatTableDataSource(this.interns);
   isAnySelected() {
     return this.selection.selected.length > 0;

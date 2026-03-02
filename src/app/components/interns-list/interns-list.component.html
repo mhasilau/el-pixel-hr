@@ -11,6 +11,7 @@
     <table
       mat-table
       [dataSource]="dataSource"
+      matSort
       cdkDropList
       cdkDropListOrientation="horizontal"
       (cdkDropListDropped)="drop($event)"
@@ -37,59 +38,59 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="index">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>№</th>
-        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>№</th>
+        <td mat-cell *matCellDef="let element">{{ element.index }}</td>
       </ng-container>
 
       <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Имя</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Имя</th>
         <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Фамилия</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Фамилия</th>
         <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="birthDate">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Дата рождения</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата рождения</th>
         <td mat-cell *matCellDef="let element">{{ element.birthDate | date: 'dd.MM.yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Телефон</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Телефон</th>
         <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
       </ng-container>
 
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Email</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Email</th>
         <td mat-cell *matCellDef="let element">{{ element.email }}</td>
       </ng-container>
 
       <ng-container matColumnDef="telegram">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Telegram</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Telegram</th>
         <td mat-cell *matCellDef="let element">{{ element.telegram }}</td>
       </ng-container>
 
       <ng-container matColumnDef="internship_spec">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Направление</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Направление</th>
         <td mat-cell *matCellDef="let element">{{ element.internship_spec }}</td>
       </ng-container>
 
       <ng-container matColumnDef="englishLevel">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Английский</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Английский</th>
         <td mat-cell *matCellDef="let element">{{ element.englishLevel }}</td>
       </ng-container>
 
       <ng-container matColumnDef="applicationDate">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Дата подачи</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата подачи</th>
         <td mat-cell *matCellDef="let element">
           {{ element.applicationDate | date: 'dd.MM.yyyy' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="finalStatus">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Статус</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Статус</th>
         <td mat-cell *matCellDef="let element">
           <span
             [class.success]="element.finalStatus === 'success'"
@@ -108,20 +109,43 @@
       </ng-container>
 
       <ng-container matColumnDef="startDate">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Дата начала</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата начала</th>
         <td mat-cell *matCellDef="let element">{{ element.startDate | date: 'dd.MM.yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="endDate">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Дата окончания</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата окончания</th>
         <td mat-cell *matCellDef="let element">{{ element.endDate | date: 'dd.MM.yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="rejectionReason">
-        <th mat-header-cell *matHeaderCellDef cdkDrag>Причина отказа</th>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Причина отказа</th>
         <td mat-cell *matCellDef="let element">{{ element.rejectionReason || '-' }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            (click)="$event.stopPropagation()"
+            aria-label="Действия"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>assignment</mat-icon>
+              <span>Первичный отзыв</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>assignment_turned_in</mat-icon>
+              <span>Итоговый отзыв</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
