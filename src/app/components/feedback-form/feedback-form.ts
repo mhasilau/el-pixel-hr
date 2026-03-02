@@ -5,22 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { oneRequiredValidator } from '../../validators/one-required.validator';
-import { AllEmployees } from '../../services/all-employees';
+import { AllEmployees } from '../../services/all-employees.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'DDD',
-  },
-  display: {
-    dateInput: 'DDD',
-    monthYearLabel: 'MMM yyyy',
-    dateA11yLabel: 'DDD',
-    monthYearA11yLabel: 'MMMM yyyy',
-  },
-};
+import { MY_FORMATS } from '../formForDate.data';
 
 @Component({
   selector: 'app-feedback-form',

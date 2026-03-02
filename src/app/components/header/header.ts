@@ -5,9 +5,9 @@ import { AuthForm } from '../auth-form/auth-form';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { AllEmployees } from '../../services/all-employees';
+import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
-import { RootForButton } from '../../services/root-for-button';
+import { RootService } from '../../services/root.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,7 @@ import { RootForButton } from '../../services/root-for-button';
 export class Header implements OnInit {
   readonly dialog = inject(MatDialog);
   employeesList = inject(AllEmployees);
-  forRoot = inject(RootForButton);
+  forRoot = inject(RootService);
   allEmployeesList: Array<IUser> = [];
   employee: IUser = {
     id: 0,

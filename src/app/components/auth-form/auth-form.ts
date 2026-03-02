@@ -11,10 +11,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { AllEmployees } from '../../services/all-employees';
+import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { Router } from '@angular/router';
-import { RootForButton } from '../../services/root-for-button';
+import { RootService } from '../../services/root.service';
 
 @Component({
   selector: 'app-auth-form',
@@ -38,7 +38,7 @@ export class AuthForm implements OnInit {
   readonly dialogRef = inject(MatDialogRef<AuthForm>);
   employeesList = inject(AllEmployees);
   router = inject(Router);
-  root = inject(RootForButton);
+  root = inject(RootService);
   allEmployeesList: Array<IUser> = [];
   authForm: FormGroup = new FormGroup({});
 
@@ -68,7 +68,9 @@ export class AuthForm implements OnInit {
     this.employeesList.enterEmployee(user);
     if (this.root.checkRootForAdmin(user.role)) {
       this.router.navigate(['employees']);
-    } //куда перейти НЕ админу?
+    } else if (this.root.checkRootForMenu(user.id)) {
+      this.router.navigate(['employees']); //изменить на список стажеров, когда будет готов это компонент
+    }
   }
 
   onNoClick(): void {

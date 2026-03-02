@@ -4,8 +4,7 @@
     @if (!employee.name) {
       <button matButton="elevated" (click)="openDialog()">Войти</button>
     }
-    @if (rootForMenu) {
-      <!-- кому отражать меню -->
+    @if (employee.name) {
       <app-nav></app-nav>
     }
   </nav>

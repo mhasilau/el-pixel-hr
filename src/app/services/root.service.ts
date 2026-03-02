@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { AllEmployees } from './all-employees';
+import { AllEmployees } from './all-employees.service';
 import { IUser } from '../components/auth-form.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RootForButton {
+export class RootService {
   employees = inject(AllEmployees);
 
   allListEmployees: Array<IUser> = [];

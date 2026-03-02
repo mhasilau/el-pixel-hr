@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AllEmployees } from '../../../services/all-employees';
+import { AllEmployees } from '../../../services/all-employees.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from '../../auth-form.model';
 

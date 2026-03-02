@@ -3,7 +3,7 @@ import { Header } from '../header/header';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { AllEmployees } from '../../services/all-employees';
+import { AllEmployees } from '../../services/all-employees.service';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
