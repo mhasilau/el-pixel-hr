@@ -3,12 +3,11 @@ import { Header } from '../header/header';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { AllEmployees } from '../../services/all-employees';
+import { AllEmployees } from '../../services/all-employees.service';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
-import { RootForButton } from '../../services/root-for-button';
 import { IUser } from '../auth-form.model';
 
 @Component({
@@ -30,30 +29,31 @@ export class Employees implements OnInit {
   dialog = inject(MatDialog);
   employeesList = inject(AllEmployees);
   router = inject(Router);
-  roleRoot = inject(RootForButton);
-  roleUser: string = '';
-  rootForChange: boolean = false;
-  displayedColumns: string[] = ['name', 'surname', 'email', 'role', 'specialization'];
+  targetUser: IUser = {
+    id: 0,
+    name: '',
+    surname: '',
+    email: '',
+    login: '',
+    password: '',
+    role: '',
+    specialization: '',
+  };
+  displayedColumns: string[] = [
+    'name',
+    'surname',
+    'email',
+    'role',
+    'specialization',
+    'edit',
+    'delete',
+  ];
   allEmployeesList = signal<Array<IUser>>([]);
 
   ngOnInit() {
     this.employeesList.getAllEmployees().subscribe((date) => {
       this.allEmployeesList.set(date);
     });
-    this.roleUser = this.roleRoot.role;
-    this.rootForChange = this.roleRoot.checkRootForChange(this.roleUser);
-    // this.rootForChange = true//удалить, это для проверки прав админа
-    if (this.rootForChange) {
-      this.displayedColumns = [
-        'name',
-        'surname',
-        'email',
-        'role',
-        'specialization',
-        'edit',
-        'delete',
-      ];
-    }
   }
 
   openEdit(id: number) {
