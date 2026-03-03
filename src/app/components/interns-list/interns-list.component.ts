@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,21 +16,30 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewChild, AfterViewInit } from '@angular/core';
+import { InternService } from '../../services/interns.service';
+import { Router } from '@angular/router';
+
 export interface IIntern {
   index: number;
   firstName: string;
   lastName: string;
   birthDate: Date;
-  phone: string;
+  gender: string;
+  country: string;
+  city: string;
   email: string;
   telegram: string;
+  phone: string;
   internship_spec: string;
   englishLevel: string;
-  applicationDate: Date;
-  finalStatus: 'success' | 'failed' | 'in-progress';
-  startDate: Date | null;
-  endDate: Date | null;
-  rejectionReason: string;
+  education?: string;
+  about?: string;
+  skills?: string[];
+  applicationDate?: Date;
+  finalStatus?: 'success' | 'failed' | 'in-progress';
+  startDate?: Date | null;
+  endDate?: Date | null;
+  rejectionReason?: string;
   selected?: boolean;
 }
 
@@ -58,8 +67,13 @@ export interface IIntern {
     MatCheckboxModule,
   ],
 })
-export class InternsListComponent implements AfterViewInit {
+export class InternsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private internService = inject(InternService);
+
+  private router = inject(Router);
+
   displayedColumns: string[] = [
     'select',
     'index',
@@ -78,94 +92,27 @@ export class InternsListComponent implements AfterViewInit {
     'rejectionReason',
     'actions',
   ];
+  dataSource = new MatTableDataSource<IIntern>([]);
   selection = new SelectionModel<IIntern>(true, []);
-  interns: IIntern[] = [
-    {
-      index: 1,
-      firstName: 'Иван',
-      lastName: 'Иванов',
-      birthDate: new Date('1998-05-15'),
-      phone: '+375291234567',
-      email: 'ivan.ivanov@example.com',
-      telegram: '@ivan_ivanov',
-      internship_spec: 'Angular',
-      englishLevel: 'Intermediate',
-      applicationDate: new Date('2026-01-15'),
-      finalStatus: 'success',
-      startDate: new Date('2026-02-01'),
-      endDate: new Date('2026-05-01'),
-      rejectionReason: '',
-    },
-    {
-      index: 2,
-      firstName: 'Петр',
-      lastName: 'Петров',
-      birthDate: new Date('1999-08-23'),
-      phone: '+375297654321',
-      email:
-        'petr.petrov@ффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффффexample.com',
-      telegram: '@petr_petrov',
-      internship_spec: 'React',
-      englishLevel: 'Upper-Intermediate / Advanced',
-      applicationDate: new Date('2026-01-20'),
-      finalStatus: 'in-progress',
-      startDate: new Date('2026-02-15'),
-      endDate: null,
-      rejectionReason: '',
-    },
-    {
-      index: 3,
-      firstName: 'Мария',
-      lastName: 'Сидорова',
-      birthDate: new Date('2000-11-03'),
-      phone: '+375331234567',
-      email: 'maria.sidorova@example.com',
-      telegram: '@maria_s',
-      internship_spec: 'Python',
-      englishLevel: 'Pre-Intermediate',
-      applicationDate: new Date('2026-01-10'),
-      finalStatus: 'failed',
-      startDate: null,
-      endDate: null,
-      rejectionReason: 'Недостаточный уровень английского',
-    },
-    {
-      index: 4,
-      firstName: 'Алексей',
-      lastName: 'Смирнов',
-      birthDate: new Date('1997-03-12'),
-      phone: '+375447771122',
-      email: 'alex.smirnov@example.com',
-      telegram: '@alex_smirnov',
-      internship_spec: 'Angular',
-      englishLevel: 'Intermediate',
-      applicationDate: new Date('2026-02-01'),
-      finalStatus: 'in-progress',
-      startDate: new Date('2026-02-20'),
-      endDate: null,
-      rejectionReason: '',
-    },
-    {
-      index: 5,
-      firstName: 'Елена',
-      lastName: 'Козлова',
-      birthDate: new Date('2001-07-19'),
-      phone: '+375251234567',
-      email: 'elena.kozlova@example.com',
-      telegram: '@elena_k',
-      internship_spec: 'React',
-      englishLevel: 'Beginner / Elementary',
-      applicationDate: new Date('2026-01-05'),
-      finalStatus: 'failed',
-      startDate: null,
-      endDate: null,
-      rejectionReason: 'Не пройдено тестовое задание',
-    },
-  ];
+
+  ngOnInit(): void {
+    this.loadInterns();
+  }
+  loadInterns() {
+    this.internService.getAllInterns().subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+      },
+    });
+  }
+
+  navigateToApplication(id: number): void {
+    this.router.navigate(['/internship/edit', id]);
+  }
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
-  dataSource = new MatTableDataSource(this.interns);
   isAnySelected() {
     return this.selection.selected.length > 0;
   }
@@ -189,9 +136,18 @@ export class InternsListComponent implements AfterViewInit {
   }
 
   deleteSelected() {
-    //const selectedIds = this.selection.selected.map(s => s.index);
-  }
+    const selectedIds = this.selection.selected.map((s) => s.index);
+    if (selectedIds.length === 0) return;
 
+    this.internService.deleteInterns(selectedIds).subscribe({
+      next: (success) => {
+        if (success) {
+          this.loadInterns();
+          this.selection.clear();
+        }
+      },
+    });
+  }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }

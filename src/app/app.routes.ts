@@ -3,7 +3,7 @@ import { MainPage } from './components/main-page/main-page';
 import { Employees } from './components/employees/employees';
 import { AddEmployee } from './components/employees/add-employee/add-employee';
 import { EmployeeEdit } from './components/employees/employee-edit/employee-edit';
-import { InternshipApplicationComponent } from './components/InternshipApplicationComponent/InternshipApplication.component';
+import { InternshipApplicationComponent } from './components/internship-application-component/internship-application.component';
 import { InternsListComponent } from './components/interns-list/interns-list.component';
 
 export const routes: Routes = [
@@ -21,7 +21,10 @@ export const routes: Routes = [
   },
   {
     path: 'internship',
-    component: InternshipApplicationComponent,
+    children: [
+      { path: '', component: InternshipApplicationComponent },
+      { path: 'edit/:id', component: InternshipApplicationComponent },
+    ],
   },
   {
     path: 'intern-list',

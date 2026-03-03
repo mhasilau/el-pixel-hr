@@ -3,7 +3,9 @@
     <div class="intern-list__title">Список стажеров</div>
     <div class="intern-list-buttons">
       <button mat-raised-button class="action-button"><mat-icon>add</mat-icon> Создать</button>
-      <button mat-raised-button class="action-button"><mat-icon>delete</mat-icon> Удалить</button>
+      <button mat-raised-button (click)="deleteSelected()" class="action-button">
+        <mat-icon>delete</mat-icon> Удалить
+      </button>
     </div>
   </div>
 
@@ -147,7 +149,11 @@
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (dblclick)="navigateToApplication(row.index)"
+      ></tr>
     </table>
   </div>
 </div>

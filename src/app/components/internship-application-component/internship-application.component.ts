@@ -19,11 +19,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
 import { StorageService } from '../../services/storage.service';
+//import { InternService } from '../../services/interns.service';
+//import { IIntern } from '../interns-list/interns-list.component';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-internship-application',
   standalone: true,
-  templateUrl: './InternshipApplication.component.html',
-  styleUrls: ['./InternshipApplication.component.scss'],
+  templateUrl: './internship-application.component.html',
+  styleUrls: ['./internship-application.component.scss'],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -41,8 +45,14 @@ import { StorageService } from '../../services/storage.service';
 export class InternshipApplicationComponent implements OnInit {
   private fb = inject(FormBuilder);
   private storageService = inject(StorageService);
+  //private internService = inject(InternService);
+  private route = inject(ActivatedRoute);
+  //private router = inject(Router);
 
   internshipApplicationForm: FormGroup;
+
+  isEditMode = false;
+  internId: number | null = null;
 
   minDate!: Date;
   maxDate!: Date;
@@ -121,11 +131,24 @@ export class InternshipApplicationComponent implements OnInit {
         englishLevel: ['', Validators.required],
         skills: [[]],
       }),
+      'internship-details': this.fb.group({
+        applicationDate: [''],
+        finalStatus: [''],
+        startDate: [''],
+        endDate: [''],
+        rejectionReason: [''],
+      }),
     });
   }
 
   ngOnInit(): void {
     this.initDateRange();
+
+    this.route.params.subscribe((params) => {
+      const id = params['id'];
+      console.log(id);
+    });
+
     this.storageService.loadForm(this.internshipApplicationForm, () =>
       this.updateAgeFromBirthDate(),
     );
