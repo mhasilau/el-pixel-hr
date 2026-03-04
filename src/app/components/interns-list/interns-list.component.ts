@@ -18,31 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
-
-export interface IIntern {
-  index: number;
-  firstName: string;
-  lastName: string;
-  birthDate: Date;
-  gender: string;
-  country: string;
-  city: string;
-  email: string;
-  telegram: string;
-  phone: string;
-  internship_spec: string;
-  englishLevel: string;
-  education?: string;
-  about?: string;
-  skills?: string[];
-  applicationDate?: Date;
-  finalStatus?: 'success' | 'failed' | 'in-progress';
-  startDate?: Date | null;
-  endDate?: Date | null;
-  rejectionReason?: string;
-  selected?: boolean;
-}
-
+import { IIntern } from '../intern.model';
 @Component({
   selector: 'app-interns-list',
   standalone: true,
@@ -109,7 +85,9 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   navigateToApplication(id: number): void {
     this.router.navigate(['/internship/edit', id]);
   }
-
+  createIntern(): void {
+    this.router.navigate(['/internship/create']);
+  }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }

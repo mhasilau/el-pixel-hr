@@ -23,6 +23,7 @@ export const routes: Routes = [
     path: 'internship',
     children: [
       { path: '', component: InternshipApplicationComponent },
+      { path: 'create', component: InternshipApplicationComponent },
       { path: 'edit/:id', component: InternshipApplicationComponent },
     ],
   },

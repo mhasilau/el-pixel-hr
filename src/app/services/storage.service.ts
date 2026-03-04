@@ -8,7 +8,6 @@ export class StorageService {
   private readonly formStorageKey = 'internshipApplicationForm';
 
   fb = inject(FormBuilder);
-
   saveForm(form: FormGroup): void {
     const formData = form.value;
     localStorage.setItem(this.formStorageKey, JSON.stringify(formData));
@@ -52,6 +51,16 @@ export class StorageService {
       });
     }
 
+    if (formData['internship-details']) {
+      const detailsData = formData['internship-details'];
+      form.get('internship-details')?.patchValue({
+        applicationDate: detailsData.applicationDate ? new Date(detailsData.applicationDate) : '',
+        finalStatus: detailsData.finalStatus || '',
+        startDate: detailsData.startDate ? new Date(detailsData.startDate) : '',
+        endDate: detailsData.endDate ? new Date(detailsData.endDate) : '',
+        rejectionReason: detailsData.rejectionReason || '',
+      });
+    }
     if (formData['personal-info']?.birthDate) {
       updateAgeCallback();
     }

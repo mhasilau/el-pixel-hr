@@ -2,7 +2,9 @@
   <div class="intern-list-header">
     <div class="intern-list__title">Список стажеров</div>
     <div class="intern-list-buttons">
-      <button mat-raised-button class="action-button"><mat-icon>add</mat-icon> Создать</button>
+      <button mat-raised-button class="action-button" (click)="createIntern()">
+        <mat-icon>add</mat-icon> Создать
+      </button>
       <button mat-raised-button (click)="deleteSelected()" class="action-button">
         <mat-icon>delete</mat-icon> Удалить
       </button>

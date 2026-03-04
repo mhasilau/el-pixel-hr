@@ -1,12 +1,11 @@
 <section class="employees">
+  <!--в гардах ограничить доступ к этому пути-->
   <app-header></app-header>
   <router-outlet></router-outlet>
 
-  @if (rootForChange) {
-    <button matButton="outlined" [routerLink]="'create'" class="button_add">
-      Добавить нового сотрудника
-    </button>
-  }
+  <button matButton="outlined" [routerLink]="'create'" class="button_add">
+    Добавить нового сотрудника
+  </button>
 
   <table mat-table [dataSource]="allEmployeesList()" class="mat-elevation-z8">
     <ng-container matColumnDef="name">

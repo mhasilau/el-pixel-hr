@@ -390,7 +390,9 @@
           </div>
         </div>
       }
-      <button type="button" class="submit-btn" (click)="onSubmit()">Отправить</button>
+      <button type="button" class="submit-btn" (click)="onSubmit()">
+        {{ isEditMode ? 'Сохранить' : 'Отправить' }}
+      </button>
     </div>
   </form>
 </div>

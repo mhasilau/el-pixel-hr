@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IUser } from '../components/auth-form.model';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,10 +38,39 @@ export class AllEmployees {
       role: 'HR',
       specialization: 'React',
     },
+    {
+      id: 4,
+      name: 'Name-four',
+      surname: 'surnameTwo',
+      email: 'email2@el-pixel.com',
+      login: 'login4',
+      password: 'password4',
+      role: 'Ментор',
+      specialization: 'React',
+    },
   ];
+
+  employee: IUser = {
+    id: 0,
+    name: '',
+    surname: '',
+    email: '',
+    login: '',
+    password: '',
+    role: '',
+    specialization: '',
+  };
 
   setAllEmployees(user: IUser) {
     this.employeesList.push(user);
+  }
+
+  enterEmployee(targetUser: IUser) {
+    this.employee = targetUser;
+  }
+
+  getEmployee() {
+    return of(this.employee);
   }
 
   getAllEmployees() {

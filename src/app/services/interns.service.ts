@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IIntern } from '../components/interns-list/interns-list.component';
+import { IIntern, InternFormData } from '../components/intern.model';
 
 @Injectable({
   providedIn: 'root',
@@ -125,9 +125,77 @@ export class InternService {
     return of(this.mockInterns);
   }
 
-  getInternById(id: number): Observable<IIntern | undefined> {
-    const intern = this.mockInterns.find((i) => i.index === id);
+  getInternById(id: number | string): Observable<IIntern | undefined> {
+    const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+    const intern = this.mockInterns.find((i) => i.index === numericId);
     return of(intern);
+  }
+  createIntern(formData: InternFormData): Observable<IIntern> {
+    const maxIndex = Math.max(...this.mockInterns.map((i) => i.index), 0);
+
+    const personalInfo = formData['personal-info'];
+    const contactInfo = formData['contact-info'];
+    const educationInfo = formData['education-info'];
+
+    const newIntern: IIntern = {
+      index: maxIndex + 1,
+      firstName: personalInfo.firstName,
+      lastName: personalInfo.lastName,
+      birthDate: personalInfo.birthDate,
+      gender: personalInfo.gender,
+      country: personalInfo.country,
+      city: personalInfo.city,
+      email: contactInfo.email,
+      telegram: contactInfo.telegram,
+      phone: contactInfo.phone,
+      education: educationInfo.education || '',
+      about: educationInfo.about || '',
+      internship_spec: educationInfo.internship_spec,
+      englishLevel: educationInfo.englishLevel,
+      skills: educationInfo.skills || [],
+      applicationDate: new Date(),
+      finalStatus: 'in-progress',
+      startDate: null,
+      endDate: null,
+      rejectionReason: '',
+    };
+
+    this.mockInterns.push(newIntern);
+    return of(newIntern);
+  }
+
+  updateIntern(id: number, formValue: InternFormData): Observable<IIntern | undefined> {
+    const index = this.mockInterns.findIndex((i) => i.index === id);
+    if (index !== -1) {
+      const updatedIntern: Partial<IIntern> = {
+        firstName: formValue['personal-info']?.firstName,
+        lastName: formValue['personal-info']?.lastName,
+        birthDate: formValue['personal-info']?.birthDate,
+        gender: formValue['personal-info']?.gender,
+        country: formValue['personal-info']?.country,
+        city: formValue['personal-info']?.city,
+        email: formValue['contact-info']?.email,
+        telegram: formValue['contact-info']?.telegram,
+        phone: formValue['contact-info']?.phone,
+        education: formValue['education-info']?.education,
+        about: formValue['education-info']?.about,
+        internship_spec: formValue['education-info']?.internship_spec,
+        englishLevel: formValue['education-info']?.englishLevel,
+        skills: formValue['education-info']?.skills,
+        applicationDate: formValue['internship-details']?.applicationDate,
+        finalStatus: formValue['internship-details']?.finalStatus,
+        startDate: formValue['internship-details']?.startDate,
+        endDate: formValue['internship-details']?.endDate,
+        rejectionReason: formValue['internship-details']?.rejectionReason,
+      };
+
+      this.mockInterns[index] = {
+        ...this.mockInterns[index],
+        ...updatedIntern,
+      };
+      return of(this.mockInterns[index]);
+    }
+    return of(undefined);
   }
 
   deleteInterns(ids: number[]): Observable<boolean> {
