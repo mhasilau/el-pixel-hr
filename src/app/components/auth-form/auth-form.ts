@@ -15,6 +15,7 @@ import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { Router } from '@angular/router';
 import { RootService } from '../../services/root.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-form',
@@ -30,6 +31,7 @@ import { RootService } from '../../services/root.service';
     FormsModule,
     MatButtonModule,
     MatDialogClose,
+    TranslatePipe,
   ],
   templateUrl: './auth-form.html',
   styleUrl: './auth-form.scss',

@@ -19,6 +19,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
 import { StorageService } from '../../services/storage.service';
+import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-internship-application',
   standalone: true,
@@ -36,6 +37,7 @@ import { StorageService } from '../../services/storage.service';
     MatSelectModule,
     MatRadioModule,
     MatChipsModule,
+    TranslatePipe,
   ],
 })
 export class InternshipApplicationComponent implements OnInit {

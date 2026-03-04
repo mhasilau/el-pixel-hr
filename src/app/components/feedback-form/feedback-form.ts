@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { FORMAT_FOR_DATA } from '../formatForDate.data';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feedback-form',
@@ -21,6 +22,7 @@ import { FORMAT_FOR_DATA } from '../formatForDate.data';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    TranslatePipe,
   ],
   templateUrl: './feedback-form.html',
   styleUrl: './feedback-form.scss',

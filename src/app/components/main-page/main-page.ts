@@ -5,10 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 import { Header } from '../header/header';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, Header, RouterLink],
+  imports: [MatButtonModule, Header, RouterLink, TranslatePipe],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })

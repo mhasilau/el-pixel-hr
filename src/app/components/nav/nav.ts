@@ -6,10 +6,11 @@ import { RouterLink } from '@angular/router';
 import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { RootService } from '../../services/root.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, RouterLink],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, RouterLink, TranslatePipe],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })

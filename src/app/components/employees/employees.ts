@@ -9,6 +9,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
 import { IUser } from '../auth-form.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-employees',
@@ -20,6 +21,7 @@ import { IUser } from '../auth-form.model';
     MatTableModule,
     RouterLink,
     RouterOutlet,
+    TranslatePipe,
   ],
   templateUrl: './employees.html',
   styleUrl: './employees.scss',
