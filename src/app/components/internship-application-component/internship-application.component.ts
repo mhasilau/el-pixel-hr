@@ -18,10 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
-import { StorageService } from '../../services/storage.service';
+//import { StorageService } from '../../services/storage.service';
 import { InternService } from '../../services/interns.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AllEmployees } from '../../services/all-employees.service';
 
 @Component({
   selector: 'app-internship-application',
@@ -44,11 +45,12 @@ import { Subscription } from 'rxjs';
 })
 export class InternshipApplicationComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  private storageService = inject(StorageService);
+  //private storageService = inject(StorageService);
   private internService = inject(InternService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private subscriptions: Subscription[] = [];
+  private allEmployees = inject(AllEmployees);
   internshipApplicationForm: FormGroup;
 
   isEditMode = false;
@@ -56,6 +58,9 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
 
   minDate!: Date;
   maxDate!: Date;
+
+  // private storageKey = '';
+  // private currentMode: 'create' | 'edit' | 'public' = 'public';
 
   internship_specs = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
   englishLevels = [
@@ -119,7 +124,7 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
           ],
           phone: [
             '',
-            [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\d+$/)],
+            [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\+?\d+$/)],
           ],
         },
         { validators: oneRequiredValidator(['telegram', 'email', 'phone']) },
@@ -146,10 +151,16 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
 
     const routeSubscribe = this.route.params.subscribe((params) => {
       const id = params['id'];
-      if (id) {
+      const url = this.router.url;
+
+      if (url === '/internship/create') {
+        this.isEditMode = false;
+        this.internId = null;
+      } else if (id) {
         this.isEditMode = true;
         this.internId = parseInt(id, 10);
-        const internSubscribe = this.internService.getInternById(id).subscribe((intern) => {
+
+        this.internService.getInternById(this.internId).subscribe((intern) => {
           if (intern) {
             this.internshipApplicationForm.patchValue({
               'personal-info': {
@@ -181,26 +192,14 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
               },
             });
             this.updateAgeFromBirthDate();
-            this.internshipApplicationForm.markAllAsTouched();
           }
         });
-        this.subscriptions.push(internSubscribe);
       } else {
         this.isEditMode = false;
-        this.storageService.loadForm(this.internshipApplicationForm, () =>
-          this.updateAgeFromBirthDate(),
-        );
+        this.internId = null;
       }
     });
     this.subscriptions.push(routeSubscribe);
-
-    const formSubscribe = this.internshipApplicationForm.valueChanges.subscribe(() => {
-      if (!this.isEditMode) {
-        this.storageService.saveForm(this.internshipApplicationForm);
-      }
-    });
-    this.subscriptions.push(formSubscribe);
-
     if (this.birthDate) {
       const birthDateSub = this.birthDate.valueChanges.subscribe(() => {
         this.updateAgeFromBirthDate();
@@ -208,6 +207,7 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
       this.subscriptions.push(birthDateSub);
     }
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
@@ -239,7 +239,7 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
   formatPhoneInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    const cleaned = input.value.replace(/\D/g, '');
+    const cleaned = input.value.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
 
     input.value = cleaned;
 
@@ -351,7 +351,6 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (updated) => {
               if (updated) {
-                this.storageService.clearForm();
                 this.router.navigate(['/intern-list']);
               }
             },
@@ -366,14 +365,12 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (newIntern) => {
                 if (newIntern) {
-                  this.storageService.clearForm();
                   this.router.navigate(['/intern-list']);
                 }
               },
             });
           this.subscriptions.push(createSub);
         } else {
-          this.storageService.clearForm();
           this.internshipApplicationForm.reset();
           this.router.navigate(['/']);
         }
