@@ -45,7 +45,6 @@ import { AllEmployees } from '../../services/all-employees.service';
 })
 export class InternshipApplicationComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  //private storageService = inject(StorageService);
   private internService = inject(InternService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -58,9 +57,6 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
 
   minDate!: Date;
   maxDate!: Date;
-
-  // private storageKey = '';
-  // private currentMode: 'create' | 'edit' | 'public' = 'public';
 
   internship_specs = [{ value: 'React' }, { value: 'Angular' }, { value: 'Python' }];
   englishLevels = [
@@ -151,12 +147,7 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
 
     const routeSubscribe = this.route.params.subscribe((params) => {
       const id = params['id'];
-      const url = this.router.url;
-
-      if (url === '/internship/create') {
-        this.isEditMode = false;
-        this.internId = null;
-      } else if (id) {
+      if (id) {
         this.isEditMode = true;
         this.internId = parseInt(id, 10);
 
@@ -357,23 +348,16 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
           });
         this.subscriptions.push(updateSub);
       } else {
-        const url = this.router.url;
-
-        if (url === '/internship/create') {
-          const createSub = this.internService
-            .createIntern(this.internshipApplicationForm.value)
-            .subscribe({
-              next: (newIntern) => {
-                if (newIntern) {
-                  this.router.navigate(['/intern-list']);
-                }
-              },
-            });
-          this.subscriptions.push(createSub);
-        } else {
-          this.internshipApplicationForm.reset();
-          this.router.navigate(['/']);
-        }
+        const createSub = this.internService
+          .createApply(this.internshipApplicationForm.value)
+          .subscribe({
+            next: (newIntern) => {
+              if (newIntern) {
+                this.router.navigate(['/']);
+              }
+            },
+          });
+        this.subscriptions.push(createSub);
       }
     } else {
       this.internshipApplicationForm.markAllAsTouched();

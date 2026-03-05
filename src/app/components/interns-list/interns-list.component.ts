@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
@@ -82,11 +82,8 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  navigateToApplication(id: number): void {
+  openInternEditForm(id: number): void {
     this.router.navigate(['/internship/edit', id]);
-  }
-  createIntern(): void {
-    this.router.navigate(['/internship/create']);
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -101,14 +98,20 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     return numSelected === numRows;
   }
 
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
+  toggleAllRows(event: MatCheckboxChange): void {
+    if (event.checked) {
       this.selection.select(...this.dataSource.data);
+    } else {
+      this.selection.clear();
     }
   }
-
+  toggleRow(event: MatCheckboxChange, row: IIntern): void {
+    if (event.checked) {
+      this.selection.select(row);
+    } else {
+      this.selection.toggle(row);
+    }
+  }
   getSelectedCount() {
     return this.selection.selected.length;
   }

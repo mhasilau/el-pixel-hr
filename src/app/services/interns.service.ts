@@ -130,7 +130,7 @@ export class InternService {
     const intern = this.mockInterns.find((i) => i.index === numericId);
     return of(intern);
   }
-  createIntern(formData: InternFormData): Observable<IIntern> {
+  createApply(formData: InternFormData): Observable<IIntern> {
     const maxIndex = Math.max(...this.mockInterns.map((i) => i.index), 0);
 
     const personalInfo = formData['personal-info'];
