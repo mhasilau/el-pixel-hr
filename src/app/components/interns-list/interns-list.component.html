@@ -1,0 +1,158 @@
+<div class="intern-list-wrapper">
+  <div class="intern-list-header">
+    <div class="intern-list__title">Список стажеров</div>
+    <div class="intern-list-buttons">
+      <button mat-raised-button (click)="deleteSelected()" class="action-button">
+        <mat-icon>delete</mat-icon> Удалить
+      </button>
+    </div>
+  </div>
+
+  <div class="intern-list-table">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)"
+      class="interns-table"
+    >
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef cdkDrag>
+          <mat-checkbox
+            (change)="toggleAllRows($event)"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="isAllSelected() ? 'Снять выделение со всех' : 'Выделить всех'"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="toggleRow($event, row)"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="selection.isSelected(row) ? 'Снять выделение' : 'Выделить'"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>№</th>
+        <td mat-cell *matCellDef="let element">{{ element.index }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Имя</th>
+        <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Фамилия</th>
+        <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="birthDate">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата рождения</th>
+        <td mat-cell *matCellDef="let element">{{ element.birthDate | date: 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Телефон</th>
+        <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telegram">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Telegram</th>
+        <td mat-cell *matCellDef="let element">{{ element.telegram }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="internship_spec">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Направление</th>
+        <td mat-cell *matCellDef="let element">{{ element.internship_spec }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="englishLevel">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Английский</th>
+        <td mat-cell *matCellDef="let element">{{ element.englishLevel }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="applicationDate">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата подачи</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.applicationDate | date: 'dd.MM.yyyy' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="finalStatus">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Статус</th>
+        <td mat-cell *matCellDef="let element">
+          <span
+            [class.success]="element.finalStatus === 'success'"
+            [class.failed]="element.finalStatus === 'failed'"
+            [class.in-progress]="element.finalStatus === 'in-progress'"
+          >
+            {{
+              element.finalStatus === 'success'
+                ? 'Успешно'
+                : element.finalStatus === 'failed'
+                  ? 'Неуспешно'
+                  : 'В процессе'
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата начала</th>
+        <td mat-cell *matCellDef="let element">{{ element.startDate | date: 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Дата окончания</th>
+        <td mat-cell *matCellDef="let element">{{ element.endDate | date: 'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rejectionReason">
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Причина отказа</th>
+        <td mat-cell *matCellDef="let element">{{ element.rejectionReason || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            (click)="$event.stopPropagation()"
+            aria-label="Действия"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>assignment</mat-icon>
+              <span>Первичный отзыв</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>assignment_turned_in</mat-icon>
+              <span>Итоговый отзыв</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (dblclick)="openInternEditForm(row.index)"
+      ></tr>
+    </table>
+  </div>
+</div>

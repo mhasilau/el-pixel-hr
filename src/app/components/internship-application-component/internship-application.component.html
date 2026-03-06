@@ -1,8 +1,5 @@
 <div class="internship-application-wrapper">
   <form [formGroup]="internshipApplicationForm" class="internship-form">
-    <div class="form-header">
-      <span class="header-title">заявка на стажировку</span>
-    </div>
     <div class="form-wrapper">
       <div class="form-block" formGroupName="personal-info">
         <div class="form-block-header">Персональная информация</div>
@@ -155,7 +152,6 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <span matTextPrefix>+ &nbsp;</span>
                 <input
                   matInput
                   type="tel"
@@ -321,7 +317,81 @@
           </mat-chip-set>
         </div>
       </div>
-      <button type="button" class="submit-btn" (click)="onSubmit()">Отправить</button>
+
+      @if (isEditMode) {
+        <div class="form-block" formGroupName="internship-details">
+          <div class="form-block-header">Детали стажировки</div>
+
+          <div class="form-line">
+            <div class="form-item">
+              <div class="input-group">
+                <mat-form-field class="input-item">
+                  <mat-label>Дата подачи</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="appDatePicker"
+                    formControlName="applicationDate"
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="appDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #appDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="input-item">
+                  <mat-label>Статус</mat-label>
+                  <mat-select formControlName="finalStatus">
+                    <mat-option value="in-progress">В процессе</mat-option>
+                    <mat-option value="success">Успешно</mat-option>
+                    <mat-option value="failed">Неуспешно</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-line">
+            <div class="form-item">
+              <div class="input-group">
+                <mat-form-field class="input-item">
+                  <mat-label>Дата начала</mat-label>
+                  <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="startDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="input-item">
+                  <mat-label>Дата окончания</mat-label>
+                  <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="endDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-line">
+            <div class="form-item">
+              <div class="input-group">
+                <mat-form-field class="input-item">
+                  <mat-label>Причина отказа</mat-label>
+                  <textarea matInput formControlName="rejectionReason" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      <button type="button" class="submit-btn" (click)="onSubmit()">
+        {{ isEditMode ? 'Сохранить' : 'Отправить' }}
+      </button>
     </div>
   </form>
 </div>
