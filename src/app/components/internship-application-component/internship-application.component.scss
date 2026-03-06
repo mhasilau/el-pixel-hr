@@ -42,23 +42,6 @@ mat-mdc-text-field-wrapper {
     margin: 0 auto;
 
     border-radius: 2px;
-    .form-header {
-      background-color: $primary-color;
-      font-size: $font-size-lg;
-      font-weight: 600;
-      color: white;
-      padding: $spacing-2xl $spacing-xl;
-      border-radius: 2px 2px 0 0;
-
-      .header-title {
-        font-size: $font-size-4xl;
-        font-weight: 600;
-        line-height: 1.2;
-        text-transform: uppercase;
-        letter-spacing: -0.5px;
-      }
-    }
-
     .form-wrapper {
       padding: $spacing-2xl;
       display: flex;
