@@ -1,4 +1,7 @@
 <div class="internship-application-wrapper">
+  @if (isLoading) {
+    <app-loader></app-loader>
+  }
   <form [formGroup]="internshipApplicationForm" class="internship-form">
     <div class="form-wrapper">
       <div class="form-block" formGroupName="personal-info">

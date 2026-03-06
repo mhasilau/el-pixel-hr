@@ -16,7 +16,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AllEmployees } from '../../../services/all-employees.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from '../../auth-form.model';
-
+import { LoaderComponent } from '../../loader/loader.component';
+import { delay } from 'rxjs';
 @Component({
   selector: 'app-form-employee',
   imports: [
@@ -31,6 +32,7 @@ import { IUser } from '../../auth-form.model';
     MatDividerModule,
     MatIconModule,
     MatTabsModule,
+    LoaderComponent,
   ],
   templateUrl: './form-employee.html',
   styleUrl: './form-employee.scss',
@@ -40,6 +42,9 @@ export class FormEmployee implements OnInit {
   router = inject(Router);
   rout = inject(ActivatedRoute);
   id = Number(this.rout.snapshot.params['id']);
+
+  isLoading = false;
+
   employee = signal<IUser>({
     id: 0,
     name: '',
@@ -56,11 +61,14 @@ export class FormEmployee implements OnInit {
 
   ngOnInit() {
     if (this.id) {
+      this.isLoading = true;
       this.employees
         .getAllEmployees()
-        .subscribe((employees) =>
-          this.employee.set(employees.filter((item) => item['id'] === this.id)[0]),
-        );
+        .pipe(delay(Math.random() * 2500 + 500))
+        .subscribe((employees) => {
+          this.employee.set(employees.filter((item) => item['id'] === this.id)[0]);
+          this.isLoading = false;
+        });
     }
 
     this.form = this.formBuild.group({

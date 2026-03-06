@@ -9,7 +9,8 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
 import { IUser } from '../auth-form.model';
-
+import { LoaderComponent } from '../loader/loader.component';
+import { delay } from 'rxjs';
 @Component({
   selector: 'app-employees',
   imports: [
@@ -20,6 +21,7 @@ import { IUser } from '../auth-form.model';
     MatTableModule,
     RouterLink,
     RouterOutlet,
+    LoaderComponent,
   ],
   templateUrl: './employees.html',
   styleUrl: './employees.scss',
@@ -29,6 +31,9 @@ export class Employees implements OnInit {
   dialog = inject(MatDialog);
   employeesList = inject(AllEmployees);
   router = inject(Router);
+
+  isLoading = false;
+
   targetUser: IUser = {
     id: 0,
     name: '',
@@ -51,9 +56,16 @@ export class Employees implements OnInit {
   allEmployeesList = signal<Array<IUser>>([]);
 
   ngOnInit() {
-    this.employeesList.getAllEmployees().subscribe((date) => {
-      this.allEmployeesList.set(date);
-    });
+    this.isLoading = true;
+    this.employeesList
+      .getAllEmployees()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.allEmployeesList.set(data);
+          this.isLoading = false;
+        },
+      });
   }
 
   openEdit(id: number) {

@@ -1,4 +1,7 @@
 <div class="intern-list-wrapper">
+  @if (isLoading) {
+    <app-loader></app-loader>
+  }
   <div class="intern-list-header">
     <div class="intern-list__title">Список стажеров</div>
     <div class="intern-list-buttons">

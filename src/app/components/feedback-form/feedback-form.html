@@ -1,4 +1,7 @@
 <section class="feetback">
+  @if (isLoading) {
+    <app-loader></app-loader>
+  }
   <app-header></app-header>
   <h1>Отзыв о стажере</h1>
   <!-- имя стажера получить из таблицы стажеров -->

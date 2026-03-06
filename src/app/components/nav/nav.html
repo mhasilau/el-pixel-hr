@@ -1,3 +1,6 @@
+@if (isLoading) {
+  <app-loader></app-loader>
+}
 <button matButton [matMenuTriggerFor]="menu">Меню</button>
 <mat-menu #menu="matMenu">
   @if (employeeRoot) {

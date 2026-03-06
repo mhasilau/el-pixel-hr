@@ -10,7 +10,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { FORMAT_FOR_DATA } from '../formatForDate.data';
-
+import { LoaderComponent } from '../loader/loader.component';
+import { delay } from 'rxjs';
 @Component({
   selector: 'app-feedback-form',
   imports: [
@@ -21,6 +22,7 @@ import { FORMAT_FOR_DATA } from '../formatForDate.data';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    LoaderComponent,
   ],
   templateUrl: './feedback-form.html',
   styleUrl: './feedback-form.scss',
@@ -36,9 +38,18 @@ export class FeedbackForm implements OnInit {
   studentId = '';
   firstFeedback: boolean = false; //получаем из таблицы что было нажато в меню.(или активроутер получаем путь и меняем переменную)Дописать логику
   resultFeedback: boolean = false;
-
+  isLoading = false;
   ngOnInit() {
-    this.allListEmployees.getEmployee().subscribe((employee) => (this.role = employee.role));
+    this.isLoading = true;
+    this.allListEmployees
+      .getEmployee()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (employee) => {
+          this.role = employee.role;
+          this.isLoading = false;
+        },
+      });
   }
 
   form = this.formBuilder.group(

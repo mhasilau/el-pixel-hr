@@ -15,6 +15,8 @@ import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { Router } from '@angular/router';
 import { RootService } from '../../services/root.service';
+import { LoaderComponent } from '../loader/loader.component';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-auth-form',
@@ -30,6 +32,7 @@ import { RootService } from '../../services/root.service';
     FormsModule,
     MatButtonModule,
     MatDialogClose,
+    LoaderComponent,
   ],
   templateUrl: './auth-form.html',
   styleUrl: './auth-form.scss',
@@ -39,13 +42,21 @@ export class AuthForm implements OnInit {
   employeesList = inject(AllEmployees);
   router = inject(Router);
   rootService = inject(RootService);
+
+  isLoading = false;
+
   allEmployeesList: Array<IUser> = [];
   authForm: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
-    this.employeesList.getAllEmployees().subscribe((employee) => {
-      this.allEmployeesList = employee;
-    });
+    this.isLoading = true;
+    this.employeesList
+      .getAllEmployees()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe((employee) => {
+        this.allEmployeesList = employee;
+        this.isLoading = false;
+      });
 
     this.authForm = new FormGroup({
       userLogin: new FormControl('', [Validators.required]),

@@ -19,6 +19,8 @@ import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
+import { delay } from 'rxjs';
+import { LoaderComponent } from '../loader/loader.component';
 @Component({
   selector: 'app-interns-list',
   standalone: true,
@@ -41,14 +43,17 @@ import { IIntern } from '../intern.model';
     CdkDropList,
     CdkDrag,
     MatCheckboxModule,
+    LoaderComponent,
   ],
 })
 export class InternsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  private internService = inject(InternService);
 
+  private internService = inject(InternService);
   private router = inject(Router);
+
+  isLoading = false;
 
   displayedColumns: string[] = [
     'select',
@@ -75,11 +80,16 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     this.loadInterns();
   }
   loadInterns() {
-    this.internService.getAllInterns().subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
-      },
-    });
+    this.isLoading = true;
+    this.internService
+      .getAllInterns()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+          this.isLoading = false;
+        },
+      });
   }
 
   openInternEditForm(id: number): void {
@@ -119,15 +129,19 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   deleteSelected() {
     const selectedIds = this.selection.selected.map((s) => s.index);
     if (selectedIds.length === 0) return;
-
-    this.internService.deleteInterns(selectedIds).subscribe({
-      next: (success) => {
-        if (success) {
-          this.loadInterns();
-          this.selection.clear();
-        }
-      },
-    });
+    this.isLoading = true;
+    this.internService
+      .deleteInterns(selectedIds)
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (success) => {
+          if (success) {
+            this.loadInterns();
+            this.selection.clear();
+            this.isLoading = false;
+          }
+        },
+      });
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
