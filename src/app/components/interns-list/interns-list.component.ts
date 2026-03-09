@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,6 +19,8 @@ import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
+import { delay } from 'rxjs';
+import { LoaderComponent } from '../loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-interns-list',
@@ -43,14 +45,17 @@ import { TranslatePipe } from '@ngx-translate/core';
     CdkDrag,
     MatCheckboxModule,
     TranslatePipe,
+    LoaderComponent,
   ],
 })
 export class InternsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  private internService = inject(InternService);
 
+  private internService = inject(InternService);
   private router = inject(Router);
+
+  isLoading = signal<boolean>(false);
 
   displayedColumns: string[] = [
     'select',
@@ -77,11 +82,16 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     this.loadInterns();
   }
   loadInterns() {
-    this.internService.getAllInterns().subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
-      },
-    });
+    this.isLoading.set(true);
+    this.internService
+      .getAllInterns()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+        },
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   openInternEditForm(id: number): void {
@@ -124,15 +134,19 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   deleteSelected() {
     const selectedIds = this.selection.selected.map((s) => s.index);
     if (selectedIds.length === 0) return;
-
-    this.internService.deleteInterns(selectedIds).subscribe({
-      next: (success) => {
-        if (success) {
-          this.loadInterns();
-          this.selection.clear();
-        }
-      },
-    });
+    this.isLoading.set(true);
+    this.internService
+      .deleteInterns(selectedIds)
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (success) => {
+          if (success) {
+            this.loadInterns();
+            this.selection.clear();
+          }
+        },
+      })
+      .add(() => this.isLoading.set(false));
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);

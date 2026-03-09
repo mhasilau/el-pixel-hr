@@ -16,6 +16,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AllEmployees } from '../../../services/all-employees.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from '../../auth-form.model';
+import { LoaderComponent } from '../../loader/loader.component';
+import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -32,6 +34,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDividerModule,
     MatIconModule,
     MatTabsModule,
+    LoaderComponent,
     TranslatePipe,
   ],
   templateUrl: './form-employee.html',
@@ -42,6 +45,9 @@ export class FormEmployee implements OnInit {
   router = inject(Router);
   rout = inject(ActivatedRoute);
   id = Number(this.rout.snapshot.params['id']);
+
+  isLoading = signal<boolean>(false);
+
   employee = signal<IUser>({
     id: 0,
     name: '',
@@ -58,11 +64,14 @@ export class FormEmployee implements OnInit {
 
   ngOnInit() {
     if (this.id) {
+      this.isLoading.set(true);
       this.employees
         .getAllEmployees()
-        .subscribe((employees) =>
-          this.employee.set(employees.filter((item) => item['id'] === this.id)[0]),
-        );
+        .pipe(delay(Math.random() * 2500 + 500))
+        .subscribe((employees) => {
+          this.employee.set(employees.filter((item) => item['id'] === this.id)[0]);
+        })
+        .add(() => this.isLoading.set(false));
     }
 
     this.form = this.formBuild.group({

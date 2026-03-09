@@ -1,3 +1,6 @@
+@if (isLoading()) {
+  <app-loader></app-loader>
+}
 <button matButton [matMenuTriggerFor]="menu" class="menu">{{ 'Button.Menu' | translate }}</button>
 <mat-menu #menu="matMenu" class="menu_list">
   @if (employeeRoot) {

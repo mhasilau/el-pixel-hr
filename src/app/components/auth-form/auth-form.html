@@ -1,3 +1,6 @@
+@if (isLoading()) {
+  <app-loader></app-loader>
+}
 <form [formGroup]="authForm" novalidate class="forAuth">
   <mat-form-field appearance="fill">
     <mat-label>{{ 'Enter login' | translate }}</mat-label>
