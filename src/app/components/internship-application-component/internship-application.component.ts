@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -18,13 +18,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
-import { StorageService } from '../../services/storage.service';
+//import { StorageService } from '../../services/storage.service';
+import { InternService } from '../../services/interns.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AllEmployees } from '../../services/all-employees.service';
 import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-internship-application',
   standalone: true,
-  templateUrl: './InternshipApplication.component.html',
-  styleUrls: ['./InternshipApplication.component.scss'],
+  templateUrl: './internship-application.component.html',
+  styleUrls: ['./internship-application.component.scss'],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -40,11 +45,17 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
   ],
 })
-export class InternshipApplicationComponent implements OnInit {
+export class InternshipApplicationComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  private storageService = inject(StorageService);
-
+  private internService = inject(InternService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private subscriptions: Subscription[] = [];
+  private allEmployees = inject(AllEmployees);
   internshipApplicationForm: FormGroup;
+
+  isEditMode = false;
+  internId: number | null = null;
 
   minDate!: Date;
   maxDate!: Date;
@@ -111,7 +122,7 @@ export class InternshipApplicationComponent implements OnInit {
           ],
           phone: [
             '',
-            [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\d+$/)],
+            [Validators.minLength(7), Validators.maxLength(15), Validators.pattern(/^\+?\d+$/)],
           ],
         },
         { validators: oneRequiredValidator(['telegram', 'email', 'phone']) },
@@ -123,24 +134,76 @@ export class InternshipApplicationComponent implements OnInit {
         englishLevel: ['', Validators.required],
         skills: [[]],
       }),
+      'internship-details': this.fb.group({
+        applicationDate: [''],
+        finalStatus: [''],
+        startDate: [''],
+        endDate: [''],
+        rejectionReason: [''],
+      }),
     });
   }
 
   ngOnInit(): void {
     this.initDateRange();
-    this.storageService.loadForm(this.internshipApplicationForm, () =>
-      this.updateAgeFromBirthDate(),
-    );
 
-    this.internshipApplicationForm.valueChanges.subscribe(() => {
-      this.storageService.saveForm(this.internshipApplicationForm);
-    });
+    const routeSubscribe = this.route.params.subscribe((params) => {
+      const id = params['id'];
+      if (id) {
+        this.isEditMode = true;
+        this.internId = parseInt(id, 10);
 
-    this.birthDate?.valueChanges.subscribe(() => {
-      this.updateAgeFromBirthDate();
+        this.internService.getInternById(this.internId).subscribe((intern) => {
+          if (intern) {
+            this.internshipApplicationForm.patchValue({
+              'personal-info': {
+                firstName: intern.firstName,
+                lastName: intern.lastName,
+                birthDate: intern.birthDate,
+                gender: intern.gender,
+                country: intern.country,
+                city: intern.city,
+              },
+              'contact-info': {
+                email: intern.email,
+                telegram: intern.telegram,
+                phone: intern.phone,
+              },
+              'education-info': {
+                education: intern.education || '',
+                about: intern.about || '',
+                internship_spec: intern.internship_spec,
+                englishLevel: intern.englishLevel,
+                skills: intern.skills || [],
+              },
+              'internship-details': {
+                applicationDate: intern.applicationDate,
+                finalStatus: intern.finalStatus,
+                startDate: intern.startDate,
+                endDate: intern.endDate,
+                rejectionReason: intern.rejectionReason,
+              },
+            });
+            this.updateAgeFromBirthDate();
+          }
+        });
+      } else {
+        this.isEditMode = false;
+        this.internId = null;
+      }
     });
+    this.subscriptions.push(routeSubscribe);
+    if (this.birthDate) {
+      const birthDateSub = this.birthDate.valueChanges.subscribe(() => {
+        this.updateAgeFromBirthDate();
+      });
+      this.subscriptions.push(birthDateSub);
+    }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
   private initDateRange(): void {
     const today = new Date();
     this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
@@ -169,7 +232,7 @@ export class InternshipApplicationComponent implements OnInit {
   formatPhoneInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    const cleaned = input.value.replace(/\D/g, '');
+    const cleaned = input.value.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
 
     input.value = cleaned;
 
@@ -207,6 +270,9 @@ export class InternshipApplicationComponent implements OnInit {
   }
   get educationInfo() {
     return this.internshipApplicationForm.get('education-info');
+  }
+  get internshipDetails() {
+    return this.internshipApplicationForm.get('internship-details');
   }
 
   get firstName() {
@@ -254,10 +320,47 @@ export class InternshipApplicationComponent implements OnInit {
   get skills(): FormArray {
     return this.educationInfo?.get('skills') as FormArray;
   }
+  get applicationDate() {
+    return this.internshipDetails?.get('applicationDate');
+  }
+  get finalStatus() {
+    return this.internshipDetails?.get('finalStatus');
+  }
+  get startDate() {
+    return this.internshipDetails?.get('startDate');
+  }
+  get endDate() {
+    return this.internshipDetails?.get('endDate');
+  }
+  get rejectionReason() {
+    return this.internshipDetails?.get('rejectionReason');
+  }
+
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
-      this.storageService.clearForm();
-      this.internshipApplicationForm.reset();
+      if (this.isEditMode && this.internId) {
+        const updateSub = this.internService
+          .updateIntern(this.internId, this.internshipApplicationForm.value)
+          .subscribe({
+            next: (updated) => {
+              if (updated) {
+                this.router.navigate(['/intern-list']);
+              }
+            },
+          });
+        this.subscriptions.push(updateSub);
+      } else {
+        const createSub = this.internService
+          .createApply(this.internshipApplicationForm.value)
+          .subscribe({
+            next: (newIntern) => {
+              if (newIntern) {
+                this.router.navigate(['/']);
+              }
+            },
+          });
+        this.subscriptions.push(createSub);
+      }
     } else {
       this.internshipApplicationForm.markAllAsTouched();
     }

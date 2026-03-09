@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { InternshipApplicationComponent } from './InternshipApplication.component';
+import { InternshipApplicationComponent } from './internship-application.component';
 
 describe('InternshipApplicationComponent', () => {
   let component: InternshipApplicationComponent;
