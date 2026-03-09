@@ -43,7 +43,7 @@ export class FormEmployee implements OnInit {
   rout = inject(ActivatedRoute);
   id = Number(this.rout.snapshot.params['id']);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   employee = signal<IUser>({
     id: 0,
@@ -61,14 +61,14 @@ export class FormEmployee implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.isLoading = true;
+      this.isLoading.set(true);
       this.employees
         .getAllEmployees()
         .pipe(delay(Math.random() * 2500 + 500))
         .subscribe((employees) => {
           this.employee.set(employees.filter((item) => item['id'] === this.id)[0]);
-          this.isLoading = false;
-        });
+        })
+        .add(() => this.isLoading.set(false));
     }
 
     this.form = this.formBuild.group({

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Header } from '../header/header';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -38,18 +38,18 @@ export class FeedbackForm implements OnInit {
   studentId = '';
   firstFeedback: boolean = false; //получаем из таблицы что было нажато в меню.(или активроутер получаем путь и меняем переменную)Дописать логику
   resultFeedback: boolean = false;
-  isLoading = false;
+  isLoading = signal<boolean>(false);
   ngOnInit() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.allListEmployees
       .getEmployee()
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe({
         next: (employee) => {
           this.role = employee.role;
-          this.isLoading = false;
         },
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   form = this.formBuilder.group(

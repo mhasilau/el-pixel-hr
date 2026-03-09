@@ -1,5 +1,5 @@
 <div class="internship-application-wrapper">
-  @if (isLoading) {
+  @if (isLoading()) {
     <app-loader></app-loader>
   }
   <form [formGroup]="internshipApplicationForm" class="internship-form">

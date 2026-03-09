@@ -32,7 +32,7 @@ export class Employees implements OnInit {
   employeesList = inject(AllEmployees);
   router = inject(Router);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   targetUser: IUser = {
     id: 0,
@@ -56,16 +56,16 @@ export class Employees implements OnInit {
   allEmployeesList = signal<Array<IUser>>([]);
 
   ngOnInit() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.employeesList
       .getAllEmployees()
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe({
         next: (data) => {
           this.allEmployeesList.set(data);
-          this.isLoading = false;
         },
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   openEdit(id: number) {
@@ -73,9 +73,11 @@ export class Employees implements OnInit {
   }
 
   deleteUser(id: number) {
+    this.isLoading.set(true);
     this.employeesList
       .deleteEmployee(id)
-      .subscribe((employees) => this.allEmployeesList.set(employees));
+      .subscribe((employees) => this.allEmployeesList.set(employees))
+      .add(() => this.isLoading.set(false));
   }
 
   openDialog(nameUser: string, id: number): void {

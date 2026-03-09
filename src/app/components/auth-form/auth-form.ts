@@ -43,20 +43,20 @@ export class AuthForm implements OnInit {
   router = inject(Router);
   rootService = inject(RootService);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   allEmployeesList: Array<IUser> = [];
   authForm: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.employeesList
       .getAllEmployees()
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe((employee) => {
         this.allEmployeesList = employee;
-        this.isLoading = false;
-      });
+      })
+      .add(() => this.isLoading.set(false));
 
     this.authForm = new FormGroup({
       userLogin: new FormControl('', [Validators.required]),

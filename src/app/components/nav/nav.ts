@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,7 +17,7 @@ import { delay } from 'rxjs';
 export class Nav implements OnInit {
   employeesList = inject(AllEmployees);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   employee: IUser = {
     id: 0,
@@ -32,14 +32,14 @@ export class Nav implements OnInit {
   employeesRoot = inject(RootService);
   employeeRoot: boolean = false;
   ngOnInit(): void {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.employeesList
       .getEmployee()
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe((employee) => {
         this.employee = employee;
-        this.isLoading = false;
-      });
+      })
+      .add(() => this.isLoading.set(false));
     this.employeeRoot = this.employeesRoot.checkRootForAdmin(this.employee.role);
   }
 }

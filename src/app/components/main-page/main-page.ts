@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { LoaderComponent } from '../loader/loader.component';
 export class MainPage {
   readonly dialog = inject(MatDialog);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
   nameUser: string = ''; //избавиться от этой переменной
 
   openDialog(): void {
@@ -25,12 +25,12 @@ export class MainPage {
       .afterClosed()
       .pipe(
         filter((date) => !!date),
-        tap(() => (this.isLoading = true)),
+        tap(() => this.isLoading.set(true)),
         delay(Math.random() * 2500 + 500),
       )
       .subscribe((result) => {
         this.nameUser = result.userName;
-        this.isLoading = false;
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
 }

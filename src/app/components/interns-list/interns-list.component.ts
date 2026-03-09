@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
@@ -53,7 +53,7 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   private internService = inject(InternService);
   private router = inject(Router);
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   displayedColumns: string[] = [
     'select',
@@ -80,16 +80,16 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     this.loadInterns();
   }
   loadInterns() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.internService
       .getAllInterns()
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe({
         next: (data) => {
           this.dataSource.data = data;
-          this.isLoading = false;
         },
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   openInternEditForm(id: number): void {
@@ -129,7 +129,7 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   deleteSelected() {
     const selectedIds = this.selection.selected.map((s) => s.index);
     if (selectedIds.length === 0) return;
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.internService
       .deleteInterns(selectedIds)
       .pipe(delay(Math.random() * 2500 + 500))
@@ -138,10 +138,10 @@ export class InternsListComponent implements OnInit, AfterViewInit {
           if (success) {
             this.loadInterns();
             this.selection.clear();
-            this.isLoading = false;
           }
         },
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
