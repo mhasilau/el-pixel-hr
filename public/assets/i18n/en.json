@@ -10,7 +10,9 @@
     "Menu":"Menu",
     "employees":"Employees",
     "trainees":"Trainees",
-    "save-feedback":"Save feedback"
+    "save-feedback":"Save feedback",
+    "add":"Add",
+    "submit":"Submit"
 },
 "Errors":{
     "Required":"Required field",
@@ -18,7 +20,16 @@
     "MinChar":"Minimum two characters",
     "MaxChar":"Maximum 50 characters",
     "@el-pixel.com":"Must contain @el-pixel.com",
-    "One required":"At least one field must be filled"
+    "One required":"At least one field must be filled",
+    "MinAge":"Minimum age is 16 years, your age",
+    "MaxAge":"Maximum age is 100 years, your age",
+    "MinCharPhone":"Minimum length is 7 characters",
+    "MaxCharPhone":"Maximum length is 15 characters",
+    "emailValid":"Please enter a valid email address",
+    "contactRequired":"Fill in at least one contact field",
+    "MinChar5":"Minimum 5 characters",
+    "MaxChar32":"Maximum 32 characters",
+    "usernameValid":"Please enter a valid username"
 },
 "RoleList":{
     "Head":"Head",
@@ -31,11 +42,26 @@
     "name":"Name",
     "Surname":"Surname",
     "Role":"Role",
-    "Specialization":"Specialization"
+    "Specialization":"Specialization",
+    "ChooseSpecialization":"Choose Specialization",
+    "Birth Date":"Birth Date",
+    "Male":"Male",
+    "Female":"Female",
+    "Country":"Country",
+    "City":"City",
+    "Contact Info":"Contact Info",
+    "Phone":"Phone",
+    "AboutYourself":"About Yourself",
+    "Education":"Education",
+    "EnglishLevel":"English Level",
+    "Skills":"Skills"
 },
 "Home": "Home",
 "Traineeship":"Traineeship",
 "Text-main-page":"El Pixel invites you to an traineeship leading to employment. We offer mentorship, practical experience, and exciting projects.",
+"Application":"Application for Traineeship",
+"Personal Info":"Personal Information",
+"AddSkill":"Add Skill",
 "Enter login":"Enter your login",
 "Employee login":"Employee login",
 "Enter password":"Enter your password",
