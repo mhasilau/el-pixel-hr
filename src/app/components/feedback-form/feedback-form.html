@@ -1,9 +1,11 @@
 <section class="feetback">
   <app-header></app-header>
-  <h1>{{ 'feedback about trainee' | translate }}</h1>
+  <h1>
+    {{ 'feedback about trainee' | translate }} {{ mockIntern.firstName }} {{ mockIntern.lastName }}
+  </h1>
   <!-- имя стажера получить из таблицы стажеров -->
   <form [formGroup]="form">
-    @if (firstFeedback) {
+    @if (formType === 'first') {
       <!-- добавить роль 'Интервьюер' -->
       @if (role === 'Интервьюер') {
         <mat-form-field>
@@ -28,7 +30,7 @@
       }
     }
 
-    @if (resultFeedback) {
+    @if (formType === 'finish') {
       <!-- кто может оставлять итоговый отзыв -->
       @if (role === 'Ментор') {
         <mat-form-field>
@@ -60,21 +62,23 @@
       }
     }
 
-    <mat-form-field>
-      <mat-label>{{ 'feedback fields.addComments' | translate }}</mat-label>
-      <textarea matInput formControlName="addComments"></textarea>
-    </mat-form-field>
+    @if (role === 'Интервьюер' || role === 'HR' || role === 'Ментор') {
+      <mat-form-field>
+        <mat-label>{{ 'feedback fields.addComments' | translate }}</mat-label>
+        <textarea matInput formControlName="addComments"></textarea>
+      </mat-form-field>
 
-    <p class="forError">
-      @if (form.invalid && form.dirty) {
-        <mat-error>{{ 'Errors.One required' | translate }}</mat-error>
-      }
-    </p>
+      <p class="forError">
+        @if (form.invalid && form.dirty) {
+          <mat-error>{{ 'Errors.One required' | translate }}</mat-error>
+        }
+      </p>
 
-    <div class="example-button-row">
-      <button matButton="tonal" [disabled]="!form.valid" (click)="saveFeedback()">
-        {{ 'Button.save-feedback' | translate }}
-      </button>
-    </div>
+      <div class="example-button-row">
+        <button matButton="tonal" [disabled]="!form.valid" (click)="saveFeedback()">
+          {{ 'Button.save-feedback' | translate }}
+        </button>
+      </div>
+    }
   </form>
 </section>

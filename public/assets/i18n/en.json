@@ -44,7 +44,7 @@
     "Role":"Role",
     "Specialization":"Specialization",
     "ChooseSpecialization":"Choose Specialization",
-    "Birth Date":"Birth Date",
+    "Birth Date":"Date of birth",
     "Male":"Male",
     "Female":"Female",
     "Country":"Country",
@@ -54,7 +54,13 @@
     "AboutYourself":"About Yourself",
     "Education":"Education",
     "EnglishLevel":"English Level",
-    "Skills":"Skills"
+    "English":"English",
+    "Skills":"Skills",
+    "DateApply":"Date of Application",
+    "status":"Status",
+    "dateStart":"Date of start",
+    "dateFinish":"Date of finish",
+    "rejectionReason":"Reason for rejection"
 },
 "Home": "Home",
 "Traineeship":"Traineeship",
@@ -80,6 +86,9 @@
     "finishLevel":"Final level of knowledge in the direction of traineeship",
     "dateStart":"Start of traineeship",
     "dateFinish":"End of traineeship",
-    "addComments":"Additional comments"
-}
+    "addComments":"Additional comments",
+    "firstFeedback":"Initial feedback",
+    "finishFeedback":"Final feedback"
+},
+"InternsList":"List of interns"
 }

@@ -4,17 +4,18 @@ import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 import { Header } from '../header/header';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, Header, RouterLink, TranslatePipe],
+  imports: [MatButtonModule, Header, TranslatePipe],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })
 export class MainPage {
   readonly dialog = inject(MatDialog);
+  router = inject(Router);
 
   nameUser: string = ''; //избавиться от этой переменной
 
@@ -26,5 +27,9 @@ export class MainPage {
       .subscribe((result) => {
         this.nameUser = result.userName;
       });
+  }
+
+  openInternCreateForm(): void {
+    this.router.navigate(['/internship/create']);
   }
 }

@@ -54,7 +54,13 @@
     "AboutYourself":"О себе",
     "Education":"Образование",
     "EnglishLevel":"Уровень английского языка",
-    "Skills":"Навыки"
+    "English":"Английский",
+    "Skills":"Навыки",
+    "DateApply":"Дата подачи",
+    "status":"Статус",
+    "dateStart":"Дата начала",
+    "dateFinish":"Дата окончания",
+    "rejectionReason":"Причина отказа"
 },
 "Home": "Домой",
 "Traineeship":"Стажировка",
@@ -80,6 +86,9 @@
     "finishLevel":"Итоговый уровень знаний по направлению",
     "dateStart":"Начало стажировки",
     "dateFinish":"Окончание стажировки",
-    "addComments":"Дополнительные комментарии"
-}
+    "addComments":"Дополнительные комментарии",
+    "firstFeedback":"Первичный отзыв",
+    "finishFeedback":"Итоговый отзыв"
+},
+"InternsList":"Список стажеров"
 }
