@@ -1,8 +1,12 @@
 <header class="for_header">
   <img src="assets/images/logo-home.svg" alt="home" class="logo" [routerLink]="'MainPage'" />
   <nav class="for_nav">
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="toggle_button">
+      <mat-button-toggle value="en" (click)="useLanguage('en')">en</mat-button-toggle>
+      <mat-button-toggle value="rus" (click)="useLanguage('ru')">рус</mat-button-toggle>
+    </mat-button-toggle-group>
     @if (!employee.name) {
-      <button matButton="elevated" (click)="openDialog()">Войти</button>
+      <button matButton="elevated" (click)="openDialog()">{{ 'Button.Enter' | translate }}</button>
     }
     @if (employee.role) {
       <app-nav></app-nav>

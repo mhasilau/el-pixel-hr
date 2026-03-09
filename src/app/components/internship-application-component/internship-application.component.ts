@@ -23,6 +23,7 @@ import { InternService } from '../../services/interns.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AllEmployees } from '../../services/all-employees.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-internship-application',
@@ -41,6 +42,7 @@ import { AllEmployees } from '../../services/all-employees.service';
     MatSelectModule,
     MatRadioModule,
     MatChipsModule,
+    TranslatePipe,
   ],
 })
 export class InternshipApplicationComponent implements OnInit, OnDestroy {

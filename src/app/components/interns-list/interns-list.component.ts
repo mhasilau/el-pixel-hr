@@ -19,6 +19,7 @@ import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
+import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-interns-list',
   standalone: true,
@@ -41,6 +42,7 @@ import { IIntern } from '../intern.model';
     CdkDropList,
     CdkDrag,
     MatCheckboxModule,
+    TranslatePipe,
   ],
 })
 export class InternsListComponent implements OnInit, AfterViewInit {
@@ -84,6 +86,9 @@ export class InternsListComponent implements OnInit, AfterViewInit {
 
   openInternEditForm(id: number): void {
     this.router.navigate(['/internship/edit', id]);
+  }
+  openFeedbackForm(id: number, form: string): void {
+    this.router.navigate(['/internship/firstFeedback', id], { state: { form: form } });
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;

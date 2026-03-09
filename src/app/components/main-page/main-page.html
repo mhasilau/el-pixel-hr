@@ -1,13 +1,10 @@
 <section class="main_pages">
   <app-header></app-header>
   <section class="for_main_content">
-    <h1>Стажировка</h1>
-    <p>
-      Компания El Pixel приглашает на стажировку с последующим трудоустройством. Предлагаем вам
-      наставничество, практический опыт и увлекательные проекты.
-    </p>
-    <button matButton="tonal" [routerLink]="'internship/create'">
-      Подать заявку на стажировку
+    <h1>{{ 'Traineeship' | translate }}</h1>
+    <p>{{ 'Text-main-page' | translate }}</p>
+    <button matButton="tonal" (click)="openInternCreateForm()">
+      {{ 'Button.Apply-button' | translate }}
     </button>
   </section>
 </section>
