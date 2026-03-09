@@ -3,47 +3,60 @@
     <app-loader></app-loader>
   }
   <app-header></app-header>
-  <h1>Отзыв о стажере</h1>
+  <h1>
+    {{ 'feedback about trainee' | translate }} {{ mockIntern.firstName }} {{ mockIntern.lastName }}
+  </h1>
   <!-- имя стажера получить из таблицы стажеров -->
   <form [formGroup]="form">
-    @if (firstFeedback) {
+    @if (formType === 'first') {
       <!-- добавить роль 'Интервьюер' -->
       @if (role === 'Интервьюер') {
         <mat-form-field>
-          <mat-label>Уровень требуемых знаний для стажировки</mat-label>
+          <mat-label>{{ 'feedback fields.fundamentalLevel' | translate }}</mat-label>
           <input matInput formControlName="fundamentalLevel" />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Уровень знаний по направлению стажировки</mat-label>
+          <mat-label>{{ 'feedback fields.traineeLevel' | translate }}</mat-label>
           <input matInput formControlName="traineeLevel" />
         </mat-form-field>
       }
 
       @if (role === 'HR') {
         <mat-form-field>
-          <mat-label>Уровень английского языка</mat-label>
+          <mat-label>{{ 'feedback fields.englishLevel' | translate }}</mat-label>
           <input matInput formControlName="englishLevel" />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Личные качества стажера</mat-label>
+          <mat-label>{{ 'feedback fields.personals' | translate }}</mat-label>
           <input matInput formControlName="personals" />
         </mat-form-field>
       }
     }
 
-    @if (resultFeedback) {
+    @if (formType === 'finish') {
       <!-- кто может оставлять итоговый отзыв -->
       @if (role === 'Ментор') {
         <mat-form-field>
-          <mat-label>Итоговый уровень знаний по направлению</mat-label>
+          <mat-label>{{ 'feedback fields.finishLevel' | translate }}</mat-label>
           <input matInput formControlName="finishLevel" />
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Период прохождения стажирвки </mat-label>
+          <mat-label
+            >{{ 'feedback fields.dateStart' | translate }} -
+            {{ 'feedback fields.dateFinish' | translate }}</mat-label
+          >
           <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Начало стажировки" formControlName="dateStart" />
-            <input matEndDate placeholder="Окончание стажировки" formControlName="dateFinish" />
+            <input
+              matStartDate
+              placeholder="{{ 'feedback fields.dateStart' | translate }}"
+              formControlName="dateStart"
+            />
+            <input
+              matEndDate
+              placeholder="{{ 'feedback fields.dateFinish' | translate }}"
+              formControlName="dateFinish"
+            />
           </mat-date-range-input>
           <mat-hint>MMMM DD, YYYY – MMMM DD, YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -52,21 +65,23 @@
       }
     }
 
-    <mat-form-field>
-      <mat-label>Дополнительные комментарии</mat-label>
-      <textarea matInput formControlName="addComments"></textarea>
-    </mat-form-field>
+    @if (role === 'Интервьюер' || role === 'HR' || role === 'Ментор') {
+      <mat-form-field>
+        <mat-label>{{ 'feedback fields.addComments' | translate }}</mat-label>
+        <textarea matInput formControlName="addComments"></textarea>
+      </mat-form-field>
 
-    <p class="forError">
-      @if (form.invalid && form.dirty) {
-        <mat-error>Должно быть заполнено минимум одно поле</mat-error>
-      }
-    </p>
+      <p class="forError">
+        @if (form.invalid && form.dirty) {
+          <mat-error>{{ 'Errors.One required' | translate }}</mat-error>
+        }
+      </p>
 
-    <div class="example-button-row">
-      <button matButton="tonal" [disabled]="!form.valid" (click)="saveFeedback()">
-        Сохранить отзыв
-      </button>
-    </div>
+      <div class="example-button-row">
+        <button matButton="tonal" [disabled]="!form.valid" (click)="saveFeedback()">
+          {{ 'Button.save-feedback' | translate }}
+        </button>
+      </div>
+    }
   </form>
 </section>

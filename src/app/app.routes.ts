@@ -5,6 +5,7 @@ import { AddEmployee } from './components/employees/add-employee/add-employee';
 import { EmployeeEdit } from './components/employees/employee-edit/employee-edit';
 import { InternshipApplicationComponent } from './components/internship-application-component/internship-application.component';
 import { InternsListComponent } from './components/interns-list/interns-list.component';
+import { FeedbackForm } from './components/feedback-form/feedback-form';
 
 export const routes: Routes = [
   {
@@ -22,8 +23,11 @@ export const routes: Routes = [
   {
     path: 'internship',
     children: [
+      { path: '', component: InternsListComponent },
       { path: 'create', component: InternshipApplicationComponent },
       { path: 'edit/:id', component: InternshipApplicationComponent },
+      { path: 'firstFeedback/:id', component: FeedbackForm },
+      { path: 'finishFeedback/:id', component: FeedbackForm },
     ],
   },
   {

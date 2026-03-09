@@ -8,9 +8,18 @@ import { IUser } from '../auth-form.model';
 import { RootService } from '../../services/root.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-nav',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, RouterLink, LoaderComponent],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    RouterLink,
+    TranslatePipe,
+    LoaderComponent,
+  ],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })

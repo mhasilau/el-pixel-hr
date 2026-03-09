@@ -18,6 +18,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IUser } from '../../auth-form.model';
 import { LoaderComponent } from '../../loader/loader.component';
 import { delay } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-form-employee',
   imports: [
@@ -33,6 +35,7 @@ import { delay } from 'rxjs';
     MatIconModule,
     MatTabsModule,
     LoaderComponent,
+    TranslatePipe,
   ],
   templateUrl: './form-employee.html',
   styleUrl: './form-employee.scss',
@@ -103,13 +106,15 @@ export class FormEmployee implements OnInit {
     this.router.navigate(['employees']);
   }
 
-  addEmployee() {
+  addEmployee(eo: PointerEvent) {
+    eo.preventDefault();
     //переделать получение данных с сервера!
     this.employees.setAllEmployees(this.form.value);
     this.openAfter();
   }
 
-  saveChanges() {
+  saveChanges(eo: PointerEvent) {
+    eo.preventDefault();
     //переделать получение данных с сервера!
     this.employees.changeEmployee(this.form.value);
     this.openAfter();

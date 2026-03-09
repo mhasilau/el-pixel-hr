@@ -24,6 +24,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, delay } from 'rxjs';
 import { AllEmployees } from '../../services/all-employees.service';
 import { LoaderComponent } from '../loader/loader.component';
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-internship-application',
   standalone: true,
@@ -41,6 +43,7 @@ import { LoaderComponent } from '../loader/loader.component';
     MatSelectModule,
     MatRadioModule,
     MatChipsModule,
+    TranslatePipe,
     LoaderComponent,
   ],
 })

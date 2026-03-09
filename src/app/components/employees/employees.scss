@@ -1,6 +1,12 @@
-.button_add {
-  margin-left: 80%;
-  width: 19%;
+.forButton {
+  display: flex;
+  justify-content: flex-end;
+  .button_add {
+    margin-right: 1%;
+    width: auto;
+    min-height: 7vh;
+    height: auto;
+  }
 }
 
 table {

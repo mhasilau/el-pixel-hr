@@ -11,6 +11,8 @@ import { DeleteDialog } from './delete-dialog';
 import { IUser } from '../auth-form.model';
 import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-employees',
   imports: [
@@ -22,6 +24,7 @@ import { delay } from 'rxjs';
     RouterLink,
     RouterOutlet,
     LoaderComponent,
+    TranslatePipe,
   ],
   templateUrl: './employees.html',
   styleUrl: './employees.scss',

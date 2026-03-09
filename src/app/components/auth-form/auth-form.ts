@@ -10,13 +10,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { Router } from '@angular/router';
 import { RootService } from '../../services/root.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-form',
@@ -31,7 +32,7 @@ import { delay } from 'rxjs';
     MatInputModule,
     FormsModule,
     MatButtonModule,
-    MatDialogClose,
+    TranslatePipe,
     LoaderComponent,
   ],
   templateUrl: './auth-form.html',
@@ -80,7 +81,7 @@ export class AuthForm implements OnInit {
     if (this.rootService.checkRootForAdmin(user.role)) {
       this.router.navigate(['employees']);
     } else if (this.rootService.checkRootForMenu(user.id)) {
-      this.router.navigate(['employees']); //изменить на список стажеров, когда будет готов это компонент
+      this.router.navigate(['internship']);
     }
   }
 

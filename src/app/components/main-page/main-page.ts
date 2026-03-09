@@ -4,17 +4,19 @@ import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, tap, delay } from 'rxjs';
 import { Header } from '../header/header';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoaderComponent } from '../loader/loader.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, Header, RouterLink, LoaderComponent],
+  imports: [MatButtonModule, Header, TranslatePipe, LoaderComponent],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })
 export class MainPage {
   readonly dialog = inject(MatDialog);
+  router = inject(Router);
 
   isLoading = signal<boolean>(false);
   nameUser: string = ''; //избавиться от этой переменной
@@ -32,5 +34,8 @@ export class MainPage {
         this.nameUser = result.userName;
       })
       .add(() => this.isLoading.set(false));
+  }
+  openInternCreateForm(): void {
+    this.router.navigate(['/internship/create']);
   }
 }
