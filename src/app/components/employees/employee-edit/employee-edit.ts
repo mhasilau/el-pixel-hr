@@ -7,7 +7,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { Header } from '@components/header/header';
 import { FormEmployee } from '@components/employees/form-employee/form-employee';
 
 @Component({
@@ -22,7 +21,6 @@ import { FormEmployee } from '@components/employees/form-employee/form-employee'
     MatDividerModule,
     MatIconModule,
     MatTabsModule,
-    Header,
     FormEmployee,
   ],
   templateUrl: './employee-edit.html',

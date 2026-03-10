@@ -10,7 +10,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
 
-import { Header } from '@components/header/header';
 import { LoaderComponent } from '@components/loader/loader.component';
 import { AllEmployees } from '@services/all-employees.service';
 import { InternService } from '@services/interns.service';
@@ -20,7 +19,6 @@ import { FORMAT_FOR_DATA } from '@models/formatForDate.data';
 @Component({
   selector: 'app-feedback-form',
   imports: [
-    Header,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,

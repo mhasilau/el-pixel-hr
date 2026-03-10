@@ -3,12 +3,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { Header } from '@components/header/header';
 import { LoaderComponent } from '@components/loader/loader.component';
 import { DeleteDialog } from '@components/employees/delete-dialog';
 import { AllEmployees } from '@services/all-employees.service';
@@ -17,13 +16,11 @@ import { IUser } from '@models/auth-form.model';
 @Component({
   selector: 'app-employees',
   imports: [
-    Header,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
     MatTableModule,
     RouterLink,
-    RouterOutlet,
     LoaderComponent,
     TranslatePipe,
   ],

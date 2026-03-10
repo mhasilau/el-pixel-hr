@@ -77,13 +77,25 @@ export class AuthForm implements OnInit {
     const user = this.allEmployeesList.filter(
       (v) => v['login'] === this.authForm.value.userLogin,
     )[0];
+    if (!user) return;
+
     this.dialogRef.close();
     this.employeesList.enterEmployee(user);
-    if (this.rootService.checkRootForAdmin(user.role)) {
-      this.router.navigate(['employees']);
-    } else if (this.rootService.checkRootForMenu(user.id)) {
-      this.router.navigate(['internship']);
-    }
+
+    this.isLoading.set(true);
+
+    this.rootService
+      .checkRootForMenu(user.id)
+      .subscribe({
+        next: (hasAccess) => {
+          if (hasAccess) {
+            this.router.navigate(['employees']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   onNoClick(): void {
