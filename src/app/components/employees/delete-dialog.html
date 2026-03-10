@@ -1,5 +1,7 @@
-<mat-dialog-content> {{ 'sure remove employee' | translate }} {{ data.name }}? </mat-dialog-content>
+<mat-dialog-content> {{ 'sure-remove-employee' | translate }} {{ data.name }}? </mat-dialog-content>
 <mat-dialog-actions>
-  <button matButton mat-dialog-close [mat-dialog-close]="true">{{ 'Delete' | translate }}</button>
-  <button matButton mat-dialog-close cdkFocusInitial>{{ 'Cancel' | translate }}</button>
+  <button matButton mat-dialog-close [mat-dialog-close]="true">
+    {{ 'button.delete' | translate }}
+  </button>
+  <button matButton mat-dialog-close cdkFocusInitial>{{ 'button.cancel' | translate }}</button>
 </mat-dialog-actions>

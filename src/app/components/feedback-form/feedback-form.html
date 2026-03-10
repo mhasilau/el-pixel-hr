@@ -1,7 +1,7 @@
 <section class="feetback">
   <app-header></app-header>
   <h1>
-    {{ 'feedback about trainee' | translate }} {{ mockIntern.firstName }} {{ mockIntern.lastName }}
+    {{ 'feedback-about-trainee' | translate }} {{ mockIntern.firstName }} {{ mockIntern.lastName }}
   </h1>
   <!-- имя стажера получить из таблицы стажеров -->
   <form [formGroup]="form">
@@ -9,22 +9,22 @@
       <!-- добавить роль 'Интервьюер' -->
       @if (role === 'Интервьюер') {
         <mat-form-field>
-          <mat-label>{{ 'feedback fields.fundamentalLevel' | translate }}</mat-label>
+          <mat-label>{{ 'feedback-fields.fundamental-level' | translate }}</mat-label>
           <input matInput formControlName="fundamentalLevel" />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>{{ 'feedback fields.traineeLevel' | translate }}</mat-label>
+          <mat-label>{{ 'feedback-fields.trainee-level' | translate }}</mat-label>
           <input matInput formControlName="traineeLevel" />
         </mat-form-field>
       }
 
       @if (role === 'HR') {
         <mat-form-field>
-          <mat-label>{{ 'feedback fields.englishLevel' | translate }}</mat-label>
+          <mat-label>{{ 'feedback-fields.english-level' | translate }}</mat-label>
           <input matInput formControlName="englishLevel" />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>{{ 'feedback fields.personals' | translate }}</mat-label>
+          <mat-label>{{ 'feedback-fields.personals' | translate }}</mat-label>
           <input matInput formControlName="personals" />
         </mat-form-field>
       }
@@ -34,24 +34,24 @@
       <!-- кто может оставлять итоговый отзыв -->
       @if (role === 'Ментор') {
         <mat-form-field>
-          <mat-label>{{ 'feedback fields.finishLevel' | translate }}</mat-label>
+          <mat-label>{{ 'feedback-fields.finish-level' | translate }}</mat-label>
           <input matInput formControlName="finishLevel" />
         </mat-form-field>
 
         <mat-form-field>
           <mat-label
-            >{{ 'feedback fields.dateStart' | translate }} -
-            {{ 'feedback fields.dateFinish' | translate }}</mat-label
+            >{{ 'feedback-fields.date-start' | translate }} -
+            {{ 'feedback-fields.date-finish' | translate }}</mat-label
           >
           <mat-date-range-input [rangePicker]="picker">
             <input
               matStartDate
-              placeholder="{{ 'feedback fields.dateStart' | translate }}"
+              placeholder="{{ 'feedback-fields.date-start' | translate }}"
               formControlName="dateStart"
             />
             <input
               matEndDate
-              placeholder="{{ 'feedback fields.dateFinish' | translate }}"
+              placeholder="{{ 'feedback-fields.date-finish' | translate }}"
               formControlName="dateFinish"
             />
           </mat-date-range-input>
@@ -64,19 +64,19 @@
 
     @if (role === 'Интервьюер' || role === 'HR' || role === 'Ментор') {
       <mat-form-field>
-        <mat-label>{{ 'feedback fields.addComments' | translate }}</mat-label>
+        <mat-label>{{ 'feedback-fields.add-comments' | translate }}</mat-label>
         <textarea matInput formControlName="addComments"></textarea>
       </mat-form-field>
 
       <p class="forError">
         @if (form.invalid && form.dirty) {
-          <mat-error>{{ 'Errors.One required' | translate }}</mat-error>
+          <mat-error>{{ 'errors.one-required' | translate }}</mat-error>
         }
       </p>
 
       <div class="example-button-row">
         <button matButton="tonal" [disabled]="!form.valid" (click)="saveFeedback()">
-          {{ 'Button.save-feedback' | translate }}
+          {{ 'button.save-feedback' | translate }}
         </button>
       </div>
     }

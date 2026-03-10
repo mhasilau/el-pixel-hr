@@ -1,8 +1,8 @@
-<button matButton [matMenuTriggerFor]="menu" class="menu">{{ 'Button.Menu' | translate }}</button>
+<button matButton [matMenuTriggerFor]="menu" class="menu">{{ 'button.menu' | translate }}</button>
 <mat-menu #menu="matMenu" class="menu_list">
   @if (employeeRoot) {
-    <button mat-menu-item [routerLink]="'/employees'">{{ 'Button.employees' | translate }}</button>
+    <button mat-menu-item [routerLink]="'/employees'">{{ 'button.employees' | translate }}</button>
   }
-  <button mat-menu-item [routerLink]="'/internship'">{{ 'Button.trainees' | translate }}</button>
+  <button mat-menu-item [routerLink]="'/internship'">{{ 'button.trainees' | translate }}</button>
   <!-- настроить навигацию методом! -->
 </mat-menu>

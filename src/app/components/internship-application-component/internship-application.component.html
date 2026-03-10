@@ -1,11 +1,11 @@
 <div class="internship-application-wrapper">
   <form [formGroup]="internshipApplicationForm" class="internship-form">
     <div class="form-header">
-      <span class="header-title">{{ 'Application' | translate }}</span>
+      <span class="header-title">{{ 'application' | translate }}</span>
     </div>
     <div class="form-wrapper">
       <div class="form-block" formGroupName="personal-info">
-        <div class="form-block-header">{{ 'Personal Info' | translate }}</div>
+        <div class="form-block-header">{{ 'personal-info' | translate }}</div>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
@@ -18,17 +18,17 @@
                   </button>
                 }
                 @if (firstName?.hasError('required') && firstName?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 } @else if (firstName?.hasError('pattern') && firstName?.touched) {
-                  <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
                 } @else if (firstName?.hasError('minlength') && firstName?.touched) {
-                  <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
                 } @else if (firstName?.hasError('maxlength') && firstName?.touched) {
-                  <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.Surname' | translate }}</mat-label>
+                <mat-label>{{ 'personality.surname' | translate }}</mat-label>
                 <input matInput formControlName="lastName" type="text" />
                 @if (lastName?.value) {
                   <button matSuffix matIconButton (click)="clearControl(lastName)" type="button">
@@ -36,13 +36,13 @@
                   </button>
                 }
                 @if (lastName?.hasError('required') && lastName?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 } @else if (lastName?.hasError('pattern') && lastName?.touched) {
-                  <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
                 } @else if (lastName?.hasError('minlength') && lastName?.touched) {
-                  <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
                 } @else if (lastName?.hasError('maxlength') && lastName?.touched) {
-                  <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -52,7 +52,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item input-item-birthdate">
-                <mat-label>{{ 'personality.Birth Date' | translate }}</mat-label>
+                <mat-label>{{ 'personality.birth-date' | translate }}</mat-label>
                 <input
                   matInput
                   [matDatepicker]="birthDatePicker"
@@ -65,15 +65,15 @@
                 ></mat-datepicker-toggle>
                 <mat-datepicker #birthDatePicker></mat-datepicker>
                 @if (birthDate?.hasError('required') && birthDate?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 } @else if (birthDate?.hasError('minAge') && birthDate?.touched) {
                   <mat-error
-                    >{{ 'Errors.MinAge' | translate }}
+                    >{{ 'errors.min-age' | translate }}
                     {{ birthDate?.errors?.['minAge']?.actualAge }}</mat-error
                   >
                 } @else if (birthDate?.hasError('maxAge') && birthDate?.touched) {
                   <mat-error
-                    >{{ 'Errors.MaxAge' | translate }}
+                    >{{ 'errors.max-age' | translate }}
                     {{ birthDate?.errors?.['maxAge']?.actualAge }}</mat-error
                   >
                 }
@@ -90,16 +90,16 @@
                 aria-label="Select gender"
               >
                 <mat-radio-button value="Male" class="gender-radio">
-                  <span class="radio-label">{{ 'personality.Male' | translate }}</span>
+                  <span class="radio-label">{{ 'personality.male' | translate }}</span>
                 </mat-radio-button>
 
                 <mat-radio-button value="Female" class="gender-radio">
-                  <span class="radio-label">{{ 'personality.Female' | translate }}</span>
+                  <span class="radio-label">{{ 'personality.female' | translate }}</span>
                 </mat-radio-button>
               </mat-radio-group>
             </div>
             @if (gender?.hasError('required') && gender?.touched) {
-              <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+              <mat-error>{{ 'errors.required' | translate }}</mat-error>
             }
           </div>
         </div>
@@ -107,7 +107,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.Country' | translate }}</mat-label>
+                <mat-label>{{ 'personality.country' | translate }}</mat-label>
                 <input matInput formControlName="country" />
                 @if (country?.value) {
                   <button matSuffix matIconButton (click)="clearControl(country)" type="button">
@@ -115,17 +115,17 @@
                   </button>
                 }
                 @if (country?.hasError('required') && country?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 } @else if (country?.hasError('pattern') && country?.touched) {
-                  <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
                 } @else if (country?.hasError('minlength') && country?.touched) {
-                  <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
                 } @else if (country?.hasError('maxlength') && country?.touched) {
-                  <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.City' | translate }}</mat-label>
+                <mat-label>{{ 'personality.city' | translate }}</mat-label>
                 <input matInput formControlName="city" />
                 @if (city?.value) {
                   <button matSuffix matIconButton (click)="clearControl(city)" type="button">
@@ -133,13 +133,13 @@
                   </button>
                 }
                 @if (city?.hasError('required') && city?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 } @else if (city?.hasError('pattern') && city?.touched) {
-                  <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
                 } @else if (city?.hasError('minlength') && city?.touched) {
-                  <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
                 } @else if (city?.hasError('maxlength') && city?.touched) {
-                  <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -147,15 +147,16 @@
         </div>
       </div>
       <div class="form-block" formGroupName="contact-info">
-        <div class="form-block-header">{{ 'personality.Contact Info' | translate }}</div>
+        <div class="form-block-header">{{ 'personality.contact-info' | translate }}</div>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
+                <mat-label>{{ 'personality.phone' | translate }}</mat-label>
                 <input
                   matInput
                   type="tel"
-                  [placeholder]="'personality.Phone' | translate"
+                  [placeholder]="'personality.phone' | translate"
                   formControlName="phone"
                   (input)="formatPhoneInput($event)"
                   required
@@ -163,16 +164,16 @@
                 <mat-icon matSuffix>mode_edit</mat-icon>
                 <mat-hint>+375 (29) 888-88-88</mat-hint>
                 @if (phone?.hasError('minlength') && phone?.touched) {
-                  <mat-error>{{ 'Errors.MinCharPhone' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char-phone' | translate }}</mat-error>
                 } @else if (phone?.hasError('maxlength') && phone?.touched) {
-                  <mat-error>{{ 'Errors.MaxCharPhone' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char-phone' | translate }}</mat-error>
                 } @else if (
                   contactInfo?.hasError('oneRequired') &&
                   !phone?.value &&
                   !email?.value &&
                   !telegram?.value
                 ) {
-                  <mat-error>{{ 'Errors.contactRequired' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.contact-required' | translate }}</mat-error>
                 }
               </mat-form-field>
               <mat-form-field class="input-item input-item-email">
@@ -190,14 +191,14 @@
                   </button>
                 }
                 @if ((email?.hasError('email') || email?.hasError('pattern')) && email?.touched) {
-                  <mat-error>{{ 'Errors.emailValid' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.email-valid' | translate }}</mat-error>
                 } @else if (
                   contactInfo?.hasError('oneRequired') &&
                   !phone?.value &&
                   !email?.value &&
                   !telegram?.value
                 ) {
-                  <mat-error>{{ 'Errors.contactRequired' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.contact-required' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -210,18 +211,18 @@
                 <mat-label>Telegram</mat-label>
                 <input matInput type="text" formControlName="telegram" required />
                 @if (telegram?.hasError('minlength') && telegram?.touched) {
-                  <mat-error>{{ 'Errors.MinChar5' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.min-char-5' | translate }}</mat-error>
                 } @else if (telegram?.hasError('maxlength') && telegram?.touched) {
-                  <mat-error>{{ 'Errors.MaxChar32' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.max-char-32' | translate }}</mat-error>
                 } @else if (telegram?.hasError('pattern') && telegram?.touched) {
-                  <mat-error>{{ 'Errors.usernameValid' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.username-valid' | translate }}</mat-error>
                 } @else if (
                   contactInfo?.hasError('oneRequired') &&
                   !phone?.value &&
                   !email?.value &&
                   !telegram?.value
                 ) {
-                  <mat-error>{{ 'Errors.contactRequired' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.contact-required' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -229,16 +230,16 @@
         </div>
       </div>
       <div class="form-block" formGroupName="education-info">
-        <p class="form-block-header">{{ 'personality.AboutYourself' | translate }}</p>
+        <p class="form-block-header">{{ 'personality.about-yourself' | translate }}</p>
         <div class="form-line">
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.Education' | translate }}</mat-label>
+                <mat-label>{{ 'personality.education' | translate }}</mat-label>
                 <textarea matInput formControlName="education"></textarea>
               </mat-form-field>
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.AboutYourself' | translate }}</mat-label>
+                <mat-label>{{ 'personality.about-yourself' | translate }}</mat-label>
                 <textarea matInput formControlName="about"></textarea>
               </mat-form-field>
             </div>
@@ -248,7 +249,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.ChooseSpecialization' | translate }}</mat-label>
+                <mat-label>{{ 'personality.choose-specialization' | translate }}</mat-label>
                 <mat-select formControlName="internship_spec">
                   @for (spec of internship_specs; track spec.value) {
                     <mat-option [value]="spec.value">
@@ -257,7 +258,7 @@
                   }
                 </mat-select>
                 @if (internship_spec?.hasError('required') && internship_spec?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -267,7 +268,7 @@
           <div class="form-item">
             <div class="input-group">
               <mat-form-field class="input-item">
-                <mat-label>{{ 'personality.EnglishLevel' | translate }}</mat-label>
+                <mat-label>{{ 'personality.english-level' | translate }}</mat-label>
                 <mat-select formControlName="englishLevel">
                   @for (level of englishLevels; track level.value) {
                     <mat-option [value]="level.value">
@@ -276,7 +277,7 @@
                   }
                 </mat-select>
                 @if (englishLevel?.hasError('required') && englishLevel?.touched) {
-                  <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+                  <mat-error>{{ 'errors.required' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -284,10 +285,10 @@
         </div>
         <div class="form-line form-line-multiple form-line-skills">
           <div class="form-item">
-            <p class="form-item__title">{{ 'personality.Skills' | translate }}</p>
+            <p class="form-item__title">{{ 'personality.skills' | translate }}</p>
             <div class="input-group skill-input-group">
               <mat-form-field class="input-item skill-field">
-                <mat-label>{{ 'AddSkill' | translate }}</mat-label>
+                <mat-label>{{ 'add-skill' | translate }}</mat-label>
                 <input
                   matInput
                   #skillInput
@@ -301,7 +302,7 @@
                 (click)="addSkill(skillInput.value); skillInput.value = ''"
                 type="button"
               >
-                {{ 'Button.add' | translate }}
+                {{ 'button.add' | translate }}
               </button>
             </div>
           </div>
@@ -318,7 +319,7 @@
         </div>
       </div>
       <button type="button" class="submit-btn" (click)="onSubmit()">
-        {{ 'Button.submit' | translate }}
+        {{ 'button.submit' | translate }}
       </button>
     </div>
   </form>

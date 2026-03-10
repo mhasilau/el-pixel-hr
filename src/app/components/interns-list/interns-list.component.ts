@@ -20,6 +20,7 @@ import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Header } from '../header/header';
 @Component({
   selector: 'app-interns-list',
   standalone: true,
@@ -43,6 +44,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CdkDrag,
     MatCheckboxModule,
     TranslatePipe,
+    Header,
   ],
 })
 export class InternsListComponent implements OnInit, AfterViewInit {

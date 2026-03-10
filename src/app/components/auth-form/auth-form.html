@@ -1,6 +1,6 @@
 <form [formGroup]="authForm" novalidate class="forAuth">
   <mat-form-field appearance="fill">
-    <mat-label>{{ 'Enter login' | translate }}</mat-label>
+    <mat-label>{{ 'enter-login' | translate }}</mat-label>
     <input
       matInput
       placeholder="{{ 'personality.login' | translate }}"
@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>{{ 'Enter password' | translate }}</mat-label>
+    <mat-label>{{ 'enter-password' | translate }}</mat-label>
     <input matInput [type]="hide() ? 'password' : 'text'" formControlName="userPassword" />
     <button
       matIconButton
@@ -26,7 +26,7 @@
   </mat-form-field>
 
   <button matButton="tonal" (click)="enter()" [disabled]="authForm.invalid">
-    {{ 'Button.Enter' | translate }}
+    {{ 'button.enter' | translate }}
   </button>
   <mat-icon class="forClose" (click)="onNoClick()">close</mat-icon>
 </form>
