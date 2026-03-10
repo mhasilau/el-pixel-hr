@@ -84,11 +84,15 @@ export class Employees implements OnInit {
   }
 
   openDialog(nameUser: string, id: number): void {
+    this.isLoading.set(true);
     const dialogRef = this.dialog.open(DeleteDialog, { width: '50%', data: { name: nameUser } });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteUser(id);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.deleteUser(id);
+        }
+      })
+      .add(() => this.isLoading.set(false));
   }
 }
