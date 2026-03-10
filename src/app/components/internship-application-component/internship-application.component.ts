@@ -58,7 +58,6 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy, CanCom
 
   isLoading = signal<boolean>(false);
   isEditMode = false;
-  isSubmitting = false;
   internId: number | null = null;
 
   minDate!: Date;
@@ -362,7 +361,6 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy, CanCom
 
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
-      this.isSubmitting = true;
       if (this.isEditMode && this.internId) {
         this.isLoading.set(true);
         const updateSub = this.internService
