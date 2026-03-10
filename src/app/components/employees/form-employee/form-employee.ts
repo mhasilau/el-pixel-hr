@@ -13,10 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AllEmployees } from '../../../services/all-employees.service';
+import { AllEmployees } from '@services/all-employees.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IUser } from '../../auth-form.model';
-import { LoaderComponent } from '../../loader/loader.component';
+import { IUser } from '@models/auth-form.model';
+import { LoaderComponent } from '@components/loader/loader.component';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 

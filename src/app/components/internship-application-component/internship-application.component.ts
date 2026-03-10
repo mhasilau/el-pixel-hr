@@ -18,14 +18,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { ageValidator, oneRequiredValidator } from '../../validators';
-//import { StorageService } from '../../services/storage.service';
-import { InternService } from '../../services/interns.service';
+import { InternService } from '@services/interns.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, delay } from 'rxjs';
-import { AllEmployees } from '../../services/all-employees.service';
-import { LoaderComponent } from '../loader/loader.component';
+import { AllEmployees } from '@services/all-employees.service';
+import { LoaderComponent } from '@components/loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CanComponentDeactivate } from '../../guards/leave-component.guard';
+import { CanComponentDeactivate } from '@guards/leave-component.guard';
+
 @Component({
   selector: 'app-internship-application',
   standalone: true,

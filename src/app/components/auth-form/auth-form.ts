@@ -11,13 +11,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AllEmployees } from '../../services/all-employees.service';
-import { IUser } from '../auth-form.model';
 import { Router } from '@angular/router';
-import { RootService } from '../../services/root.service';
-import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
+
+import { AllEmployees } from '@services/all-employees.service';
+import { RootService } from '@services/root.service';
+import { IUser } from '@models/auth-form.model';
+import { LoaderComponent } from '@components/loader/loader.component';
 
 @Component({
   selector: 'app-auth-form',

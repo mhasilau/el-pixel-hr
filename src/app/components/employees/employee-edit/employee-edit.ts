@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Header } from '../../header/header';
-import { FormEmployee } from '../form-employee/form-employee';
+
+import { Header } from '@components/header/header';
+import { FormEmployee } from '@components/employees/form-employee/form-employee';
 
 @Component({
   selector: 'app-employee-edit',

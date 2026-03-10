@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IUser } from '../components/auth-form.model';
+import { IUser } from '@models/auth-form.model';
 import { from, of } from 'rxjs';
 
 @Injectable({

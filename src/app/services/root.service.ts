@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AllEmployees } from './all-employees.service';
-import { IUser } from '../components/auth-form.model';
+import { IUser } from '@models/auth-form.model';
 
 @Injectable({
   providedIn: 'root',

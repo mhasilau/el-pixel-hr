@@ -16,12 +16,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewChild, AfterViewInit } from '@angular/core';
-import { InternService } from '../../services/interns.service';
+import { InternService } from '@services/interns.service';
 import { Router } from '@angular/router';
-import { IIntern } from '../intern.model';
+import { IIntern } from '@models/intern.model';
 import { delay } from 'rxjs';
-import { LoaderComponent } from '../loader/loader.component';
+import { LoaderComponent } from '@components/loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-interns-list',
   standalone: true,

@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { AllEmployees } from '../../services/all-employees.service';
-import { IUser } from '../auth-form.model';
+import { IUser } from '../../models/auth-form.model';
 import { RootService } from '../../services/root.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
