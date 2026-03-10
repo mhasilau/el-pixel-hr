@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, CanActivateChild, Router } from '@angular/router';
-import { AllEmployees } from '../services/all-employees.service';
+import { AllEmployees } from '@services/all-employees.service';
 
 @Injectable({
   providedIn: 'root',

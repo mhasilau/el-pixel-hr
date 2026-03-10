@@ -2,9 +2,6 @@
   @if (isLoading()) {
     <app-loader></app-loader>
   }
-  <!--в гардах ограничить доступ к этому пути+проверить админ с IF-->
-  <app-header></app-header>
-  <router-outlet></router-outlet>
   <div class="forButton">
     <button matButton="outlined" [routerLink]="'create'" class="button_add">
       {{ 'Button.add-user' | translate }}

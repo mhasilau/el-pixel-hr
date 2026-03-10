@@ -1,25 +1,24 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Header } from '../header/header';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { oneRequiredValidator } from '../../validators/one-required.validator';
-import { AllEmployees } from '../../services/all-employees.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
-import { FORMAT_FOR_DATA } from '../formatForDate.data';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-import { InternService } from '../../services/interns.service';
-import { IIntern } from '../intern.model';
 import { filter } from 'rxjs';
-import { LoaderComponent } from '../loader/loader.component';
+
+import { LoaderComponent } from '@components/loader/loader.component';
+import { AllEmployees } from '@services/all-employees.service';
+import { InternService } from '@services/interns.service';
+import { IIntern } from '@models/intern.model';
+import { oneRequiredValidator } from '@validators/one-required.validator';
+import { FORMAT_FOR_DATA } from '@models/formatForDate.data';
 @Component({
   selector: 'app-feedback-form',
   imports: [
-    Header,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -62,7 +61,8 @@ export class FeedbackForm implements OnInit {
     this.allListEmployees
       .getEmployee()
       .subscribe((employee) => (this.role = employee.role))
-      .add(() => this.isLoading.set(true)); //получение pоли из auth-servise!!!!
+      .add(() => this.isLoading.set(false));
+
     this.internId = Number(this.route.snapshot.params['id']);
     this.formType = history.state['form'];
     this.internService

@@ -1,28 +1,26 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { Header } from '../header/header';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { AllEmployees } from '../../services/all-employees.service';
 import { MatTableModule } from '@angular/material/table';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialog } from './delete-dialog';
-import { IUser } from '../auth-form.model';
-import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
+
+import { LoaderComponent } from '@components/loader/loader.component';
+import { DeleteDialog } from '@components/employees/delete-dialog';
+import { AllEmployees } from '@services/all-employees.service';
+import { IUser } from '@models/auth-form.model';
 
 @Component({
   selector: 'app-employees',
   imports: [
-    Header,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
     MatTableModule,
     RouterLink,
-    RouterOutlet,
     LoaderComponent,
     TranslatePipe,
   ],

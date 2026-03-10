@@ -14,7 +14,16 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2022",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@services/*": ["src/app/services/*"],
+      "@components/*": ["src/app/components/*"],
+      "@models/*": ["src/app/models/*"],
+      "@validators/*": ["src/app/validators/*"],
+      "@pipes/*": ["src/app/pipes/*"],
+      "@guards/*": ["src/app/guards/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

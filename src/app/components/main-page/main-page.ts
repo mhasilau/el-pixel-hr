@@ -3,14 +3,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthForm } from '../auth-form/auth-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, tap, delay } from 'rxjs';
-import { Header } from '../header/header';
 import { Router } from '@angular/router';
-import { LoaderComponent } from '../loader/loader.component';
+import { LoaderComponent } from '@components/loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-page',
-  imports: [MatButtonModule, Header, TranslatePipe, LoaderComponent],
+  imports: [MatButtonModule, TranslatePipe, LoaderComponent],
   templateUrl: './main-page.html',
   styleUrl: './main-page.scss',
 })

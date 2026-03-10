@@ -1,4 +1,7 @@
 <header class="for_header">
+  @if (isLoading()) {
+    <app-loader></app-loader>
+  }
   <img src="assets/images/logo-home.svg" alt="home" class="logo" [routerLink]="'MainPage'" />
   <nav class="for_nav">
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="toggle_button">

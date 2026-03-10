@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IIntern, InternFormData } from '../components/intern.model';
+import { IIntern, InternFormData } from '@models/intern.model';
 
 @Injectable({
   providedIn: 'root',

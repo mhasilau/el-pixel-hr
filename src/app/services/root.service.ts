@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AllEmployees } from './all-employees.service';
-import { IUser } from '../components/auth-form.model';
+import { IUser } from '@models/auth-form.model';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,16 +11,21 @@ export class RootService {
 
   allListEmployees: Array<IUser> = [];
 
-  checkRootForMenu(id: number): boolean {
-    this.employees.getAllEmployees().subscribe((data) => (this.allListEmployees = data));
-    const role = this.allListEmployees.filter((v) => v['id'] === id)[0].role;
-    return role === 'админ' ||
-      role === 'Руководитель' ||
-      role === 'HR' ||
-      role === 'Руководитель стажировки' ||
-      role === 'Ментор'
-      ? true
-      : false;
+  checkRootForMenu(id: number): Observable<boolean> {
+    return this.employees.getAllEmployees().pipe(
+      map((data: IUser[]) => {
+        const user = data.find((v) => v.id === id);
+        const role = user?.role || '';
+
+        return role === 'админ' ||
+          role === 'Руководитель' ||
+          role === 'HR' ||
+          role === 'Руководитель стажировки' ||
+          role === 'Ментор'
+          ? true
+          : false;
+      }),
+    );
   }
 
   checkRootForAdmin(role: string): boolean {

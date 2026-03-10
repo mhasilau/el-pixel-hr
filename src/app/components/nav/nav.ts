@@ -3,10 +3,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { AllEmployees } from '../../services/all-employees.service';
-import { IUser } from '../auth-form.model';
-import { RootService } from '../../services/root.service';
-import { LoaderComponent } from '../loader/loader.component';
+import { AllEmployees } from '@services/all-employees.service';
+import { IUser } from '@models/auth-form.model';
+import { RootService } from '@services/root.service';
+import { LoaderComponent } from '@components/loader/loader.component';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -47,8 +47,8 @@ export class Nav implements OnInit {
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe((employee) => {
         this.employee = employee;
+        this.employeeRoot = this.employeesRoot.checkRootForAdmin(this.employee.role);
       })
       .add(() => this.isLoading.set(false));
-    this.employeeRoot = this.employeesRoot.checkRootForAdmin(this.employee.role);
   }
 }
