@@ -29,10 +29,7 @@ import { LoaderComponent } from '@components/loader/loader.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
+
     TranslatePipe,
     LoaderComponent,
   ],

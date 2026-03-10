@@ -61,7 +61,8 @@ export class FeedbackForm implements OnInit {
     this.allListEmployees
       .getEmployee()
       .subscribe((employee) => (this.role = employee.role))
-      .add(() => this.isLoading.set(true)); //получение pоли из auth-servise!!!!
+      .add(() => this.isLoading.set(false));
+
     this.internId = Number(this.route.snapshot.params['id']);
     this.formType = history.state['form'];
     this.internService

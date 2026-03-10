@@ -30,7 +30,7 @@ export class Header implements OnInit {
   employeesList = inject(AllEmployees);
   rootService = inject(RootService);
   private translate = inject(TranslateService);
-  allEmployeesList: Array<IUser> = [];
+
   employee: IUser = {
     id: 0,
     name: '',
@@ -48,12 +48,6 @@ export class Header implements OnInit {
   ngOnInit(): void {
     this.isLoading.set(true);
 
-    this.employeesList
-      .getAllEmployees()
-      .subscribe((date) => {
-        this.allEmployeesList = date;
-      })
-      .add(() => this.isLoading.set(false));
     this.employeesList
       .getEmployee()
       .subscribe((employee) => {
