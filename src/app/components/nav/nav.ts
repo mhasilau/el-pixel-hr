@@ -47,8 +47,8 @@ export class Nav implements OnInit {
       .pipe(delay(Math.random() * 2500 + 500))
       .subscribe((employee) => {
         this.employee = employee;
+        this.employeeRoot = this.employeesRoot.checkRootForAdmin(this.employee.role);
       })
       .add(() => this.isLoading.set(false));
-    this.employeeRoot = this.employeesRoot.checkRootForAdmin(this.employee.role);
   }
 }

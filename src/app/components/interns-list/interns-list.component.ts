@@ -22,6 +22,7 @@ import { IIntern } from '../intern.model';
 import { delay } from 'rxjs';
 import { LoaderComponent } from '../loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Header } from '../header/header';
 @Component({
   selector: 'app-interns-list',
   standalone: true,
@@ -46,6 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatCheckboxModule,
     TranslatePipe,
     LoaderComponent,
+    Header,
   ],
 })
 export class InternsListComponent implements OnInit, AfterViewInit {
@@ -82,6 +84,16 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     this.loadInterns();
   }
   loadInterns() {
+    this.isLoading.set(true);
+    this.internService
+      .getAllInterns()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+        },
+      })
+      .add(() => this.isLoading.set(false));
     this.isLoading.set(true);
     this.internService
       .getAllInterns()
@@ -134,6 +146,19 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   deleteSelected() {
     const selectedIds = this.selection.selected.map((s) => s.index);
     if (selectedIds.length === 0) return;
+    this.isLoading.set(true);
+    this.internService
+      .deleteInterns(selectedIds)
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (success) => {
+          if (success) {
+            this.loadInterns();
+            this.selection.clear();
+          }
+        },
+      })
+      .add(() => this.isLoading.set(false));
     this.isLoading.set(true);
     this.internService
       .deleteInterns(selectedIds)

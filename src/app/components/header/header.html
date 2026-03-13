@@ -6,7 +6,7 @@
       <mat-button-toggle value="rus" (click)="useLanguage('ru')">рус</mat-button-toggle>
     </mat-button-toggle-group>
     @if (!employee.name) {
-      <button matButton="elevated" (click)="openDialog()">{{ 'Button.Enter' | translate }}</button>
+      <button matButton="elevated" (click)="openDialog()">{{ 'button.enter' | translate }}</button>
     }
     @if (employee.role) {
       <app-nav></app-nav>

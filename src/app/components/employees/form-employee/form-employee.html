@@ -3,97 +3,97 @@
 }
 <form [formGroup]="form">
   <div>
-    <span>{{ 'Employee name' | translate }}</span>
+    <span>{{ 'employee-name' | translate }}</span>
     <mat-form-field>
       <mat-label>{{ 'personality.name' | translate }}</mat-label>
       <input matInput formControlName="name" />
       @if (form.controls['name'].hasError('required') && form.controls['name'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       } @else if (form.controls['name'].hasError('pattern') && form.controls['name'].touched) {
-        <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+        <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
       } @else if (form.controls['name'].hasError('minlength') && form.controls['name'].touched) {
-        <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+        <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
       } @else if (form.controls['name'].hasError('maxlength') && form.controls['name'].touched) {
-        <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+        <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'Employee surname' | translate }}а</span>
+    <span>{{ 'employee-surname' | translate }}а</span>
     <mat-form-field>
-      <mat-label>{{ 'personality.Surname' | translate }}</mat-label>
+      <mat-label>{{ 'personality.surname' | translate }}</mat-label>
       <input matInput formControlName="surname" />
       @if (form.controls['surname'].hasError('required') && form.controls['surname'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       } @else if (
         form.controls['surname'].hasError('pattern') && form.controls['surname'].touched
       ) {
-        <mat-error>{{ 'Errors.Without numbers' | translate }}</mat-error>
+        <mat-error>{{ 'errors.without-numbers' | translate }}</mat-error>
       } @else if (
         form.controls['surname'].hasError('minlength') && form.controls['surname'].touched
       ) {
-        <mat-error>{{ 'Errors.MinChar' | translate }}</mat-error>
+        <mat-error>{{ 'errors.min-char' | translate }}</mat-error>
       } @else if (
         form.controls['surname'].hasError('maxlength') && form.controls['surname'].touched
       ) {
-        <mat-error>{{ 'Errors.MaxChar' | translate }}</mat-error>
+        <mat-error>{{ 'errors.max-char' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'Employee email' | translate }}</span>
+    <span>{{ 'employee-email' | translate }}</span>
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input matInput placeholder="pat@example.com" formControlName="email" />
       @if (form.controls['email'].hasError('required') && form.controls['email'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       } @else if (form.controls['email'].hasError('pattern') && form.controls['email'].touched) {
-        <mat-error>{{ 'Errors.@el-pixel.com' | translate }}</mat-error>
+        <mat-error>{{ 'errors.el-pixel' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'Employee login' | translate }}</span
+    <span>{{ 'employee-login' | translate }}</span
     ><!--из емэйл!!!-->
     <mat-form-field>
       <mat-label>{{ 'personality.login' | translate }}</mat-label>
       <input matInput formControlName="login" />
       @if (form.controls['login'].hasError('required') && form.controls['login'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'Employee password' | translate }}</span>
+    <span>{{ 'employee-password' | translate }}</span>
     <mat-form-field>
-      <mat-label>{{ 'personality.Password' | translate }}</mat-label>
+      <mat-label>{{ 'personality.password' | translate }}</mat-label>
       <input matInput formControlName="password" />
       @if (form.controls['password'].hasError('required') && form.controls['password'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'Employee role' | translate }}</span>
+    <span>{{ 'employee-role' | translate }}</span>
     <mat-form-field>
-      <mat-label>{{ 'personality.Role' | translate }}</mat-label>
+      <mat-label>{{ 'personality.role' | translate }}</mat-label>
       <mat-select formControlName="role">
-        <mat-option value="Руководитель">{{ 'RoleList.Head' | translate }}</mat-option>
+        <mat-option value="Руководитель">{{ 'role-list.head' | translate }}</mat-option>
         <mat-option value="HR">HR</mat-option>
-        <mat-option value="Ментор">{{ 'RoleList.Mentor' | translate }}</mat-option>
+        <mat-option value="Ментор">{{ 'role-list.mentor' | translate }}</mat-option>
         <mat-option value="Руководитель стажировки">{{
-          'RoleList.Traineeship Head' | translate
+          'role-list.traineeship-head' | translate
         }}</mat-option>
       </mat-select>
       @if (form.controls['role'].hasError('required') && form.controls['role'].touched) {
-        <mat-error>{{ 'Errors.Required' | translate }}</mat-error>
+        <mat-error>{{ 'errors.required' | translate }}</mat-error>
       }
     </mat-form-field>
   </div>
   <div>
-    <span>{{ 'personality.Specialization' | translate }}</span>
+    <span>{{ 'personality.specialization' | translate }}</span>
     <mat-form-field>
-      <mat-label>{{ 'personality.Specialization' | translate }}</mat-label>
+      <mat-label>{{ 'personality.specialization' | translate }}</mat-label>
       <mat-select formControlName="specialization">
         <mat-option value="React">React</mat-option>
         <mat-option value="Angular">Angular</mat-option>
@@ -104,13 +104,13 @@
   @if (!id) {
     <div class="example-button-row">
       <button matButton="tonal" [disabled]="form.invalid" (click)="addEmployee($event)">
-        {{ 'Button.add-user' | translate }}
+        {{ 'button.add-user' | translate }}
       </button>
     </div>
   } @else {
     <div class="example-button-row">
       <button matButton="tonal" [disabled]="form.invalid" (click)="saveChanges($event)">
-        {{ 'Button.Save-changes' | translate }}
+        {{ 'button.save-changes' | translate }}
       </button>
     </div>
   }
