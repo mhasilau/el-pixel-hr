@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,6 +20,8 @@ import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
+import { delay } from 'rxjs';
+import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
 import { LoaderComponent } from '../loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -59,6 +62,8 @@ export class InternsListComponent implements OnInit, AfterViewInit {
 
   isLoading = signal<boolean>(false);
 
+  isLoading = signal<boolean>(false);
+
   displayedColumns: string[] = [
     'select',
     'index',
@@ -84,6 +89,16 @@ export class InternsListComponent implements OnInit, AfterViewInit {
     this.loadInterns();
   }
   loadInterns() {
+    this.isLoading.set(true);
+    this.internService
+      .getAllInterns()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.dataSource.data = data;
+        },
+      })
+      .add(() => this.isLoading.set(false));
     this.isLoading.set(true);
     this.internService
       .getAllInterns()
@@ -136,6 +151,19 @@ export class InternsListComponent implements OnInit, AfterViewInit {
   deleteSelected() {
     const selectedIds = this.selection.selected.map((s) => s.index);
     if (selectedIds.length === 0) return;
+    this.isLoading.set(true);
+    this.internService
+      .deleteInterns(selectedIds)
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (success) => {
+          if (success) {
+            this.loadInterns();
+            this.selection.clear();
+          }
+        },
+      })
+      .add(() => this.isLoading.set(false));
     this.isLoading.set(true);
     this.internService
       .deleteInterns(selectedIds)

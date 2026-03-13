@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -6,6 +7,8 @@ import { RouterLink } from '@angular/router';
 import { AllEmployees } from '../../services/all-employees.service';
 import { IUser } from '../auth-form.model';
 import { RootService } from '../../services/root.service';
+import { LoaderComponent } from '../loader/loader.component';
+import { delay } from 'rxjs';
 import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -20,11 +23,21 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
     LoaderComponent,
   ],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    RouterLink,
+    TranslatePipe,
+    LoaderComponent,
+  ],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
 })
 export class Nav implements OnInit {
   employeesList = inject(AllEmployees);
+
+  isLoading = signal<boolean>(false);
 
   isLoading = signal<boolean>(false);
 
