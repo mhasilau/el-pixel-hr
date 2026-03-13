@@ -6,6 +6,8 @@ import { EmployeeEdit } from './components/employees/employee-edit/employee-edit
 import { InternshipApplicationComponent } from './components/internship-application-component/internship-application.component';
 import { InternsListComponent } from './components/interns-list/interns-list.component';
 import { FeedbackForm } from './components/feedback-form/feedback-form';
+import { AuthGuard } from './guards/auth.guard';
+import { LeaveFormGuard } from './guards/leave-component.guard';
 
 export const routes: Routes = [
   {
@@ -14,25 +16,37 @@ export const routes: Routes = [
   },
   {
     path: 'employees',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', component: Employees },
-      { path: 'create', component: AddEmployee },
-      { path: 'edit/:id', component: EmployeeEdit },
+      { path: 'create', canActivate: [AuthGuard], component: AddEmployee },
+      { path: 'edit/:id', canActivate: [AuthGuard], component: EmployeeEdit },
     ],
   },
   {
     path: 'internship',
     children: [
-      { path: '', component: InternsListComponent },
-      { path: 'create', component: InternshipApplicationComponent },
-      { path: 'edit/:id', component: InternshipApplicationComponent },
-      { path: 'firstFeedback/:id', component: FeedbackForm },
-      { path: 'finishFeedback/:id', component: FeedbackForm },
+      {
+        path: 'create',
+        canDeactivate: [LeaveFormGuard],
+        component: InternshipApplicationComponent,
+      },
+      {
+        path: 'edit/:id',
+        canActivate: [AuthGuard],
+        canDeactivate: [LeaveFormGuard],
+        component: InternshipApplicationComponent,
+      },
     ],
   },
   {
     path: 'intern-list',
-    component: InternsListComponent,
+    children: [
+      { path: '', canActivate: [AuthGuard], component: InternsListComponent },
+      { path: 'firstFeedback/:id', canActivate: [AuthGuard], component: FeedbackForm },
+      { path: 'finishFeedback/:id', canActivate: [AuthGuard], component: FeedbackForm },
+    ],
   },
   {
     path: '**',

@@ -1,5 +1,8 @@
 <app-header></app-header>
 <div class="intern-list-wrapper">
+  @if (isLoading()) {
+    <app-loader></app-loader>
+  }
   <div class="intern-list-header">
     <div class="intern-list__title">{{ 'interns-list' | translate }}</div>
     <div class="intern-list-buttons">

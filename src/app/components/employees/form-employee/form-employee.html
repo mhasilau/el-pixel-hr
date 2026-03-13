@@ -1,3 +1,6 @@
+@if (isLoading()) {
+  <app-loader></app-loader>
+}
 <form [formGroup]="form">
   <div>
     <span>{{ 'employee-name' | translate }}</span>

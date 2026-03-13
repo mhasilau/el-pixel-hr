@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Header } from '../header/header';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InternService } from '../../services/interns.service';
 import { IIntern } from '../intern.model';
 import { filter } from 'rxjs';
-
+import { LoaderComponent } from '../loader/loader.component';
 @Component({
   selector: 'app-feedback-form',
   imports: [
@@ -27,6 +27,7 @@ import { filter } from 'rxjs';
     MatFormFieldModule,
     MatDatepickerModule,
     TranslatePipe,
+    LoaderComponent,
   ],
   templateUrl: './feedback-form.html',
   styleUrl: './feedback-form.scss',
@@ -55,17 +56,22 @@ export class FeedbackForm implements OnInit {
     internship_spec: '',
     englishLevel: '',
   };
-
+  isLoading = signal<boolean>(false);
   ngOnInit() {
-    this.allListEmployees.getEmployee().subscribe((employee) => (this.role = employee.role)); //получение pоли из auth-servise!!!!
+    this.isLoading.set(true);
+    this.allListEmployees
+      .getEmployee()
+      .subscribe((employee) => (this.role = employee.role))
+      .add(() => this.isLoading.set(true)); //получение pоли из auth-servise!!!!
     this.internId = Number(this.route.snapshot.params['id']);
     this.formType = history.state['form'];
     this.internService
       .getInternById(this.internId)
-      .pipe(filter((data) => !!data))
+      .pipe(filter((data): data is IIntern => !!data))
       .subscribe((intern) => {
         this.mockIntern = intern;
-      });
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   form = this.formBuilder.group(

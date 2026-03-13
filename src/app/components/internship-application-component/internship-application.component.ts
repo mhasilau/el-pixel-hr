@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -21,10 +21,11 @@ import { ageValidator, oneRequiredValidator } from '../../validators';
 //import { StorageService } from '../../services/storage.service';
 import { InternService } from '../../services/interns.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, delay } from 'rxjs';
 import { AllEmployees } from '../../services/all-employees.service';
+import { LoaderComponent } from '../loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
-
+import { CanComponentDeactivate } from '../../guards/leave-component.guard';
 @Component({
   selector: 'app-internship-application',
   standalone: true,
@@ -43,9 +44,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatRadioModule,
     MatChipsModule,
     TranslatePipe,
+    LoaderComponent,
   ],
 })
-export class InternshipApplicationComponent implements OnInit, OnDestroy {
+export class InternshipApplicationComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   private fb = inject(FormBuilder);
   private internService = inject(InternService);
   private route = inject(ActivatedRoute);
@@ -54,6 +56,7 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
   private allEmployees = inject(AllEmployees);
   internshipApplicationForm: FormGroup;
 
+  isLoading = signal<boolean>(false);
   isEditMode = false;
   internId: number | null = null;
 
@@ -147,51 +150,61 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initDateRange();
 
-    const routeSubscribe = this.route.params.subscribe((params) => {
-      const id = params['id'];
-      if (id) {
-        this.isEditMode = true;
-        this.internId = parseInt(id, 10);
+    this.isLoading.set(true);
+    const routeSubscribe = this.route.params
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe((params) => {
+        const id = params['id'];
+        if (id) {
+          this.isEditMode = true;
+          this.internId = parseInt(id, 10);
 
-        this.internService.getInternById(this.internId).subscribe((intern) => {
-          if (intern) {
-            this.internshipApplicationForm.patchValue({
-              'personal-info': {
-                firstName: intern.firstName,
-                lastName: intern.lastName,
-                birthDate: intern.birthDate,
-                gender: intern.gender,
-                country: intern.country,
-                city: intern.city,
-              },
-              'contact-info': {
-                email: intern.email,
-                telegram: intern.telegram,
-                phone: intern.phone,
-              },
-              'education-info': {
-                education: intern.education || '',
-                about: intern.about || '',
-                internship_spec: intern.internship_spec,
-                englishLevel: intern.englishLevel,
-                skills: intern.skills || [],
-              },
-              'internship-details': {
-                applicationDate: intern.applicationDate,
-                finalStatus: intern.finalStatus,
-                startDate: intern.startDate,
-                endDate: intern.endDate,
-                rejectionReason: intern.rejectionReason,
-              },
-            });
-            this.updateAgeFromBirthDate();
-          }
-        });
-      } else {
-        this.isEditMode = false;
-        this.internId = null;
-      }
-    });
+          this.isLoading.set(true);
+          this.internService
+            .getInternById(this.internId)
+            .pipe(delay(Math.random() * 2500 + 500))
+            .subscribe((intern) => {
+              if (intern) {
+                this.internshipApplicationForm.patchValue({
+                  'personal-info': {
+                    firstName: intern.firstName,
+                    lastName: intern.lastName,
+                    birthDate: intern.birthDate,
+                    gender: intern.gender,
+                    country: intern.country,
+                    city: intern.city,
+                  },
+                  'contact-info': {
+                    email: intern.email,
+                    telegram: intern.telegram,
+                    phone: intern.phone,
+                  },
+                  'education-info': {
+                    education: intern.education || '',
+                    about: intern.about || '',
+                    internship_spec: intern.internship_spec,
+                    englishLevel: intern.englishLevel,
+                    skills: intern.skills || [],
+                  },
+                  'internship-details': {
+                    applicationDate: intern.applicationDate,
+                    finalStatus: intern.finalStatus,
+                    startDate: intern.startDate,
+                    endDate: intern.endDate,
+                    rejectionReason: intern.rejectionReason,
+                  },
+                });
+                this.updateAgeFromBirthDate();
+              }
+            })
+            .add(() => this.isLoading.set(false));
+        } else {
+          this.isEditMode = false;
+          this.internId = null;
+          this.isLoading.set(false);
+        }
+      });
+    routeSubscribe.add(() => this.isLoading.set(false));
     this.subscriptions.push(routeSubscribe);
     if (this.birthDate) {
       const birthDateSub = this.birthDate.valueChanges.subscribe(() => {
@@ -204,6 +217,16 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+  canDeactivate(): boolean {
+    if (!this.internshipApplicationForm.dirty) {
+      return true;
+    }
+    const userConfirmed = confirm(
+      'У вас есть несохраненные изменения. Вы уверены, что хотите покинуть страницу?',
+    );
+    return userConfirmed;
+  }
+
   private initDateRange(): void {
     const today = new Date();
     this.maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
@@ -339,26 +362,35 @@ export class InternshipApplicationComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.internshipApplicationForm.valid) {
       if (this.isEditMode && this.internId) {
+        this.isLoading.set(true);
         const updateSub = this.internService
           .updateIntern(this.internId, this.internshipApplicationForm.value)
+          .pipe(delay(Math.random() * 2500 + 500))
           .subscribe({
             next: (updated) => {
               if (updated) {
+                this.internshipApplicationForm.markAsPristine();
                 this.router.navigate(['/intern-list']);
               }
             },
           });
+
+        updateSub.add(() => this.isLoading.set(false));
         this.subscriptions.push(updateSub);
       } else {
+        this.isLoading.set(true);
         const createSub = this.internService
           .createApply(this.internshipApplicationForm.value)
+          .pipe(delay(Math.random() * 2500 + 500))
           .subscribe({
             next: (newIntern) => {
               if (newIntern) {
+                this.internshipApplicationForm.markAsPristine();
                 this.router.navigate(['/']);
               }
             },
           });
+        createSub.add(() => this.isLoading.set(false));
         this.subscriptions.push(createSub);
       }
     } else {

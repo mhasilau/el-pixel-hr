@@ -1,4 +1,7 @@
 <section class="main_pages">
+  @if (isLoading()) {
+    <app-loader></app-loader>
+  }
   <app-header></app-header>
   <section class="for_main_content">
     <h1>{{ 'traineeship' | translate }}</h1>

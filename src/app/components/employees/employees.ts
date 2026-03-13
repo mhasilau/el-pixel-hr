@@ -9,6 +9,8 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialog } from './delete-dialog';
 import { IUser } from '../auth-form.model';
+import { LoaderComponent } from '../loader/loader.component';
+import { delay } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -21,6 +23,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatTableModule,
     RouterLink,
     RouterOutlet,
+    LoaderComponent,
     TranslatePipe,
   ],
   templateUrl: './employees.html',
@@ -31,6 +34,9 @@ export class Employees implements OnInit {
   dialog = inject(MatDialog);
   employeesList = inject(AllEmployees);
   router = inject(Router);
+
+  isLoading = signal<boolean>(false);
+
   targetUser: IUser = {
     id: 0,
     name: '',
@@ -53,9 +59,16 @@ export class Employees implements OnInit {
   allEmployeesList = signal<Array<IUser>>([]);
 
   ngOnInit() {
-    this.employeesList.getAllEmployees().subscribe((date) => {
-      this.allEmployeesList.set(date);
-    });
+    this.isLoading.set(true);
+    this.employeesList
+      .getAllEmployees()
+      .pipe(delay(Math.random() * 2500 + 500))
+      .subscribe({
+        next: (data) => {
+          this.allEmployeesList.set(data);
+        },
+      })
+      .add(() => this.isLoading.set(false));
   }
 
   openEdit(id: number) {
@@ -63,17 +76,23 @@ export class Employees implements OnInit {
   }
 
   deleteUser(id: number) {
+    this.isLoading.set(true);
     this.employeesList
       .deleteEmployee(id)
-      .subscribe((employees) => this.allEmployeesList.set(employees));
+      .subscribe((employees) => this.allEmployeesList.set(employees))
+      .add(() => this.isLoading.set(false));
   }
 
   openDialog(nameUser: string, id: number): void {
+    this.isLoading.set(true);
     const dialogRef = this.dialog.open(DeleteDialog, { width: '50%', data: { name: nameUser } });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.deleteUser(id);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.deleteUser(id);
+        }
+      })
+      .add(() => this.isLoading.set(false));
   }
 }

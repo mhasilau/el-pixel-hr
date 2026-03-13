@@ -1,4 +1,7 @@
 <section class="feetback">
+  @if (isLoading()) {
+    <app-loader></app-loader>
+  }
   <app-header></app-header>
   <h1>
     {{ 'feedback-about-trainee' | translate }} {{ mockIntern.firstName }} {{ mockIntern.lastName }}
