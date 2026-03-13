@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
@@ -20,8 +19,6 @@ import { ViewChild, AfterViewInit } from '@angular/core';
 import { InternService } from '../../services/interns.service';
 import { Router } from '@angular/router';
 import { IIntern } from '../intern.model';
-import { delay } from 'rxjs';
-import { LoaderComponent } from '../loader/loader.component';
 import { delay } from 'rxjs';
 import { LoaderComponent } from '../loader/loader.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -59,8 +56,6 @@ export class InternsListComponent implements OnInit, AfterViewInit {
 
   private internService = inject(InternService);
   private router = inject(Router);
-
-  isLoading = signal<boolean>(false);
 
   isLoading = signal<boolean>(false);
 
